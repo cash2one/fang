@@ -14,17 +14,17 @@ from zaih_core.database import (db, Model, DateTime,
 
 
 __all__ = [
-    'Column',
+    'Article',
 ]
 
 
-def column_id_generator():
-    return generator_string_id(18, 8)
+def article_id_generator():
+    return generator_string_id(20, 7)
 
 
-class Column(Model):
+class Article(Model):
 
-    __tablename__ = 'column'
+    __tablename__ = 'article'
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
@@ -37,13 +37,12 @@ class Column(Model):
     PUBLIC_REVIEW_STATUSES = [REVIEW_STATUS_PASSED, REVIEW_STATUS_AUTO_PASSED]
 
     id = db.Column(
-        db.String(32), primary_key=True, default=column_id_generator)
-    name = db.Column(db.String(128), nullable=False, index=True)
+        db.String(32), primary_key=True, default=article_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    image = db.Column(db.String(512), nullable=True)
-    price = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    title = db.Column(db.String(128), nullable=False, index=True)
+    summary = db.Column(db.String(512), nullable=False)
     content = db.Column(db.String(), nullable=False)
-    assistant_name = db.Column(db.String(32), nullable=True)
     status = db.Column(
         db.String(16), nullable=False, index=True, server_default=STATUS_DRAFT)
     review_status = db.Column(
@@ -52,37 +51,9 @@ class Column(Model):
     is_hidden = db.Column(
         db.Boolean(), nullable=False, index=True,
         server_default=sql.false())
-    date_published = db.Column(
-        DateTime, nullable=False, index=True,
-        server_default=db.func.current_timestamp())
-    date_start = db.Column(
-        DateTime, nullable=False, index=True,
-        server_default=db.func.current_timestamp())
-    date_end = db.Column(
-        DateTime, nullable=False, index=True,
-        server_default=db.func.current_timestamp())
     date_created = db.Column(
         db.DateTime(timezone=True), nullable=False, index=True,
         server_default=db.func.current_timestamp())
-    date_updated = db.Column(
-        DateTime, nullable=False, index=True,
-        server_default=db.func.current_timestamp())
-
-
-class Member(SurrogatePK, Model):
-
-    __tablename__ = 'member'
-
-    account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
-
-
-class Assistant(SurrogatePK, Model):
-
-    __tablename__ = 'assistant'
-
-    account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
     date_updated = db.Column(
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
