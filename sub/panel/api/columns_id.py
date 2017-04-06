@@ -1,21 +1,30 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
 
-from flask import request, g
-
+from flask import g
 from . import Resource
-from .. import schemas
+
+from zaih_core.api_errors import NotFound
+
+from sub.models import Column
+from sub.services.permissions import register_permission
 
 
 class ColumnsId(Resource):
 
+    def _get_column(self, id):
+        column = Column.get_by_id(id)
+        if not column:
+            raise NotFound('column_not_found')
+        return column
+
+    @register_permission('get_column')
     def get(self, id):
-        print(g.headers)
+        column = self._get_column(id)
+        return column, 200
 
-        return {}, 200, None
-
+    @register_permission('update_column')
     def put(self, id):
-        print(g.headers)
-        print(g.json)
-
-        return {}, 200, None
+        column = self._get_column(id)
+        if g.json:
+            column.update(**g.json)
+        return column, 200

@@ -93,6 +93,8 @@ definitions:
                 type: integer
             status:
                 type: string
+            is_hidden:
+                type: boolean
             date_start:
                 $ref: '#/definitions/datetime'
             date_end:
@@ -130,6 +132,8 @@ definitions:
                 type: string
             price:
                 type: integer
+            is_hidden:
+                type: boolean
             status:
                 type: string
                 enum:
@@ -146,6 +150,84 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_end:
                 $ref: '#/definitions/datetime'
+    ArticleLite:
+        properties:
+            id:
+                type: string
+            name:
+                type: string
+            account:
+                $ref: '#/definitions/AccountWithFC'
+            views_count:
+                type: integer
+                format: int32
+            status:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_published:
+                $ref: '#/definitions/datetime'
+    Article:
+        properties:
+            id:
+                type: string
+            name:
+                type: string
+            content:
+                type: string
+            account:
+                $ref: '#/definitions/AccountWithFC'
+            voice:
+                $ref: '#/definitions/VoiceLite'
+            views_count:
+                type: integer
+                format: int32
+            status:
+                type: string
+            date_published:
+                $ref: '#/definitions/datetime'
+            date_created:
+                $ref: '#/definitions/datetime'
+    CreateArticle:
+        properties:
+            title:
+                type: string
+            summary:
+                type: string
+            content:
+                type: string
+            voice_id:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: integer
+    UpdateArticle:
+        properties:
+            title:
+                type: string
+            summary:
+                type: string
+            content:
+                type: string
+            voice_id:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: integer
+            status:
+                type: string
+                enum:
+                    - draft
+                    - published
+            review_status:
+                type: string
+                enum:
+                    - pending
+                    - passed
+                    - rejected
+                    - auto_passed
     Error:
         properties:
             error_code:
@@ -209,7 +291,17 @@ parameters:
         enum:
             - draft
             - published
-            - hidden
+    review_status_in_query:
+        description: review_status in query
+        name: review_status
+        in: query
+        required: false
+        type: string
+        enum:
+            - pending
+            - passwd
+            - rejected
+            - auto_passed
     is_digest_in_query:
         description:  是否是精选
         name: is_digest
@@ -220,18 +312,30 @@ parameters:
         description:  专栏ID
         name: column_id
         in: query
-        required: True
+        required: false
+        type: string
+    article_id_in_query:
+        description:  文章ID
+        name: article_id
+        in: query
+        required: false
         type: string
     account_id_in_path:
         description: account id in path
-        name: id
+        name: account_id
         in: path
         required: true
         type: integer
         format: int32
     column_id_in_path:
         description: column id in path
-        name: id
+        name: column_id
+        in: path
+        required: true
+        type: string
+    article_id_in_path:
+        description: article id in path
+        name: article_id
         in: path
         required: true
         type: string
@@ -299,8 +403,8 @@ paths:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
-                - $ref: '#/parameters/date_created_in_query'
                 - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/review_status_in_query'
                 - $ref: '#/parameters/limit'
             responses:
                 200:
@@ -421,6 +525,139 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [panel]
+    /articles:
+        get:
+            summary: 文章列表
+            description: 文章列表
+            tags: [ARTICLES]
+            operationdId: articles
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/article_id_in_query'
+                - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 文章列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/ArticleLite'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        post:
+            summary: 添加文章
+            description: 添加文章
+            tags: [ARTICLES]
+            operationdId: create_article
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_article
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateArticle'
+            responses:
+                201:
+                    description: 文章
+                    schema:
+                        $ref: '#/definitions/Article'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /articles/{id}:
+        get:
+            summary: 文章
+            description: 文章
+            tags: [ARTICLES]
+            operationdId: article
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/article_id_in_path'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Article'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        put:
+            summary: 修改专栏
+            description: 修改专栏
+            tags: [ARTICLES]
+            operationdId: article
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/article_id_in_path'
+                - name: update_article
+                  in: body
+                  required: true
+                  schema:
+                        $ref: '#/definitions/UpdateArticle'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Article'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /articles/{id}/publish:
+        put:
+            summary: 发布文章
+            description: 发布文章
+            tags: [ARTICLES]
+            operationdId: article
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/article_id_in_path'
+            responses:
+                200:
+                    description: 发布文章
+                    schema:
+                        $ref: '#/definitions/Article'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        delete:
+            summary: 取消发布文章
+            description: 取消发布文章
+            tags: [ARTICLES]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/article_id_in_path'
+            responses:
+                204:
+                    description: 取消发布文章
+                    schema:
+                        $ref: '#/definitions/None'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
     /voices:
         get:
             summary: 语音列表
@@ -469,4 +706,5 @@ paths:
 
 tags:
     - {description: "专栏列表", name: COLUMNS}
+    - {description: "文章列表", name: ARTICLES}
     - {description: "语音", name: VOICES}
