@@ -115,6 +115,7 @@ class Config(object):
     FENDA_SERVER_HOST = environ.get('FENDA_PORT_8888_HTTP_PROTO',
                                     'http://localhost:8888')
     FENDA_OAUTH_API = '{host}/backend/oauth/tokeninfo'.format(host=FENDA_SERVER_HOST)
+    FENDA_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
     FENDA_AUTH_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
     FENDA_ACCOUNT_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
     # censor server
@@ -133,6 +134,7 @@ class Config(object):
         'censor': CENSOR_BACKEND_API,
         'board': BOARD_BACKEND_API,
         'feed': FEED_BACKEND_API,
+        'fenda': FENDA_BACKEND_API,
     }
 
     REVIEW_SERVER_HOST = environ.get('REVIEW_SERVER_HOST', b'54.223.60.47')
