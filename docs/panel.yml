@@ -1,0 +1,472 @@
+swagger: '2.0'
+info:
+    title: Fenda Sub Panel API
+    version: '1.0.0'
+schemes:
+    - http
+basePath:
+    /panel
+consumes:
+    - application/json
+profuces:
+    - application/json
+definitions:
+    datetime:
+        type: string
+        format: datetime
+    Account:
+        properties:
+            id:
+                type: string
+            nickname:
+                type: string
+            title:
+                type: string
+            avatar:
+                type: string
+            is_verified:
+                type: boolean
+    AccountWithFC:
+        allOf:
+            - $ref: '#/definitions/Account'
+            - type: object
+        properties:
+            is_followed:
+                type: boolean
+    VoiceLite:
+        properties:
+            id:
+                type: string
+            duration:
+                type: string
+    Voice:
+        properties:
+            id:
+                type: string
+            column_id:
+                type: string
+            url:
+                type: string
+            duration:
+                type: string
+    CreateVoice:
+        properties:
+            source_key:
+                type: string
+            column_id:
+                type: string
+    ColumnLite:
+        properties:
+            id:
+                type: string
+            name:
+                type: string
+            content:
+                type: string
+            account:
+                $ref: '#/definitions/AccountWithFC'
+            voice:
+                $ref: '#/definitions/VoiceLite'
+            views_count:
+                type: integer
+                format: int32
+            status:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+    Column:
+        properties:
+            id:
+                type: string
+            name:
+                type: string
+            content:
+                type: string
+            account:
+                $ref: '#/definitions/AccountWithFC'
+            voice:
+                $ref: '#/definitions/VoiceLite'
+            views_count:
+                type: integer
+                format: int32
+            order_score:
+                type: integer
+            status:
+                type: string
+            date_start:
+                $ref: '#/definitions/datetime'
+            date_end:
+                $ref: '#/definitions/datetime'
+            date_created:
+                $ref: '#/definitions/datetime'
+    CreateColumn:
+        properties:
+            title:
+                type: string
+            content:
+                type: string
+            image:
+                type: string
+            price:
+                type: integer
+            account_id:
+                type: integer
+            status:
+                type: string
+                enum:
+                    - draft
+                    - published
+            date_start:
+                $ref: '#/definitions/datetime'
+            date_end:
+                $ref: '#/definitions/datetime'
+    UpdateColumn:
+        properties:
+            name:
+                type: string
+            content:
+                type: string
+            image:
+                type: string
+            price:
+                type: integer
+            status:
+                type: string
+                enum:
+                    - draft
+                    - published
+            review_status:
+                type: string
+                enum:
+                    - pending
+                    - passed
+                    - rejected
+                    - auto_passed
+            date_start:
+                $ref: '#/definitions/datetime'
+            date_end:
+                $ref: '#/definitions/datetime'
+    Error:
+        properties:
+            error_code:
+                type: string
+            message:
+                type: string
+            text:
+                type: string
+    Success:
+        properties:
+            ok:
+                type: boolean
+    None:
+        type: object
+parameters:
+    AccessToken:
+        name: Authorization
+        in: header
+        required: true
+        type: string
+    AccessTokenOptional:
+        name: Authorization
+        in: header
+        required: false
+        type: string
+    Authorization:
+        description: 格式 (Basic hashkey) 注 hashkey为client_id + client_secret 做BASE64处理
+        in: header
+        name: Authorization
+        required: true
+        type: string
+    order_by:
+        description: order by
+        name: order_by
+        in: query
+        required: false
+        type: string
+        enum:
+            - order_score
+            - create_time
+            - published_time
+    account_id_in_query:
+        description: account id in query
+        name: account_id
+        in: query
+        required: false
+        type: integer
+        format: int32
+    date_created_in_query:
+        description: date in query
+        name: date_created
+        in: query
+        required: false
+        type: string
+    status_in_query:
+        description: status in query
+        name: status
+        in: query
+        required: false
+        type: string
+        enum:
+            - draft
+            - published
+            - hidden
+    is_digest_in_query:
+        description:  是否是精选
+        name: is_digest
+        in: query
+        required: false
+        type: boolean
+    column_id_in_query:
+        description:  专栏ID
+        name: column_id
+        in: query
+        required: True
+        type: string
+    account_id_in_path:
+        description: account id in path
+        name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+    column_id_in_path:
+        description: column id in path
+        name: id
+        in: path
+        required: true
+        type: string
+    page:
+        description: page number
+        name: page
+        in: query
+        required: false
+        type: integer
+        format: int32
+        maximum: 1000
+    per_page:
+        description: per_page number
+        name: per_page
+        in: query
+        required: false
+        type: integer
+        format: int32
+        maximum: 100
+    offset:
+        description: offset number
+        name: offset
+        in: query
+        required: false
+        type: integer
+        format: int32
+        maximum: 20000
+    limit:
+        description: limit number
+        name: limit
+        in: query
+        required: false
+        type: integer
+        format: int32
+        maximum: 100
+    order_score:
+        description: 排序值
+        name: order_score
+        in: query
+        required: false
+        type: string
+    is_refresh:
+        description: 是否刷新
+        name: is_refresh
+        in: query
+        required: false
+        type: boolean
+securityDefinitions:
+    OAuth2:
+        type: oauth2
+        flow: password
+        tokenUrl: https://apis-fd.zaih.com/v1/oauth/token
+        scopes:
+            open: 开放API
+            panel: 后台API
+            backend: Backend API
+paths:
+    /columns:
+        get:
+            summary: 专栏列表
+            description: 专栏列表
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/date_created_in_query'
+                - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/ColumnLite'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        post:
+            summary: 添加专栏
+            description: 添加专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_column
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateColumn'
+            responses:
+                201:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /columns/{id}:
+        get:
+            summary: 专栏
+            description: 专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/column_id_in_path'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        put:
+            summary: 修改专栏
+            description: 修改专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/column_id_in_path'
+                - name: update_column
+                  in: body
+                  required: true
+                  schema:
+                        $ref: '#/definitions/UpdateColumn'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /columns/{id}/publish:
+        put:
+            summary: 发布专栏
+            description: 发布专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/column_id_in_path'
+            responses:
+                200:
+                    description: 发布专栏
+                    schema:
+                        $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        delete:
+            summary: 取消发布专栏
+            description: 取消发布专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/column_id_in_path'
+            responses:
+                204:
+                    description: 取消发布专栏
+                    schema:
+                        $ref: '#/definitions/None'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /voices:
+        get:
+            summary: 语音列表
+            description: 语音列表
+            tags: [VOICES]
+            operationdId: get_voices
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/column_id_in_query'
+            responses:
+                200:
+                    description: 语音列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Voice'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        post:
+            summary: 上传语音
+            description: 上传语音
+            tags: [VOICES]
+            operationdId: create_voices 
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_column
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateVoice'
+            responses:
+                201:
+                    description: 语音
+                    schema:
+                        $ref: '#/definitions/Voice'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+
+tags:
+    - {description: "专栏列表", name: COLUMNS}
+    - {description: "语音", name: VOICES}
