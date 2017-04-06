@@ -1,0 +1,721 @@
+{
+  "info": {
+    "version": "1.0.0",
+    "title": "Fenda Sub Panel API"
+  },
+  "paths": {
+    "/columns/{id}": {
+      "put": {
+        "description": "\u4fee\u6539\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/UpdateColumn"
+            },
+            "required": true,
+            "name": "update_column",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u4fee\u6539\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Column"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Column"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/columns": {
+      "post": {
+        "description": "\u6dfb\u52a0\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/CreateColumn"
+            },
+            "required": true,
+            "name": "create_column",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u6dfb\u52a0\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "201": {
+            "description": "\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Column"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u4e13\u680f\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/date_created_in_query"
+          },
+          {
+            "$ref": "#/parameters/status_in_query"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u4e13\u680f\u5217\u8868",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Column"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/voices": {
+      "post": {
+        "description": "\u4e0a\u4f20\u8bed\u97f3",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/CreateVoice"
+            },
+            "required": true,
+            "name": "create_column",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "VOICES"
+        ],
+        "summary": "\u4e0a\u4f20\u8bed\u97f3",
+        "operationdId": "create_voices",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "201": {
+            "description": "\u8bed\u97f3",
+            "schema": {
+              "$ref": "#/definitions/Voice"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u8bed\u97f3\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_query"
+          }
+        ],
+        "tags": [
+          "VOICES"
+        ],
+        "summary": "\u8bed\u97f3\u5217\u8868",
+        "operationdId": "get_voices",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u8bed\u97f3\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Voice"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/columns/{id}/publish": {
+      "put": {
+        "description": "\u53d1\u5e03\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u53d1\u5e03\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u53d1\u5e03\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Column"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "204": {
+            "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/None"
+            }
+          }
+        }
+      }
+    }
+  },
+  "profuces": [
+    "application/json"
+  ],
+  "parameters": {
+    "order_by": {
+      "enum": [
+        "order_score",
+        "create_time",
+        "published_time"
+      ],
+      "name": "order_by",
+      "required": false,
+      "in": "query",
+      "type": "string",
+      "description": "order by"
+    },
+    "is_refresh": {
+      "required": false,
+      "type": "boolean",
+      "description": "\u662f\u5426\u5237\u65b0",
+      "in": "query",
+      "name": "is_refresh"
+    },
+    "AccessToken": {
+      "required": true,
+      "type": "string",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "is_digest_in_query": {
+      "required": false,
+      "type": "boolean",
+      "description": "\u662f\u5426\u662f\u7cbe\u9009",
+      "in": "query",
+      "name": "is_digest"
+    },
+    "account_id_in_query": {
+      "description": "account id in query",
+      "format": "int32",
+      "required": false,
+      "in": "query",
+      "type": "integer",
+      "name": "account_id"
+    },
+    "status_in_query": {
+      "enum": [
+        "draft",
+        "published",
+        "hidden"
+      ],
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string",
+      "description": "status in query"
+    },
+    "offset": {
+      "description": "offset number",
+      "format": "int32",
+      "required": false,
+      "maximum": 20000,
+      "in": "query",
+      "type": "integer",
+      "name": "offset"
+    },
+    "order_score": {
+      "required": false,
+      "type": "string",
+      "description": "\u6392\u5e8f\u503c",
+      "in": "query",
+      "name": "order_score"
+    },
+    "column_id_in_query": {
+      "required": true,
+      "type": "string",
+      "description": "\u4e13\u680fID",
+      "in": "query",
+      "name": "headline_id"
+    },
+    "limit": {
+      "description": "limit number",
+      "format": "int32",
+      "required": false,
+      "maximum": 100,
+      "in": "query",
+      "type": "integer",
+      "name": "limit"
+    },
+    "account_id_in_path": {
+      "description": "account id in path",
+      "format": "int32",
+      "required": true,
+      "in": "path",
+      "type": "integer",
+      "name": "id"
+    },
+    "AccessTokenOptional": {
+      "required": false,
+      "type": "string",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "column_id_in_path": {
+      "required": true,
+      "type": "string",
+      "description": "headline id in path",
+      "in": "path",
+      "name": "id"
+    },
+    "per_page": {
+      "description": "per_page number",
+      "format": "int32",
+      "required": false,
+      "maximum": 100,
+      "in": "query",
+      "type": "integer",
+      "name": "per_page"
+    },
+    "page": {
+      "description": "page number",
+      "format": "int32",
+      "required": false,
+      "maximum": 1000,
+      "in": "query",
+      "type": "integer",
+      "name": "page"
+    },
+    "Authorization": {
+      "required": true,
+      "type": "string",
+      "description": "\u683c\u5f0f (Basic hashkey) \u6ce8 hashkey\u4e3aclient_id + client_secret \u505aBASE64\u5904\u7406",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "date_created_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "date in query",
+      "in": "query",
+      "name": "date_created"
+    }
+  },
+  "tags": [
+    {
+      "description": "\u4e13\u680f\u5217\u8868",
+      "name": "COLUMNS"
+    },
+    {
+      "description": "\u8bed\u97f3",
+      "name": "VOICES"
+    }
+  ],
+  "basePath": "/panel",
+  "securityDefinitions": {
+    "OAuth2": {
+      "flow": "password",
+      "tokenUrl": "https://apis-fd.zaih.com/v1/oauth/token",
+      "type": "oauth2",
+      "scopes": {
+        "backend": "Backend API",
+        "open": "\u5f00\u653eAPI",
+        "panel": "\u540e\u53f0API"
+      }
+    }
+  },
+  "definitions": {
+    "CreateVoice": {
+      "properties": {
+        "headline_id": {
+          "type": "string"
+        },
+        "source_key": {
+          "type": "string"
+        }
+      }
+    },
+    "Account": {
+      "properties": {
+        "is_verified": {
+          "type": "boolean"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "Success": {
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Column": {
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "account": {
+          "$ref": "#/definitions/AccountWithFC"
+        },
+        "name": {
+          "type": "string"
+        },
+        "is_digest": {
+          "type": "integer"
+        },
+        "date_end": {
+          "$ref": "#/definitions/datetime"
+        },
+        "date_start": {
+          "$ref": "#/definitions/datetime"
+        },
+        "order_score": {
+          "type": "integer"
+        },
+        "content": {
+          "type": "string"
+        },
+        "voice": {
+          "$ref": "#/definitions/VoiceLite"
+        },
+        "id": {
+          "type": "string"
+        },
+        "views_count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "AccountWithFC": {
+      "properties": {
+        "is_followed": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/Account"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "datetime": {
+      "type": "string",
+      "format": "datetime"
+    },
+    "VoiceLite": {
+      "properties": {
+        "duration": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateColumn": {
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "date_start": {
+          "$ref": "#/definitions/datetime"
+        },
+        "review_status": {
+          "enum": [
+            "pending",
+            "passed",
+            "rejected",
+            "auto_passed"
+          ],
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "date_end": {
+          "$ref": "#/definitions/datetime"
+        },
+        "price": {
+          "type": "integer"
+        }
+      }
+    },
+    "Error": {
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "error_code": {
+          "type": "string"
+        }
+      }
+    },
+    "None": {
+      "type": "object"
+    },
+    "Voice": {
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "headline_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateColumn": {
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "type": "string"
+        },
+        "account_id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "date_start": {
+          "$ref": "#/definitions/datetime"
+        },
+        "content": {
+          "type": "string"
+        },
+        "date_end": {
+          "$ref": "#/definitions/datetime"
+        },
+        "price": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "swagger": "2.0",
+  "consumes": [
+    "application/json"
+  ]
+}
