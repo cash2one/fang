@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
+
+from . import Resource
+
 from zaih_core.ztime import now
 from zaih_core.api_errors import NotFound, BadRequest
 
 from sub.models import Column
 from sub.services.permissions import register_permission
-
-from . import Resource
-from .. import schemas
 
 
 class ColumnsIdPublish(Resource):
@@ -20,7 +20,7 @@ class ColumnsIdPublish(Resource):
     @register_permission('update_column')
     def put(self, id):
         column = self._get_column(id)
-        if column.status == Column.STATUS_HIDDEN:
+        if column.is_hidden:
             raise BadRequest('column_hidden')
         params = {
             'status': Column.STATUS_PUBLISHED

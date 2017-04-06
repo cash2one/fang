@@ -4,6 +4,108 @@
     "title": "Fenda Sub Panel API"
   },
   "paths": {
+    "/replies": {
+      "post": {
+        "description": "\u6dfb\u52a0\u4e3b\u8d34",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/CreateReply"
+            },
+            "required": true,
+            "name": "create_reply",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u6dfb\u52a0\u4e3b\u8d34",
+        "operationdId": "replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "201": {
+            "description": "\u4e3b\u8d34",
+            "schema": {
+              "$ref": "#/definitions/Reply"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u8ba8\u8bba\u56de\u590d\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/post_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_hidden_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_sticky_in_query"
+          },
+          {
+            "$ref": "#/parameters/review_status_in_query"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u8ba8\u8bba\u56de\u590d\u5217\u8868",
+        "operationdId": "replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u56de\u590d\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Reply"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/articles/{id}/publish": {
       "put": {
         "description": "\u53d1\u5e03\u6587\u7ae0",
@@ -139,10 +241,10 @@
             "$ref": "#/parameters/article_id_in_query"
           },
           {
-            "$ref": "#/parameters/date_created_in_query"
+            "$ref": "#/parameters/status_in_query"
           },
           {
-            "$ref": "#/parameters/status_in_query"
+            "$ref": "#/parameters/is_hidden_in_query"
           },
           {
             "$ref": "#/parameters/review_status_in_query"
@@ -406,10 +508,10 @@
             "$ref": "#/parameters/column_id_in_query"
           },
           {
-            "$ref": "#/parameters/date_created_in_query"
+            "$ref": "#/parameters/status_in_query"
           },
           {
-            "$ref": "#/parameters/status_in_query"
+            "$ref": "#/parameters/is_hidden_in_query"
           },
           {
             "$ref": "#/parameters/review_status_in_query"
@@ -438,6 +540,349 @@
                 "$ref": "#/definitions/ColumnLite"
               },
               "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "put": {
+        "description": "\u4fee\u6539\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/post_id_in_path"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/UpdatePost"
+            },
+            "required": true,
+            "name": "update_post",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u4fee\u6539\u4e13\u680f",
+        "operationdId": "posts",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u4e3b\u8d34",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/post_id_in_path"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u4e3b\u8d34",
+        "operationdId": "posts",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/columns/{id}/publish": {
+      "put": {
+        "description": "\u53d1\u5e03\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u53d1\u5e03\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u53d1\u5e03\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/Column"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_path"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+        "operationdId": "columns",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "204": {
+            "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
+            "schema": {
+              "$ref": "#/definitions/None"
+            }
+          }
+        }
+      }
+    },
+    "/posts": {
+      "post": {
+        "description": "\u6dfb\u52a0\u4e3b\u8d34",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/CreatePost"
+            },
+            "required": true,
+            "name": "create_post",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u6dfb\u52a0\u4e3b\u8d34",
+        "operationdId": "posts",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "201": {
+            "description": "\u4e3b\u8d34",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u8ba8\u8bba\u4e3b\u8d34\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/column_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_hidden_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_sticky_in_query"
+          },
+          {
+            "$ref": "#/parameters/review_status_in_query"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u8ba8\u8bba\u4e3b\u8d34\u5217\u8868",
+        "operationdId": "posts",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Post"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/replies/{id}": {
+      "put": {
+        "description": "\u4fee\u6539\u56de\u590d",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/reply_id_in_path"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/UpdateReply"
+            },
+            "required": true,
+            "name": "update_reply",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u4fee\u6539\u56de\u590d",
+        "operationdId": "replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u56de\u590d",
+            "schema": {
+              "$ref": "#/definitions/Reply"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u56de\u590d",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/reply_id_in_path"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u56de\u590d",
+        "operationdId": "replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u56de\u590d",
+            "schema": {
+              "$ref": "#/definitions/Reply"
             }
           },
           "default": {
@@ -532,113 +977,18 @@
           }
         }
       }
-    },
-    "/columns/{id}/publish": {
-      "put": {
-        "description": "\u53d1\u5e03\u4e13\u680f",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AccessToken"
-          },
-          {
-            "$ref": "#/parameters/column_id_in_path"
-          }
-        ],
-        "tags": [
-          "COLUMNS"
-        ],
-        "summary": "\u53d1\u5e03\u4e13\u680f",
-        "operationdId": "columns",
-        "security": [
-          {
-            "OAuth2": [
-              "panel"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "\u53d1\u5e03\u4e13\u680f",
-            "schema": {
-              "$ref": "#/definitions/Column"
-            }
-          },
-          "default": {
-            "description": "Unexpected Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AccessToken"
-          },
-          {
-            "$ref": "#/parameters/column_id_in_path"
-          }
-        ],
-        "tags": [
-          "COLUMNS"
-        ],
-        "summary": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
-        "operationdId": "columns",
-        "security": [
-          {
-            "OAuth2": [
-              "panel"
-            ]
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Unexpected Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "204": {
-            "description": "\u53d6\u6d88\u53d1\u5e03\u4e13\u680f",
-            "schema": {
-              "$ref": "#/definitions/None"
-            }
-          }
-        }
-      }
     }
   },
   "profuces": [
     "application/json"
   ],
   "parameters": {
-    "order_by": {
-      "enum": [
-        "order_score",
-        "create_time",
-        "published_time"
-      ],
-      "name": "order_by",
-      "required": false,
-      "in": "query",
-      "type": "string",
-      "description": "order by"
-    },
-    "article_id_in_path": {
+    "reply_id_in_path": {
       "required": true,
       "type": "string",
-      "description": "article id in path",
+      "description": "reply id in path",
       "in": "path",
-      "name": "article_id"
-    },
-    "article_id_in_query": {
-      "required": false,
-      "type": "string",
-      "description": "\u6587\u7ae0ID",
-      "in": "query",
-      "name": "article_id"
+      "name": "id"
     },
     "AccessToken": {
       "required": true,
@@ -653,14 +1003,6 @@
       "in": "query",
       "name": "is_digest"
     },
-    "account_id_in_query": {
-      "description": "account id in query",
-      "format": "int32",
-      "required": false,
-      "in": "query",
-      "type": "integer",
-      "name": "account_id"
-    },
     "status_in_query": {
       "enum": [
         "draft",
@@ -671,72 +1013,6 @@
       "in": "query",
       "type": "string",
       "description": "status in query"
-    },
-    "column_id_in_path": {
-      "required": true,
-      "type": "string",
-      "description": "column id in path",
-      "in": "path",
-      "name": "column_id"
-    },
-    "order_score": {
-      "required": false,
-      "type": "string",
-      "description": "\u6392\u5e8f\u503c",
-      "in": "query",
-      "name": "order_score"
-    },
-    "review_status_in_query": {
-      "enum": [
-        "pending",
-        "passwd",
-        "rejected",
-        "auto_passed"
-      ],
-      "name": "review_status",
-      "required": false,
-      "in": "query",
-      "type": "string",
-      "description": "review_status in query"
-    },
-    "page": {
-      "description": "page number",
-      "format": "int32",
-      "required": false,
-      "maximum": 1000,
-      "in": "query",
-      "type": "integer",
-      "name": "page"
-    },
-    "column_id_in_query": {
-      "required": false,
-      "type": "string",
-      "description": "\u4e13\u680fID",
-      "in": "query",
-      "name": "column_id"
-    },
-    "limit": {
-      "description": "limit number",
-      "format": "int32",
-      "required": false,
-      "maximum": 100,
-      "in": "query",
-      "type": "integer",
-      "name": "limit"
-    },
-    "account_id_in_path": {
-      "description": "account id in path",
-      "format": "int32",
-      "required": true,
-      "in": "path",
-      "type": "integer",
-      "name": "account_id"
-    },
-    "AccessTokenOptional": {
-      "required": false,
-      "type": "string",
-      "name": "Authorization",
-      "in": "header"
     },
     "offset": {
       "description": "offset number",
@@ -756,13 +1032,6 @@
       "type": "integer",
       "name": "per_page"
     },
-    "is_refresh": {
-      "required": false,
-      "type": "boolean",
-      "description": "\u662f\u5426\u5237\u65b0",
-      "in": "query",
-      "name": "is_refresh"
-    },
     "Authorization": {
       "required": true,
       "type": "string",
@@ -770,12 +1039,147 @@
       "name": "Authorization",
       "in": "header"
     },
+    "is_sticky_in_query": {
+      "required": false,
+      "type": "boolean",
+      "description": "is_sticky in query",
+      "in": "query",
+      "name": "is_sticky"
+    },
+    "order_by": {
+      "enum": [
+        "order_score",
+        "create_time",
+        "published_time"
+      ],
+      "name": "order_by",
+      "required": false,
+      "in": "query",
+      "type": "string",
+      "description": "order by"
+    },
+    "order_score": {
+      "required": false,
+      "type": "string",
+      "description": "\u6392\u5e8f\u503c",
+      "in": "query",
+      "name": "order_score"
+    },
+    "account_id_in_query": {
+      "description": "account id in query",
+      "format": "int32",
+      "required": false,
+      "in": "query",
+      "type": "integer",
+      "name": "account_id"
+    },
+    "account_id_in_path": {
+      "description": "account id in path",
+      "format": "int32",
+      "required": true,
+      "in": "path",
+      "type": "integer",
+      "name": "account_id"
+    },
+    "review_status_in_query": {
+      "enum": [
+        "pending",
+        "passwd",
+        "rejected",
+        "auto_passed"
+      ],
+      "name": "review_status",
+      "required": false,
+      "in": "query",
+      "type": "string",
+      "description": "review_status in query"
+    },
+    "AccessTokenOptional": {
+      "required": false,
+      "type": "string",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "column_id_in_path": {
+      "required": true,
+      "type": "string",
+      "description": "column id in path",
+      "in": "path",
+      "name": "id"
+    },
+    "article_id_in_path": {
+      "required": true,
+      "type": "string",
+      "description": "article id in path",
+      "in": "path",
+      "name": "id"
+    },
+    "post_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "post id in query",
+      "in": "query",
+      "name": "post_id"
+    },
+    "article_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "\u6587\u7ae0ID",
+      "in": "query",
+      "name": "article_id"
+    },
     "date_created_in_query": {
       "required": false,
       "type": "string",
       "description": "date in query",
       "in": "query",
       "name": "date_created"
+    },
+    "is_hidden_in_query": {
+      "required": false,
+      "type": "boolean",
+      "description": "is_hidden in query",
+      "in": "query",
+      "name": "is_hidden"
+    },
+    "page": {
+      "description": "page number",
+      "format": "int32",
+      "required": false,
+      "maximum": 1000,
+      "in": "query",
+      "type": "integer",
+      "name": "page"
+    },
+    "limit": {
+      "description": "limit number",
+      "format": "int32",
+      "required": false,
+      "maximum": 100,
+      "in": "query",
+      "type": "integer",
+      "name": "limit"
+    },
+    "column_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "\u4e13\u680fID",
+      "in": "query",
+      "name": "column_id"
+    },
+    "post_id_in_path": {
+      "required": true,
+      "type": "string",
+      "description": "post id in path",
+      "in": "path",
+      "name": "id"
+    },
+    "is_refresh": {
+      "required": false,
+      "type": "boolean",
+      "description": "\u662f\u5426\u5237\u65b0",
+      "in": "query",
+      "name": "is_refresh"
     }
   },
   "tags": [
@@ -786,6 +1190,10 @@
     {
       "description": "\u6587\u7ae0\u5217\u8868",
       "name": "ARTICLES"
+    },
+    {
+      "description": "\u8ba8\u8bba\u5217\u8868",
+      "name": "POSTS"
     },
     {
       "description": "\u8bed\u97f3",
@@ -812,7 +1220,7 @@
           "type": "string"
         },
         "account": {
-          "$ref": "#/definitions/AccountWithFC"
+          "$ref": "#/definitions/Account"
         },
         "views_count": {
           "type": "integer",
@@ -864,91 +1272,6 @@
         }
       }
     },
-    "Success": {
-      "properties": {
-        "ok": {
-          "type": "boolean"
-        }
-      }
-    },
-    "CreateArticle": {
-      "properties": {
-        "account_id": {
-          "type": "integer"
-        },
-        "title": {
-          "type": "string"
-        },
-        "column_id": {
-          "type": "integer"
-        },
-        "content": {
-          "type": "string"
-        },
-        "summary": {
-          "type": "string"
-        },
-        "voice_id": {
-          "type": "string"
-        }
-      }
-    },
-    "Column": {
-      "properties": {
-        "status": {
-          "type": "string"
-        },
-        "account": {
-          "$ref": "#/definitions/AccountWithFC"
-        },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "date_end": {
-          "$ref": "#/definitions/datetime"
-        },
-        "date_start": {
-          "$ref": "#/definitions/datetime"
-        },
-        "order_score": {
-          "type": "integer"
-        },
-        "content": {
-          "type": "string"
-        },
-        "date_created": {
-          "$ref": "#/definitions/datetime"
-        },
-        "is_hidden": {
-          "type": "boolean"
-        },
-        "voice": {
-          "$ref": "#/definitions/VoiceLite"
-        },
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "AccountWithFC": {
-      "properties": {
-        "is_followed": {
-          "type": "boolean"
-        }
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/Account"
-        },
-        {
-          "type": "object"
-        }
-      ]
-    },
     "datetime": {
       "type": "string",
       "format": "datetime"
@@ -959,7 +1282,7 @@
           "type": "string"
         },
         "account": {
-          "$ref": "#/definitions/AccountWithFC"
+          "$ref": "#/definitions/Account"
         },
         "views_count": {
           "type": "integer",
@@ -975,16 +1298,6 @@
           "type": "string"
         },
         "name": {
-          "type": "string"
-        }
-      }
-    },
-    "VoiceLite": {
-      "properties": {
-        "duration": {
-          "type": "string"
-        },
-        "id": {
           "type": "string"
         }
       }
@@ -1030,21 +1343,72 @@
         }
       }
     },
-    "Error": {
+    "Reply": {
       "properties": {
-        "text": {
+        "status": {
           "type": "string"
         },
-        "message": {
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "views_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_sticky": {
+          "type": "boolean"
+        },
+        "content": {
           "type": "string"
         },
-        "error_code": {
+        "date_created": {
+          "$ref": "#/definitions/datetime"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "id": {
           "type": "string"
         }
       }
     },
-    "None": {
-      "type": "object"
+    "CreatePost": {
+      "properties": {
+        "column_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateArticle": {
+      "properties": {
+        "account_id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "column_id": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "voice_id": {
+          "type": "string"
+        }
+      }
     },
     "Article": {
       "properties": {
@@ -1052,7 +1416,7 @@
           "type": "string"
         },
         "account": {
-          "$ref": "#/definitions/AccountWithFC"
+          "$ref": "#/definitions/Account"
         },
         "views_count": {
           "type": "integer",
@@ -1074,6 +1438,157 @@
           "type": "string"
         },
         "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Post": {
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "description": {
+          "type": "string"
+        },
+        "is_sticky": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "date_created": {
+          "$ref": "#/definitions/datetime"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "views_count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "None": {
+      "type": "object"
+    },
+    "Success": {
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Column": {
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "views_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "date_end": {
+          "$ref": "#/definitions/datetime"
+        },
+        "date_start": {
+          "$ref": "#/definitions/datetime"
+        },
+        "order_score": {
+          "type": "integer"
+        },
+        "content": {
+          "type": "string"
+        },
+        "date_created": {
+          "$ref": "#/definitions/datetime"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "voice": {
+          "$ref": "#/definitions/VoiceLite"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdatePost": {
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "is_sticky": {
+          "type": "boolean"
+        },
+        "review_status": {
+          "enum": [
+            "pending",
+            "passed",
+            "rejected",
+            "auto_passed"
+          ],
+          "type": "string"
+        },
+        "column_id": {
+          "type": "string"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "account_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Error": {
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "error_code": {
+          "type": "string"
+        }
+      }
+    },
+    "Voice": {
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "column_id": {
           "type": "string"
         }
       }
@@ -1103,7 +1618,7 @@
           "type": "string"
         },
         "column_id": {
-          "type": "integer"
+          "type": "string"
         },
         "content": {
           "type": "string"
@@ -1112,22 +1627,6 @@
           "type": "string"
         },
         "voice_id": {
-          "type": "string"
-        }
-      }
-    },
-    "Voice": {
-      "properties": {
-        "url": {
-          "type": "string"
-        },
-        "duration": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "column_id": {
           "type": "string"
         }
       }
@@ -1161,6 +1660,68 @@
         },
         "price": {
           "type": "integer"
+        }
+      }
+    },
+    "UpdateReply": {
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "type": "string"
+        },
+        "account_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_sticky": {
+          "type": "boolean"
+        },
+        "review_status": {
+          "enum": [
+            "pending",
+            "passed",
+            "rejected",
+            "auto_passed"
+          ],
+          "type": "string"
+        },
+        "column_id": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        }
+      }
+    },
+    "VoiceLite": {
+      "properties": {
+        "duration": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateReply": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "reply_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "integer"
+        },
+        "column_id": {
+          "type": "string"
         }
       }
     }

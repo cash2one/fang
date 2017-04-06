@@ -26,13 +26,6 @@ definitions:
                 type: string
             is_verified:
                 type: boolean
-    AccountWithFC:
-        allOf:
-            - $ref: '#/definitions/Account'
-            - type: object
-        properties:
-            is_followed:
-                type: boolean
     VoiceLite:
         properties:
             id:
@@ -64,7 +57,7 @@ definitions:
             content:
                 type: string
             account:
-                $ref: '#/definitions/AccountWithFC'
+                $ref: '#/definitions/Account'
             voice:
                 $ref: '#/definitions/VoiceLite'
             views_count:
@@ -83,7 +76,7 @@ definitions:
             content:
                 type: string
             account:
-                $ref: '#/definitions/AccountWithFC'
+                $ref: '#/definitions/Account'
             voice:
                 $ref: '#/definitions/VoiceLite'
             views_count:
@@ -157,7 +150,7 @@ definitions:
             name:
                 type: string
             account:
-                $ref: '#/definitions/AccountWithFC'
+                $ref: '#/definitions/Account'
             views_count:
                 type: integer
                 format: int32
@@ -176,7 +169,7 @@ definitions:
             content:
                 type: string
             account:
-                $ref: '#/definitions/AccountWithFC'
+                $ref: '#/definitions/Account'
             voice:
                 $ref: '#/definitions/VoiceLite'
             views_count:
@@ -201,7 +194,7 @@ definitions:
             account_id:
                 type: integer
             column_id:
-                type: integer
+                type: string
     UpdateArticle:
         properties:
             title:
@@ -215,7 +208,119 @@ definitions:
             account_id:
                 type: integer
             column_id:
+                type: string
+            status:
+                type: string
+                enum:
+                    - draft
+                    - published
+            review_status:
+                type: string
+                enum:
+                    - pending
+                    - passed
+                    - rejected
+                    - auto_passed
+    Post:
+        properties:
+            id:
+                type: string
+            title:
+                type: string
+            description:
+                type: string
+            account:
+                $ref: '#/definitions/Account'
+            views_count:
                 type: integer
+                format: int32
+            is_hidden:
+                type: boolean
+            is_sticky:
+                type: boolean
+            status:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+    CreatePost:
+        properties:
+            title:
+                type: string
+            description:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: string
+    UpdatePost:
+        properties:
+            title:
+                type: string
+            description:
+                type: string
+            account_id:
+                type: integer
+                format: int32
+            column_id:
+                type: string
+            is_hidden:
+                type: boolean
+            is_sticky:
+                type: boolean
+            status:
+                type: string
+                enum:
+                    - draft
+                    - published
+            review_status:
+                type: string
+                enum:
+                    - pending
+                    - passed
+                    - rejected
+                    - auto_passed
+    Reply:
+        properties:
+            id:
+                type: string
+            content:
+                type: string
+            account:
+                $ref: '#/definitions/Account'
+            views_count:
+                type: integer
+                format: int32
+            is_hidden:
+                type: boolean
+            is_sticky:
+                type: boolean
+            status:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+    CreateReply:
+        properties:
+            content:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: string
+            reply_id:
+                type: string
+    UpdateReply:
+        properties:
+            content:
+                type: string
+            account_id:
+                type: integer
+                format: int32
+            column_id:
+                type: string
+            is_hidden:
+                type: boolean
+            is_sticky:
+                type: boolean
             status:
                 type: string
                 enum:
@@ -276,12 +381,30 @@ parameters:
         required: false
         type: integer
         format: int32
+    post_id_in_query:
+        description: post id in query
+        name: post_id
+        in: query
+        required: false
+        type: string
     date_created_in_query:
         description: date in query
         name: date_created
         in: query
         required: false
         type: string
+    is_hidden_in_query:
+        description: is_hidden in query
+        name: is_hidden
+        in: query
+        required: false
+        type: boolean
+    is_sticky_in_query:
+        description: is_sticky in query
+        name: is_sticky
+        in: query
+        required: false
+        type: boolean
     status_in_query:
         description: status in query
         name: status
@@ -329,13 +452,25 @@ parameters:
         format: int32
     column_id_in_path:
         description: column id in path
-        name: column_id
+        name: id
         in: path
         required: true
         type: string
     article_id_in_path:
         description: article id in path
-        name: article_id
+        name: id
+        in: path
+        required: true
+        type: string
+    post_id_in_path:
+        description: post id in path
+        name: id
+        in: path
+        required: true
+        type: string
+    reply_id_in_path:
+        description: reply id in path
+        name: id
         in: path
         required: true
         type: string
@@ -404,6 +539,7 @@ paths:
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
                 - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/review_status_in_query'
                 - $ref: '#/parameters/limit'
             responses:
@@ -537,6 +673,7 @@ paths:
                 - $ref: '#/parameters/column_id_in_query'
                 - $ref: '#/parameters/article_id_in_query'
                 - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/review_status_in_query'
                 - $ref: '#/parameters/limit'
             responses:
@@ -658,6 +795,195 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [panel]
+    /posts:
+        get:
+            summary: 讨论主贴列表
+            description: 讨论主贴列表
+            tags: [POSTS]
+            operationdId: posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
+                - $ref: '#/parameters/is_sticky_in_query'
+                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        post:
+            summary: 添加主贴
+            description: 添加主贴
+            tags: [POSTS]
+            operationdId: posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_post
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreatePost'
+            responses:
+                201:
+                    description: 主贴
+                    schema:
+                        $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /posts/{id}:
+        get:
+            summary: 主贴
+            description: 主贴
+            tags: [POSTS]
+            operationdId: posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/post_id_in_path'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        put:
+            summary: 修改专栏
+            description: 修改专栏
+            tags: [POSTS]
+            operationdId: posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/post_id_in_path'
+                - name: update_post
+                  in: body
+                  required: true
+                  schema:
+                        $ref: '#/definitions/UpdatePost'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /replies:
+        get:
+            summary: 讨论回复列表
+            description: 讨论回复列表
+            tags: [POSTS]
+            operationdId: replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/post_id_in_query'
+                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
+                - $ref: '#/parameters/is_sticky_in_query'
+                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 回复列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        post:
+            summary: 添加主贴
+            description: 添加主贴
+            tags: [POSTS]
+            operationdId: replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_reply
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateReply'
+            responses:
+                201:
+                    description: 主贴
+                    schema:
+                        $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /replies/{id}:
+        get:
+            summary: 回复
+            description: 回复
+            tags: [POSTS]
+            operationdId: replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/reply_id_in_path'
+            responses:
+                200:
+                    description: 回复
+                    schema:
+                        $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+        put:
+            summary: 修改回复
+            description: 修改回复
+            tags: [POSTS]
+            operationdId: replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/reply_id_in_path'
+                - name: update_reply
+                  in: body
+                  required: true
+                  schema:
+                        $ref: '#/definitions/UpdateReply'
+            responses:
+                200:
+                    description: 回复
+                    schema:
+                        $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
     /voices:
         get:
             summary: 语音列表
@@ -707,4 +1033,5 @@ paths:
 tags:
     - {description: "专栏列表", name: COLUMNS}
     - {description: "文章列表", name: ARTICLES}
+    - {description: "讨论列表", name: POSTS}
     - {description: "语音", name: VOICES}

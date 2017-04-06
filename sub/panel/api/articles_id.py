@@ -1,21 +1,30 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
 
-from flask import request, g
-
+from flask import g
 from . import Resource
-from .. import schemas
+
+from zaih_core.api_errors import NotFound
+
+from sub.models import Article
+from sub.services.permissions import register_permission
 
 
 class ArticlesId(Resource):
 
+    def _get_article(self, id):
+        column = Article.get_by_id(id)
+        if not column:
+            raise NotFound('article_not_found')
+        return column
+
+    @register_permission('get_article')
     def get(self, id):
-        print(g.headers)
+        article = self._get_article(id)
+        return article, 200
 
-        return {}, 200, None
-
+    @register_permission('update_article')
     def put(self, id):
-        print(g.headers)
-        print(g.json)
-
-        return {}, 200, None
+        article = self._get_article(id)
+        if g.json:
+            article.update(**g.json)
+        return article, 200
