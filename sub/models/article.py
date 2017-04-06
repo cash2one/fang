@@ -39,7 +39,7 @@ class Article(Model):
     id = db.Column(
         db.String(32), primary_key=True, default=article_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
     title = db.Column(db.String(128), nullable=False, index=True)
     summary = db.Column(db.String(512), nullable=False)
     content = db.Column(db.String(), nullable=False)

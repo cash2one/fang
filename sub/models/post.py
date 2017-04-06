@@ -37,7 +37,7 @@ class Post(Model):
     id = db.Column(
         db.String(32), primary_key=True, default=post_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
     title = db.Column(db.String(128), nullable=False)
     description = db.Column(db.String(), nullable=True)
     review_status = db.Column(
@@ -75,8 +75,8 @@ class Reply(Model):
     id = db.Column(
         db.String(32), primary_key=True, default=reply_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
-    post_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
+    post_id = db.Column(db.String(32), nullable=False, index=True)
     content = db.Column(db.String(), nullable=False)
     review_status = db.Column(
         db.String(16), nullable=False, index=True,

@@ -42,9 +42,10 @@ def register_extensions(app):
 def register_blueprints(app):
     for bp in blueprints:
         app.register_blueprint(import_string(bp))
-    import v1, backend
+    import v1, backend, panel
     app.register_blueprint(v1.bp, url_prefix='/v1')
     app.register_blueprint(backend.bp, url_prefix='/backend')
+    app.register_blueprint(panel.bp, url_prefix='/panel')
 
 
 def register_jinja_funcs(app):

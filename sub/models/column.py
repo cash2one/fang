@@ -74,7 +74,7 @@ class Member(SurrogatePK, Model):
     __tablename__ = 'member'
 
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
 
 
 class Assistant(SurrogatePK, Model):
@@ -82,7 +82,7 @@ class Assistant(SurrogatePK, Model):
     __tablename__ = 'assistant'
 
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
     date_updated = db.Column(
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())

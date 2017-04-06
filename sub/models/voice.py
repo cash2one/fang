@@ -66,7 +66,7 @@ class Voice(Model):
 
     @cached_property
     def _voice(self):
-        from wanted.services.media import (
+        from sub.services.media import (
             get_weixin_media_url, qiniu_sign_url)
         if (self.status == self.STATUS_DRAFT and
                 self.source == self.SOURCE_WEIXIN):

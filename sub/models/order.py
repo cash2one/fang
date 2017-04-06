@@ -32,7 +32,7 @@ class Order(Model):
     id = db.Column(
         db.String(32), primary_key=True, default=order_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.Integer(), nullable=False, index=True)
+    column_id = db.Column(db.String(32), nullable=False, index=True)
     price = db.Column(db.Integer(), nullable=False, index=True)
     status = db.Column(
         db.String(16), nullable=False, index=True,
