@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from zaih_core.ztime import now
+from zaih_core.api_errors import NotFound, BadRequest
 
-from flask import request, g
+from sub.models import Column
+from sub.services.permissions import register_permission
 
 from . import Resource
 from .. import schemas
@@ -9,12 +11,27 @@ from .. import schemas
 
 class ColumnsIdPublish(Resource):
 
+    def _get_column(self, id):
+        column = Column.get_by_id(id)
+        if not column:
+            raise NotFound('column_not_found')
+        return column
+
+    @register_permission('update_column')
     def put(self, id):
-        print(g.headers)
+        column = self._get_column(id)
+        if column.status == Column.STATUS_HIDDEN:
+            raise BadRequest('column_hidden')
+        params = {
+            'status': Column.STATUS_PUBLISHED
+        }
+        if not column.date_published:
+            params['date_published'] = now()
+        column.update(**params)
+        return column, 200
 
-        return {}, 200, None
-
+    @register_permission('update_column')
     def delete(self, id):
-        print(g.headers)
-
-        return {}, 204, None
+        column = self._get_column(id)
+        column.update(status='draft')
+        return {}, 204

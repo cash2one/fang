@@ -12,37 +12,54 @@
 
 DefinitionsVoicelite = {'properties': {'duration': {'type': 'string'}, 'id': {'type': 'string'}}}
 DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
+DefinitionsCreatearticle = {'properties': {'content': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'summary': {'type': 'string'}, 'voice_id': {'type': 'string'}, 'column_id': {'type': 'integer'}}}
+DefinitionsUpdatearticle = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'column_id': {'type': 'integer'}, 'content': {'type': 'string'}, 'summary': {'type': 'string'}, 'voice_id': {'type': 'string'}}}
 DefinitionsAccount = {'properties': {'nickname': {'type': 'string'}, 'title': {'type': 'string'}, 'is_verified': {'type': 'boolean'}, 'id': {'type': 'string'}, 'avatar': {'type': 'string'}}}
-DefinitionsVoice = {'properties': {'url': {'type': 'string'}, 'duration': {'type': 'string'}, 'headline_id': {'type': 'string'}, 'id': {'type': 'string'}}}
-DefinitionsCreatevoice = {'properties': {'headline_id': {'type': 'string'}, 'source_key': {'type': 'string'}}}
+DefinitionsVoice = {'properties': {'url': {'type': 'string'}, 'duration': {'type': 'string'}, 'id': {'type': 'string'}, 'column_id': {'type': 'string'}}}
+DefinitionsCreatevoice = {'properties': {'source_key': {'type': 'string'}, 'column_id': {'type': 'string'}}}
 DefinitionsDatetime = {'type': 'string', 'format': 'datetime'}
 DefinitionsNone = {'type': 'object'}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
 DefinitionsAccountwithfc = {'properties': {'is_followed': {'type': 'boolean'}}, 'allOf': [DefinitionsAccount, {'type': 'object'}]}
 DefinitionsCreatecolumn = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'content': {'type': 'string'}, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime}}
-DefinitionsUpdatecolumn = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'name': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'content': {'type': 'string'}, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime}}
-DefinitionsColumn = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccountwithfc, 'name': {'type': 'string'}, 'is_digest': {'type': 'integer'}, 'date_end': DefinitionsDatetime, 'date_start': DefinitionsDatetime, 'order_score': {'type': 'integer'}, 'content': {'type': 'string'}, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}, 'views_count': {'type': 'integer', 'format': 'int32'}}}
+DefinitionsUpdatecolumn = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'name': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'content': {'type': 'string'}, 'is_hidden': {'type': 'boolean'}, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime}}
+DefinitionsColumnlite = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccountwithfc, 'views_count': {'type': 'integer', 'format': 'int32'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
+DefinitionsColumn = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccountwithfc, 'views_count': {'type': 'integer', 'format': 'int32'}, 'date_end': DefinitionsDatetime, 'date_start': DefinitionsDatetime, 'order_score': {'type': 'integer'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
+DefinitionsArticlelite = {'properties': {'status': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'account': DefinitionsAccountwithfc, 'views_count': {'type': 'integer', 'format': 'int32'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
+DefinitionsArticle = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccountwithfc, 'views_count': {'type': 'integer', 'format': 'int32'}, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
 
 validators = {
     ('columns_id', 'PUT'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsUpdatecolumn},
     ('columns_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('columns', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatecolumn},
-    ('columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'status': {'required': False, 'description': 'status in query', 'enum': ['draft', 'published', 'hidden'], 'type': 'string'}, 'date_created': {'required': False, 'type': 'string', 'description': 'date in query'}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 100}, 'account_id': {'description': 'account id in query', 'format': 'int32', 'required': False, 'type': 'integer'}}}},
+    ('columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'status': {'required': False, 'description': 'status in query', 'enum': ['draft', 'published'], 'type': 'string'}, 'account_id': {'description': 'account id in query', 'format': 'int32', 'required': False, 'type': 'integer'}, 'review_status': {'required': False, 'description': 'review_status in query', 'enum': ['pending', 'passwd', 'rejected', 'auto_passed'], 'type': 'string'}, 'column_id': {'required': False, 'type': 'string', 'description': u'\u4e13\u680fID'}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 100}, 'date_created': {'required': False, 'type': 'string', 'description': 'date in query'}}}},
     ('voices', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatevoice},
-    ('voices', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': ['headline_id'], 'properties': {'headline_id': {'type': 'string', 'description': u'\u4e13\u680fID'}}}},
+    ('voices', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'column_id': {'required': False, 'type': 'string', 'description': u'\u4e13\u680fID'}}}},
+    ('articles_id_publish', 'PUT'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
+    ('articles_id_publish', 'DELETE'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('columns_id_publish', 'PUT'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('columns_id_publish', 'DELETE'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
+    ('articles', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatearticle},
+    ('articles', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'status': {'required': False, 'description': 'status in query', 'enum': ['draft', 'published'], 'type': 'string'}, 'account_id': {'description': 'account id in query', 'format': 'int32', 'required': False, 'type': 'integer'}, 'review_status': {'required': False, 'description': 'review_status in query', 'enum': ['pending', 'passwd', 'rejected', 'auto_passed'], 'type': 'string'}, 'column_id': {'required': False, 'type': 'string', 'description': u'\u4e13\u680fID'}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 100}, 'date_created': {'required': False, 'type': 'string', 'description': 'date in query'}, 'article_id': {'required': False, 'type': 'string', 'description': u'\u6587\u7ae0ID'}}}},
+    ('articles_id', 'PUT'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsUpdatearticle},
+    ('articles_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
 }
 
 filters = {
     ('columns_id', 'PUT'): {200: {'headers': None, 'schema': DefinitionsColumn}},
     ('columns_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsColumn}},
     ('columns', 'POST'): {201: {'headers': None, 'schema': DefinitionsColumn}},
-    ('columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
+    ('columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumnlite, 'type': 'array'}}},
     ('voices', 'POST'): {201: {'headers': None, 'schema': DefinitionsVoice}},
     ('voices', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsVoice, 'type': 'array'}}},
+    ('articles_id_publish', 'PUT'): {200: {'headers': None, 'schema': DefinitionsArticle}},
+    ('articles_id_publish', 'DELETE'): {204: {'headers': None, 'schema': DefinitionsNone}},
     ('columns_id_publish', 'PUT'): {200: {'headers': None, 'schema': DefinitionsColumn}},
     ('columns_id_publish', 'DELETE'): {204: {'headers': None, 'schema': DefinitionsNone}},
+    ('articles', 'POST'): {201: {'headers': None, 'schema': DefinitionsArticle}},
+    ('articles', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsArticlelite, 'type': 'array'}}},
+    ('articles_id', 'PUT'): {200: {'headers': None, 'schema': DefinitionsArticle}},
+    ('articles_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsArticle}},
 }
 
 scopes = {
@@ -52,8 +69,14 @@ scopes = {
     ('columns', 'GET'): ['panel'],
     ('voices', 'POST'): ['panel'],
     ('voices', 'GET'): ['panel'],
+    ('articles_id_publish', 'PUT'): ['panel'],
+    ('articles_id_publish', 'DELETE'): ['panel'],
     ('columns_id_publish', 'PUT'): ['panel'],
     ('columns_id_publish', 'DELETE'): ['panel'],
+    ('articles', 'POST'): ['panel'],
+    ('articles', 'GET'): ['panel'],
+    ('articles_id', 'PUT'): ['panel'],
+    ('articles_id', 'GET'): ['panel'],
 }
 
 
