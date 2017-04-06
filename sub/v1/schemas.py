@@ -10,16 +10,25 @@
 ###
 
 
-DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
+DefinitionsAccount = {'properties': {'nickname': {'type': 'string'}, 'title': {'type': 'string'}, 'is_verified': {'type': 'boolean'}, 'id': {'type': 'string'}, 'avatar': {'type': 'string'}}}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
+DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
+DefinitionsDatetime = {'type': 'string', 'format': 'datetime'}
+DefinitionsColumn = {'properties': {'account': DefinitionsAccount, 'assistant_name': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'date_updated': DefinitionsDatetime, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime, 'name': {'type': 'string'}}}
+DefinitionsColumndetail = {'properties': {'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
 
 validators = {
+    ('columns_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
+    ('columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
 }
 
 filters = {
+    ('columns_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsColumndetail}},
+    ('columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
 }
 
 scopes = {
+    ('columns_id', 'GET'): ['open'],
 }
 
 

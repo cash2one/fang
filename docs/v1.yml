@@ -11,6 +11,56 @@ consumes:
 profuces:
     - application/json
 definitions:
+    datetime:
+        type: string
+        format: datetime
+    Account:
+        properties:
+            id:
+                type: string
+            nickname:
+                type: string
+            title:
+                type: string
+            avatar:
+                type: string
+            is_verified:
+                type: boolean
+    Column:
+        properties:
+            id:
+                type: string
+            name:
+                type: string
+            content:
+                type: string
+            account_id:
+                type: integer
+            account:
+                $ref: '#/definitions/Account'
+            image:
+                type: string
+            price:
+                type: integer
+            assistant_name:
+                type: string
+            date_published:
+                $ref: '#/definitions/datetime'
+            date_start:
+                $ref: '#/definitions/datetime'
+            date_end:
+                $ref: '#/definitions/datetime'
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_updated:
+                $ref: '#/definitions/datetime'
+    ColumnDetail:
+        allOf:
+            - $ref: '#/definitions/Column'
+            - type: object
+        properties:
+            voice_id:
+                type: string
     Error:
         properties:
             error_code:
@@ -38,6 +88,12 @@ parameters:
         description: 格式 (Basic hashkey) 注 hashkey为client_id + client_secret 做BASE64处理
         in: header
         name: Authorization
+        required: true
+        type: string
+    string_id_in_path:
+        description: string id in path
+        name: id
+        in: path
         required: true
         type: string
     page:
@@ -82,5 +138,48 @@ securityDefinitions:
             panel: 后台API
             backend: Backend API
 paths:
+    /columns:
+        get:
+            summary: 专栏列表
+            description: 专栏列表
+            tags: [COLUMNS]
+            operationdId: get_columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+    /columns/{id}:
+        get:
+            summary: 专栏
+            description: 专栏
+            tags: [COLUMNS]
+            operationdId: columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+            responses:
+                200:
+                    description: 专栏
+                    schema:
+                        $ref: '#/definitions/ColumnDetail'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
 tags:
-    - {description: "专栏", name: OPEN_COLUMN}
+    - {description: "专栏", name: COLUMNS}
