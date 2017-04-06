@@ -1,0 +1,34 @@
+sub:
+  image: docker-registry.guokr.com/apps/fenda-sub-app
+  command: bash -c "NEW_RELIC_CONFIG_FILE=newrelic.ini newrelic-admin run-program python manage.py server"
+  ports:
+      - "8888:8888"
+  links:
+      - zhifubao
+  environment:
+    PG_USER: "sub"
+    PG_PASSWORD: "ssss"
+    PG_DATABASE: "sub"
+    POSTGRES_PORT_5432_TCP_ADDR: "$SERVER_NAME"
+    REDIS_PORT_6379_TCP_ADDR: "$SERVER_NAME"
+    REDIS_PORT_6379_TCP_PORT: "6379"
+    REDIS_SLAVE_PORT_6379_TCP_ADDR: "$SERVER_NAME"
+    REDIS_SLAVE_PORT_6379_TCP_PORT: "6379"
+    CELERY_RABBITMQ_PORT_5672_USERNAME: "sub"
+    CELERY_RABBITMQ_PORT_5672_PASSWORD: "sub"
+    CELERY_RABBITMQ_PORT_5672_TCP_ADDR: "$SERVER_NAME"
+    CELERY_RABBITMQ_PORT_5672_TCP_PORT: "5672"
+    MEMCACHED_URLS: "$SERVER_NAME:11211"
+    APP_DOMAIN: "http://sub-fd.zaih.com"
+    APP_API_DOMAIN: "http://sub-fd-apis.zaih.com"
+    FENDA_DOMAIN: "http://fd.zaih.com"
+    WEIXINMP_APPID: ""
+    WEIXINMP_APP_SECRET: ""
+    WEIXINMP_TOKEN: ""
+    WEIXINMP_ENCODINGAESKEY: ""
+    FENDA_PORT_8888_HTTP_PROTO: "http://zhifubao:8888"
+    ADMIN_OPENID: 'ohWrAjruLpt7qEX0DRgGFcAu4ADs'
+    REVIEW_SERVER_USERNAME: 'guokrblacklist'
+    REVIEW_SERVER_PASSWORD: '6z9wXow4994EcV68'
+    REVIEW_SERVER_HOST: '5000.api.blacklist.zaih-prod.guokr.com'
+    REVIEW_SERVER_PORT: '80'

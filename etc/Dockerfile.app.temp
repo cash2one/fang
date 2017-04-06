@@ -1,0 +1,11 @@
+# DON'T CHANGE ME !!!
+# latest: {{ VERSION }}-{{ BRANCH }}-{{ COMMIT }}
+
+FROM {{ image }}
+
+ADD . /app
+WORKDIR /app 
+
+RUN chmod +x ./bin/start.sh
+
+# RUN py.test tests
