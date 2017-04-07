@@ -26,12 +26,14 @@ DefinitionsNone = {'type': 'object'}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
 DefinitionsCreatecolumn = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'content': {'type': 'string'}, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime}}
 DefinitionsArticlelite = {'properties': {'status': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
-DefinitionsReply = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'is_sticky': {'type': 'boolean'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'id': {'type': 'string'}}}
+DefinitionsPostlite = {'properties': {'account': DefinitionsAccount, 'description': {'type': 'string'}, 'title': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'review_status': {'type': 'string'}, 'id': {'type': 'string'}}}
+DefinitionsReply = {'properties': {'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'is_sticky': {'type': 'boolean'}, 'review_status': {'type': 'string'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'id': {'type': 'string'}}}
 DefinitionsArticle = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
-DefinitionsPost = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccount, 'description': {'type': 'string'}, 'title': {'type': 'string'}, 'is_sticky': {'type': 'boolean'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'id': {'type': 'string'}, 'views_count': {'type': 'integer', 'format': 'int32'}}}
+DefinitionsPost = {'properties': {'account': DefinitionsAccount, 'description': {'type': 'string'}, 'title': {'type': 'string'}, 'is_sticky': {'type': 'boolean'}, 'review_status': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'id': {'type': 'string'}, 'views_count': {'type': 'integer', 'format': 'int32'}}}
 DefinitionsColumnlite = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'date_created': DefinitionsDatetime, 'follows_count': {'type': 'integer', 'format': 'int32'}, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
 DefinitionsUpdatecolumn = {'properties': {'status': {'enum': ['draft', 'published'], 'type': 'string'}, 'name': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'content': {'type': 'string'}, 'is_hidden': {'type': 'boolean'}, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime}}
 DefinitionsColumn = {'properties': {'status': {'type': 'string'}, 'account': DefinitionsAccount, 'views_count': {'type': 'integer', 'format': 'int32'}, 'date_end': DefinitionsDatetime, 'date_start': DefinitionsDatetime, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'is_hidden': {'type': 'boolean'}, 'voice': DefinitionsVoice, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
+DefinitionsReplylite = {'properties': {'content': {'type': 'string'}, 'account': DefinitionsAccount, 'review_status': {'type': 'string'}, 'id': {'type': 'string'}, 'is_hidden': {'type': 'boolean'}}}
 
 validators = {
     ('replies', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatereply},
@@ -62,7 +64,7 @@ validators = {
 
 filters = {
     ('replies', 'POST'): {201: {'headers': None, 'schema': DefinitionsReply}},
-    ('replies', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsReply, 'type': 'array'}}},
+    ('replies', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsReplylite, 'type': 'array'}}},
     ('articles_id_publish', 'PUT'): {200: {'headers': None, 'schema': DefinitionsArticle}},
     ('articles_id_publish', 'DELETE'): {204: {'headers': None, 'schema': DefinitionsNone}},
     ('replies_id', 'PUT'): {200: {'headers': None, 'schema': DefinitionsReply}},
@@ -81,7 +83,7 @@ filters = {
     ('columns_id_publish', 'PUT'): {200: {'headers': None, 'schema': DefinitionsColumn}},
     ('columns_id_publish', 'DELETE'): {204: {'headers': None, 'schema': DefinitionsNone}},
     ('posts', 'POST'): {201: {'headers': None, 'schema': DefinitionsPost}},
-    ('posts', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsPost, 'type': 'array'}}},
+    ('posts', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsPostlite, 'type': 'array'}}},
     ('replies_id_review', 'PUT'): {200: {'headers': None, 'schema': DefinitionsSuccess}},
     ('voices', 'POST'): {201: {'headers': None, 'schema': DefinitionsVoice}},
     ('voices', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsVoice, 'type': 'array'}}},

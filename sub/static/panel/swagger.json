@@ -92,7 +92,7 @@
             "description": "\u56de\u590d\u5217\u8868",
             "schema": {
               "items": {
-                "$ref": "#/definitions/Reply"
+                "$ref": "#/definitions/ReplyLite"
               },
               "type": "array"
             }
@@ -890,7 +890,7 @@
             "description": "\u4e13\u680f\u5217\u8868",
             "schema": {
               "items": {
-                "$ref": "#/definitions/Post"
+                "$ref": "#/definitions/PostLite"
               },
               "type": "array"
             }
@@ -1394,6 +1394,31 @@
         }
       }
     },
+    "PostLite": {
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "review_status": {
+          "type": "string"
+        },
+        "date_created": {
+          "$ref": "#/definitions/datetime"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
     "UpdateColumn": {
       "properties": {
         "status": {
@@ -1437,9 +1462,6 @@
     },
     "Reply": {
       "properties": {
-        "status": {
-          "type": "string"
-        },
         "account": {
           "$ref": "#/definitions/Account"
         },
@@ -1449,6 +1471,9 @@
         },
         "is_sticky": {
           "type": "boolean"
+        },
+        "review_status": {
+          "type": "string"
         },
         "content": {
           "type": "string"
@@ -1502,6 +1527,25 @@
         }
       }
     },
+    "ReplyLite": {
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "account": {
+          "$ref": "#/definitions/Account"
+        },
+        "review_status": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_hidden": {
+          "type": "boolean"
+        }
+      }
+    },
     "Article": {
       "properties": {
         "status": {
@@ -1536,9 +1580,6 @@
     },
     "Post": {
       "properties": {
-        "status": {
-          "type": "string"
-        },
         "account": {
           "$ref": "#/definitions/Account"
         },
@@ -1549,6 +1590,9 @@
           "type": "boolean"
         },
         "title": {
+          "type": "string"
+        },
+        "review_status": {
           "type": "string"
         },
         "date_created": {

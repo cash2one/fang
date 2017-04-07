@@ -218,6 +218,22 @@ definitions:
                     - passed
                     - rejected
                     - auto_passed
+    PostLite:
+        properties:
+            id:
+                type: string
+            title:
+                type: string
+            description:
+                type: string
+            account:
+                $ref: '#/definitions/Account'
+            is_hidden:
+                type: boolean
+            review_status:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
     Post:
         properties:
             id:
@@ -235,7 +251,7 @@ definitions:
                 type: boolean
             is_sticky:
                 type: boolean
-            status:
+            review_status:
                 type: string
             date_created:
                 $ref: '#/definitions/datetime'
@@ -271,6 +287,18 @@ definitions:
                     - passed
                     - rejected
                     - auto_passed
+    ReplyLite:
+        properties:
+            id:
+                type: string
+            content:
+                type: string
+            account:
+                $ref: '#/definitions/Account'
+            is_hidden:
+                type: boolean
+            review_status:
+                type: string
     Reply:
         properties:
             id:
@@ -286,7 +314,7 @@ definitions:
                 type: boolean
             is_sticky:
                 type: boolean
-            status:
+            review_status:
                 type: string
             date_created:
                 $ref: '#/definitions/datetime'
@@ -802,7 +830,7 @@ paths:
                     schema:
                         type: array
                         items:
-                            $ref: '#/definitions/Post'
+                            $ref: '#/definitions/PostLite'
                 default:
                     description: Unexpected Error
                     schema:
@@ -922,7 +950,7 @@ paths:
                     schema:
                         type: array
                         items:
-                            $ref: '#/definitions/Reply'
+                            $ref: '#/definitions/ReplyLite'
                 default:
                     description: Unexpected Error
                     schema:

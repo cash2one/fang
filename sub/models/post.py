@@ -56,6 +56,12 @@ class Post(Model):
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
+    @cached_property
+    def account(self):
+        from sub.cache.accounts import account_meta
+        account = account_meta(self.account_id)
+        return account
+
 
 def reply_id_generator():
     return generator_string_id(21, 5)
@@ -93,3 +99,9 @@ class Reply(Model):
     date_updated = db.Column(
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
+
+    @cached_property
+    def account(self):
+        from sub.cache.accounts import account_meta
+        account = account_meta(self.account_id)
+        return account

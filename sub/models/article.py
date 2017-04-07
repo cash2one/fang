@@ -57,3 +57,9 @@ class Article(Model):
     date_updated = db.Column(
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
+
+    @cached_property
+    def account(self):
+        from sub.cache.accounts import account_meta
+        account = account_meta(self.account_id)
+        return account
