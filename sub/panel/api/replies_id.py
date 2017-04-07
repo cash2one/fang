@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
-
-from flask import request, g
-
+from flask import g
 from . import Resource
-from .. import schemas
+
+from zaih_core.api_errors import NotFound
+
+from sub.models import Reply
+from sub.services.permissions import register_permission
 
 
 class RepliesId(Resource):
 
+    def _get_reply(self, id):
+        reply = Reply.get_by_id(id)
+        if not reply:
+            raise NotFound('reply_not_found')
+        return reply
+
+    @register_permission('get_reply')
     def get(self, id):
-        print(g.headers)
+        post = self._get_reply(id)
+        return post, 200
 
-        return {}, 200, None
-
+    @register_permission('update_column')
     def put(self, id):
-        print(g.headers)
-        print(g.json)
-
-        return {}, 200, None
+        reply = self._get_reply(id)
+        if g.json:
+            reply.update(**g.json)
+        return reply, 200

@@ -182,6 +182,53 @@
         }
       }
     },
+    "/replies/{id}/review": {
+      "put": {
+        "description": "\u5ba1\u6838\u56de\u590d",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/reply_id_in_path"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/UpdateReply"
+            },
+            "required": "ture",
+            "name": "review_reply",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u5ba1\u6838\u56de\u590d",
+        "operationdId": "review_reply",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/Success"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/articles": {
       "post": {
         "description": "\u6dfb\u52a0\u6587\u7ae0",
@@ -357,6 +404,53 @@
             "description": "\u4e13\u680f",
             "schema": {
               "$ref": "#/definitions/Article"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}/review": {
+      "put": {
+        "description": "\u5ba1\u6838\u8ba8\u8bba",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/post_id_in_path"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/UpdatePost"
+            },
+            "required": "ture",
+            "name": "review_post",
+            "in": "body"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u5ba1\u6838\u8ba8\u8bba",
+        "operationdId": "review_post",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/Success"
             }
           },
           "default": {
@@ -1226,20 +1320,18 @@
           "type": "integer",
           "format": "int32"
         },
-        "content": {
+        "name": {
           "type": "string"
         },
         "date_created": {
           "$ref": "#/definitions/datetime"
         },
-        "voice": {
-          "$ref": "#/definitions/VoiceLite"
-        },
         "id": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
+        "follows_count": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -1502,9 +1594,6 @@
         "date_start": {
           "$ref": "#/definitions/datetime"
         },
-        "order_score": {
-          "type": "integer"
-        },
         "content": {
           "type": "string"
         },
@@ -1515,7 +1604,7 @@
           "type": "boolean"
         },
         "voice": {
-          "$ref": "#/definitions/VoiceLite"
+          "$ref": "#/definitions/Voice"
         },
         "id": {
           "type": "string"
@@ -1527,13 +1616,6 @@
     },
     "UpdatePost": {
       "properties": {
-        "status": {
-          "enum": [
-            "draft",
-            "published"
-          ],
-          "type": "string"
-        },
         "description": {
           "type": "string"
         },
@@ -1665,13 +1747,6 @@
     },
     "UpdateReply": {
       "properties": {
-        "status": {
-          "enum": [
-            "draft",
-            "published"
-          ],
-          "type": "string"
-        },
         "account_id": {
           "type": "integer",
           "format": "int32"

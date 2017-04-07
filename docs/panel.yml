@@ -54,12 +54,11 @@ definitions:
                 type: string
             name:
                 type: string
-            content:
-                type: string
             account:
                 $ref: '#/definitions/Account'
-            voice:
-                $ref: '#/definitions/VoiceLite'
+            follows_count:
+                type: integer
+                format: int32
             views_count:
                 type: integer
                 format: int32
@@ -78,12 +77,10 @@ definitions:
             account:
                 $ref: '#/definitions/Account'
             voice:
-                $ref: '#/definitions/VoiceLite'
+                $ref: '#/definitions/Voice'
             views_count:
                 type: integer
                 format: int32
-            order_score:
-                type: integer
             status:
                 type: string
             is_hidden:
@@ -267,11 +264,6 @@ definitions:
                 type: boolean
             is_sticky:
                 type: boolean
-            status:
-                type: string
-                enum:
-                    - draft
-                    - published
             review_status:
                 type: string
                 enum:
@@ -321,11 +313,6 @@ definitions:
                 type: boolean
             is_sticky:
                 type: boolean
-            status:
-                type: string
-                enum:
-                    - draft
-                    - published
             review_status:
                 type: string
                 enum:
@@ -889,6 +876,31 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [panel]
+    /posts/{id}/review:
+        put:
+            summary: 审核讨论
+            description: 审核讨论
+            tags: [POSTS]
+            operationdId: review_post
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/post_id_in_path'
+                - name: review_post
+                  in: body
+                  required: ture
+                  schema:
+                      $ref: '#/definitions/UpdatePost'
+            responses:
+                200:
+                    description: ok
+                    schema:
+                        $ref: '#/definitions/Success'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
     /replies:
         get:
             summary: 讨论回复列表
@@ -978,6 +990,31 @@ paths:
                     description: 回复
                     schema:
                         $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /replies/{id}/review:
+        put:
+            summary: 审核回复
+            description: 审核回复
+            tags: [POSTS]
+            operationdId: review_reply
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/reply_id_in_path'
+                - name: review_reply
+                  in: body
+                  required: ture
+                  schema:
+                      $ref: '#/definitions/UpdateReply'
+            responses:
+                200:
+                    description: ok
+                    schema:
+                        $ref: '#/definitions/Success'
                 default:
                     description: Unexpected Error
                     schema:

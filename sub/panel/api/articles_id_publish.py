@@ -20,8 +20,10 @@ class ArticlesIdPublish(Resource):
     @register_permission('update_article')
     def put(self, id):
         article = self._get_article(id)
-        if article.is_hidden:
-            raise BadRequest('article_hidden')
+
+        if article.is_hidden or (article.status not in [Article.STATUS_DRAFT]):
+            raise BadRequest('column_status_error')
+
         params = {
             'status': Article.STATUS_PUBLISHED
         }
@@ -33,5 +35,5 @@ class ArticlesIdPublish(Resource):
     @register_permission('update_article')
     def delete(self, id):
         article = self._get_article(id)
-        article.update(status='draft')
+        article.update(status=Article.STATUS_DRAFT)
         return {}, 204

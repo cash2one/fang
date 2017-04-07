@@ -20,8 +20,10 @@ class ColumnsIdPublish(Resource):
     @register_permission('update_column')
     def put(self, id):
         column = self._get_column(id)
-        if column.is_hidden:
-            raise BadRequest('column_hidden')
+
+        if column.is_hidden or (column.status not in [Column.STATUS_DRAFT]):
+            raise BadRequest('column_status_error')
+
         params = {
             'status': Column.STATUS_PUBLISHED
         }
@@ -33,5 +35,5 @@ class ColumnsIdPublish(Resource):
     @register_permission('update_column')
     def delete(self, id):
         column = self._get_column(id)
-        column.update(status='draft')
+        column.update(status=Column.STATUS_DRAFT)
         return {}, 204
