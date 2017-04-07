@@ -8,9 +8,9 @@
 ###
 from __future__ import absolute_import
 
-from .api.posts_id_replies import PostsIdReplies
+from .api.self_columns_subscribed import SelfColumnsSubscribed
 from .api.columns_id_posts import ColumnsIdPosts
-from .api.self_columns import SelfColumns
+from .api.posts_id_replies import PostsIdReplies
 from .api.alipay import Alipay
 from .api.columns_id_activities import ColumnsIdActivities
 from .api.articles_id import ArticlesId
@@ -24,9 +24,9 @@ from .api.voices_id import VoicesId
 
 
 routes = [
-    dict(resource=PostsIdReplies, urls=['/posts/<id>/replies'], endpoint='posts_id_replies'),
+    dict(resource=SelfColumnsSubscribed, urls=['/self/columns/subscribed'], endpoint='self_columns_subscribed'),
     dict(resource=ColumnsIdPosts, urls=['/columns/<id>/posts'], endpoint='columns_id_posts'),
-    dict(resource=SelfColumns, urls=['/self/columns'], endpoint='self_columns'),
+    dict(resource=PostsIdReplies, urls=['/posts/<id>/replies'], endpoint='posts_id_replies'),
     dict(resource=Alipay, urls=['/alipay'], endpoint='alipay'),
     dict(resource=ColumnsIdActivities, urls=['/columns/<id>/activities'], endpoint='columns_id_activities'),
     dict(resource=ArticlesId, urls=['/articles/<id>'], endpoint='articles_id'),

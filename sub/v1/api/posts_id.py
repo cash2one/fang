@@ -1,15 +1,29 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from flask import g
 
-from flask import request, g
+from zaih_core.api_errors import NotFound, BadRequest
+
+from sub.models import Post, Member
 
 from . import Resource
-from .. import schemas
 
 
 class PostsId(Resource):
 
     def get(self, id):
-        print(g.headers)
-
-        return {}, 200, None
+        post = (
+            Post.query
+            .filter(Post.id == id)
+            .filter(~Post.is_hidden)
+            .filter(Post.review_status.in_(Post.PUBLIC_REVIEW_STATUSES))
+            .first())
+        if not post:
+            raise NotFound('post_not_found')
+        member = (
+            Member.query
+            .filter(Member.account_id == g.account.id)
+            .filter(Member.column_id == post.column_id)
+            .first())
+        if not member:
+            raise BadRequest('not_subscribe_column')
+        return post, 200

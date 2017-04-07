@@ -398,7 +398,7 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [open]
-    /self/columns:
+    /self/columns/subscribed:
         get:
             summary: 我订阅的专栏列表
             description: 我订阅的专栏列表

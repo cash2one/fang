@@ -4,16 +4,18 @@ from flask import g
 
 from zaih_core.pager import get_offset_limit
 
-from sub.models import Column
+from sub.models import Column, Member
 
 from . import Resource
 
 
-class Columns(Resource):
+class SelfColumnsSubscribed(Resource):
 
     def get(self):
         query = (
             Column.query
+            .filter(Column.id == Member.column_id)
+            .filter(Member.account_id == g.account.id)
             .filter(~Column.is_hidden)
             .filter(Column.review_status.in_(Column.PUBLIC_REVIEW_STATUSES))
             .filter(Column.status == Column.STATUS_PUBLISHED))

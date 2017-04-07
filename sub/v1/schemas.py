@@ -33,11 +33,11 @@ DefinitionsPostdetail = {'properties': {'account': DefinitionsAccount}, 'allOf':
 DefinitionsArticledetail = {'properties': {'account': DefinitionsAccount, 'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsArticle, {'type': 'object'}]}
 
 validators = {
-    ('posts_id_replies', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatereply},
-    ('posts_id_replies', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('self_columns_subscribed', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
     ('columns_id_posts', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatepost},
     ('columns_id_posts', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
-    ('self_columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('posts_id_replies', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatereply},
+    ('posts_id_replies', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
     ('alipay', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatealipay},
     ('columns_id_activities', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
     ('articles_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
@@ -51,11 +51,11 @@ validators = {
 }
 
 filters = {
-    ('posts_id_replies', 'POST'): {201: {'headers': None, 'schema': DefinitionsReply}},
-    ('posts_id_replies', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsReply, 'type': 'array'}}},
+    ('self_columns_subscribed', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
     ('columns_id_posts', 'POST'): {201: {'headers': None, 'schema': DefinitionsPost}},
     ('columns_id_posts', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsPost, 'type': 'array'}}},
-    ('self_columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
+    ('posts_id_replies', 'POST'): {201: {'headers': None, 'schema': DefinitionsReply}},
+    ('posts_id_replies', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsReply, 'type': 'array'}}},
     ('alipay', 'POST'): {201: {'headers': None, 'schema': DefinitionsAlipayorderreturn}},
     ('columns_id_activities', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsActivity, 'type': 'array'}}},
     ('articles_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsArticledetail}},
@@ -69,11 +69,11 @@ filters = {
 }
 
 scopes = {
-    ('posts_id_replies', 'POST'): ['open'],
-    ('posts_id_replies', 'GET'): ['open'],
+    ('self_columns_subscribed', 'GET'): ['open'],
     ('columns_id_posts', 'POST'): ['open'],
     ('columns_id_posts', 'GET'): ['open'],
-    ('self_columns', 'GET'): ['open'],
+    ('posts_id_replies', 'POST'): ['open'],
+    ('posts_id_replies', 'GET'): ['open'],
     ('alipay', 'POST'): ['open'],
     ('columns_id_activities', 'GET'): ['open'],
     ('articles_id', 'GET'): ['open'],

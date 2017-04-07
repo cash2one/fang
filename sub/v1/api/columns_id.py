@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
 
-from flask import request, g
+from zaih_core.api_errors import NotFound
+
+from sub.models import Column
 
 from . import Resource
-from .. import schemas
 
 
 class ColumnsId(Resource):
 
     def get(self, id):
-        print(g.headers)
-
-        return {}, 200, None
+        column = (
+            Column.query
+            .filter(Column.id == id)
+            .filter(~Column.is_hidden)
+            .filter(Column.review_status.in_(Column.PUBLIC_REVIEW_STATUSES))
+            .filter(Column.status == Column.STATUS_PUBLISHED)
+            .first())
+        if not column:
+            raise NotFound('column_not_found')
+        return column, 200
