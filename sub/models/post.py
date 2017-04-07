@@ -59,8 +59,7 @@ class Post(Model):
     @cached_property
     def account(self):
         from sub.cache.accounts import account_meta
-        account = account_meta(self.account_id)
-        return account
+        return account_meta(self.account_id)
 
 
 def reply_id_generator():
@@ -103,5 +102,4 @@ class Reply(Model):
     @cached_property
     def account(self):
         from sub.cache.accounts import account_meta
-        account = account_meta(self.account_id)
-        return account
+        return account_meta(self.account_id)

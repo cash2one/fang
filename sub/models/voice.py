@@ -59,7 +59,7 @@ class Voice(Model):
 
     article = db.relationship(
         'Article',
-        backref=db.backref('voice', lazy='joined', uselist=False),
+        backref=db.backref('_voice', lazy='joined', uselist=False),
         primaryjoin='and_(Article.id==Voice.target_id, Voice.target_type=="article")',
         foreign_keys='Voice.target_id',
         uselist=False)

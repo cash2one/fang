@@ -26,6 +26,14 @@ definitions:
                 type: string
             is_verified:
                 type: boolean
+    Voice:
+        properties:
+            id:
+                type: string
+            url:
+                type: string
+            duration:
+                type: integer
     Column:
         properties:
             id:
@@ -36,8 +44,6 @@ definitions:
                 type: string
             account_id:
                 type: integer
-            account:
-                $ref: '#/definitions/Account'
             image:
                 type: string
             price:
@@ -59,7 +65,236 @@ definitions:
             - $ref: '#/definitions/Column'
             - type: object
         properties:
+            account:
+                $ref: '#/definitions/Account'
+    Activity:
+        properties:
+            id:
+                type: string
+            account_id:
+                type: integer
+            action:
+                type: string
+            target_id:
+                type: string
+            target_type:
+                type: string
+            description:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_updated:
+                $ref: '#/definitions/datetime'
+    Article:
+        properties:
+            id:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: string
+            title:
+                type: string
+            summary:
+                type: string
+            content:
+                type: string
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_updated:
+                $ref: '#/definitions/datetime'
+    ArticleDetail:
+        allOf:
+            - $ref: '#/definitions/Article'
+            - type: object
+        properties:
             voice_id:
+                type: string
+            account:
+                $ref: '#/definitions/Account'
+    Post:
+        properties:
+            id:
+                type: string
+            account_id:
+                type: integer
+            column_id:
+                type: string
+            title:
+                type: string
+            description:
+                type: string
+            is_sticky:
+                type: boolean
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_updated:
+                $ref: '#/definitions/datetime'
+    PostDetail:
+        allOf:
+            - $ref: '#/definitions/Post'
+            - type: object
+        properties:
+            account:
+                $ref: '#/definitions/Account'
+    CreatePost:
+        required:
+            - title
+            - description
+        properties:
+            title:
+                type: string
+            description:
+                type: string
+    CreatePostActivity:
+        required:
+            - description
+        properties:
+            description:
+                type: string
+    Reply:
+        properties:
+            id:
+                type: string
+            account_id:
+                type: integer
+            account:
+                $ref: '#/definitions/Account'
+            column_id:
+                type: string
+            post_id:
+                type: string
+            content:
+                type: string
+            is_sticky:
+                type: boolean
+            likings_count:
+                type: integer
+            date_created:
+                $ref: '#/definitions/datetime'
+            date_updated:
+                $ref: '#/definitions/datetime'
+    CreateReply:
+        required:
+            - content
+        properties:
+            content:
+                type: string
+    CreateLiking:
+        required:
+            - target_id
+            - target_type
+        properties:
+            target_id:
+                type: string
+            target_type:
+                type: string
+    CreateWeixinPay:
+        required:
+            - order_type
+            - trade_type
+            - target_type
+            - target_id
+        properties:
+            order_type:
+                type: string
+                description: 订单类型 订阅专栏
+                enum:
+                    - subscribe_column
+            target_type:
+                type: string
+                enum:
+                    - column
+            target_id:
+                type: string
+            trade_type:
+                type: string
+                default: NATIVE
+                enum:
+                    - JSAPI
+                    - NATIVE
+                    - APP
+                    - MWEB
+    CreateAliPay:
+        required:
+            - order_type
+            - target_type
+            - target_id
+            - trade_type
+        properties:
+            order_type:
+                type: string
+                description: 订单类型 订阅专栏
+                enum:
+                    - subscribe_column
+            target_type:
+                type: string
+                enum:
+                    - column
+            target_id:
+                type: string
+            trade_type:
+                type: string
+                default: alipay
+                enum:
+                    - alipay
+            return_url:
+                type: string
+    Unifiedorder:
+        required:
+            - return_code
+        properties:
+            return_code:
+                type: string
+                enum:
+                    - SUCCESS
+                    - FAIL
+            return_msg:
+                description: 错误原因
+                type: string
+            appid:
+                type: string
+            mch_type:
+                type: string
+                enum:
+                    - guokr
+                    - zaihang
+            device_info:
+                type: string
+            nonce_str:
+                type: string
+            sign:
+                type: string
+            result_code:
+                description: 业务结果
+                type: string
+                enum:
+                    - SUCCESS
+                    - FAIL
+            err_code:
+                type: string
+            err_code_des:
+                type: string
+            trade_type:
+                type: string
+                enum:
+                    - JSAPI
+                    - NATIVE
+                    - APP
+            prepay_id:
+                type: string
+            code_url:
+                description: trade_type为NATIVE是有返回
+                type: string
+            time_stamp:
+                type: string
+            mweb_url:
+                type: string
+    AlipayOrderReturn:
+        required:
+            - payment_url
+        properties:
+            payment_url:
                 type: string
     Error:
         properties:
@@ -142,7 +377,7 @@ paths:
         get:
             summary: 专栏列表
             description: 专栏列表
-            tags: [COLUMNS]
+            tags: [COLUMN]
             operationdId: get_columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
@@ -161,11 +396,38 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /self/columns:
+        get:
+            summary: 我订阅的专栏列表
+            description: 我订阅的专栏列表
+            tags: [COLUMN]
+            operationdId: self_get_columns
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Column'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
     /columns/{id}:
         get:
             summary: 专栏
             description: 专栏
-            tags: [COLUMNS]
+            tags: [COLUMN]
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
@@ -181,5 +443,291 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [open]
+    /columns/{id}/activities:
+        get:
+            summary: activities
+            description: activities
+            tags: [ACTIVE]
+            operationdId: get_activities
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: activity
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Activity'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /articles/{id}:
+        get:
+            summary: 文章
+            description: 文章
+            tags: [ARTICLE]
+            operationdId: get_article
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+            responses:
+                200:
+                    description: 文章
+                    schema:
+                        $ref: '#/definitions/ArticleDetail'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /columns/{id}/posts:
+        get:
+            summary: 讨论列表
+            description: 讨论列表
+            tags: [POST]
+            operationdId: get_posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 讨论列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+        post:
+            summary: 发起讨论
+            description: 发起讨论
+            tags: [POST]
+            operationdId: create_post
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_post
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreatePost'
+            responses:
+                201:
+                    description: 详情
+                    schema:
+                        $ref: '#/definitions/Post'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /posts/{id}:
+        get:
+            summary: 讨论
+            description: 讨论
+            tags: [POST]
+            operationdId: get_post
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+            responses:
+                200:
+                    description: 讨论
+                    schema:
+                        $ref: '#/definitions/PostDetail'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /posts/{id}/replies:
+        get:
+            summary: 讨论回复列表
+            description: 讨论回复列表
+            tags: [REPLY]
+            operationdId: get_post_replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 讨论回复列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+        post:
+            summary: 回复讨论
+            description: 回复讨论
+            tags: [REPLY]
+            operationdId: create_reply
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - name: create_reply
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateReply'
+            responses:
+                201:
+                    description: 详情
+                    schema:
+                        $ref: '#/definitions/Reply'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /posts/{id}/forward:
+        post:
+            summary: 转发讨论
+            description: 转发讨论
+            tags: [POST]
+            operationdId: post_forward
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - name: post_forward
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreatePostActivity'
+            responses:
+                201:
+                    description: 详情
+                    schema:
+                        $ref: '#/definitions/Activity'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /liking:
+        post:
+            summary: 点赞
+            description: 点赞
+            tags: [LIKING]
+            operationdId: create_liking
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_liking
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateLiking'
+            responses:
+                201:
+                    description: ok
+                    schema:
+                        $ref: '#/definitions/Success'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /voices/{id}:
+        post:
+            summary: 获取语音url
+            tags: [VOICE]
+            operationdId: get_voice
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+            responses:
+                201:
+                    schema:
+                        $ref: '#/definitions/Voice'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /weixin/pay:
+        post:
+            summary: 生成调用微信统一下单
+            description: 调用微信统一下单 生成预支付数据
+            tags: [PAY]
+            operationdId: weixin_pay
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_weixin_pay
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CreateWeixinPay'
+            responses:
+                201:
+                    description: 微信统一下单支付信息
+                    schema:
+                        $ref: '#/definitions/Unifiedorder'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
+    /alipay:
+        post:
+            summary: 生成调用支付宝支付
+            description: 调用支付宝支付费用
+            tags: [PAY]
+            operationdId: alipay
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - name: create_alipay
+                  in: body
+                  required: ture
+                  schema:
+                      $ref: '#/definitions/CreateAliPay'
+            responses:
+                201:
+                    description: 支付宝支付信息
+                    schema:
+                        $ref: '#/definitions/AlipayOrderReturn'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
 tags:
-    - {description: "专栏", name: COLUMNS}
+    - {description: "专栏", name: COLUMN}
+    - {description: "文章", name: ACTIVE}
+    - {description: "讨论", name: POST}
+    - {description: "讨论回复", name: REPLY}
+    - {description: "点赞", name: LIKING}
+    - {description: "语音", name: VOICE}
+    - {description: "支付", name: PAY}

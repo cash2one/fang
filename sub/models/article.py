@@ -61,5 +61,13 @@ class Article(Model):
     @cached_property
     def account(self):
         from sub.cache.accounts import account_meta
-        account = account_meta(self.account_id)
-        return account
+        return account_meta(self.account_id)
+
+    @cached_property
+    def voice(self):
+        return self._voice
+
+    @cached_property
+    def voice_id(self):
+        if self._voice:
+            return self._voice.id

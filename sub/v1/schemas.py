@@ -10,25 +10,80 @@
 ###
 
 
-DefinitionsAccount = {'properties': {'nickname': {'type': 'string'}, 'title': {'type': 'string'}, 'is_verified': {'type': 'boolean'}, 'id': {'type': 'string'}, 'avatar': {'type': 'string'}}}
-DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
+DefinitionsCreateweixinpay = {'required': ['order_type', 'trade_type', 'target_type', 'target_id'], 'properties': {'trade_type': {'default': 'NATIVE', 'enum': ['JSAPI', 'NATIVE', 'APP', 'MWEB'], 'type': 'string'}, 'target_id': {'type': 'string'}, 'order_type': {'enum': ['subscribe_column'], 'type': 'string', 'description': u'\u8ba2\u5355\u7c7b\u578b \u8ba2\u9605\u4e13\u680f'}, 'target_type': {'enum': ['column'], 'type': 'string'}}}
+DefinitionsUnifiedorder = {'required': ['return_code'], 'properties': {'trade_type': {'enum': ['JSAPI', 'NATIVE', 'APP'], 'type': 'string'}, 'prepay_id': {'type': 'string'}, 'nonce_str': {'type': 'string'}, 'return_code': {'enum': ['SUCCESS', 'FAIL'], 'type': 'string'}, 'return_msg': {'type': 'string', 'description': u'\u9519\u8bef\u539f\u56e0'}, 'sign': {'type': 'string'}, 'device_info': {'type': 'string'}, 'mch_type': {'enum': ['guokr', 'zaihang'], 'type': 'string'}, 'err_code_des': {'type': 'string'}, 'appid': {'type': 'string'}, 'time_stamp': {'type': 'string'}, 'mweb_url': {'type': 'string'}, 'code_url': {'type': 'string', 'description': u'trade_type\u4e3aNATIVE\u662f\u6709\u8fd4\u56de'}, 'result_code': {'enum': ['SUCCESS', 'FAIL'], 'type': 'string', 'description': u'\u4e1a\u52a1\u7ed3\u679c'}, 'err_code': {'type': 'string'}}}
+DefinitionsCreatealipay = {'required': ['order_type', 'target_type', 'target_id', 'trade_type'], 'properties': {'trade_type': {'default': 'alipay', 'enum': ['alipay'], 'type': 'string'}, 'target_id': {'type': 'string'}, 'order_type': {'enum': ['subscribe_column'], 'type': 'string', 'description': u'\u8ba2\u5355\u7c7b\u578b \u8ba2\u9605\u4e13\u680f'}, 'return_url': {'type': 'string'}, 'target_type': {'enum': ['column'], 'type': 'string'}}}
+DefinitionsCreatepostactivity = {'required': ['description'], 'properties': {'description': {'type': 'string'}}}
 DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
+DefinitionsCreateliking = {'required': ['target_id', 'target_type'], 'properties': {'target_id': {'type': 'string'}, 'target_type': {'type': 'string'}}}
+DefinitionsAlipayorderreturn = {'required': ['payment_url'], 'properties': {'payment_url': {'type': 'string'}}}
+DefinitionsCreatepost = {'required': ['title', 'description'], 'properties': {'description': {'type': 'string'}, 'title': {'type': 'string'}}}
+DefinitionsCreatereply = {'required': ['content'], 'properties': {'content': {'type': 'string'}}}
 DefinitionsDatetime = {'type': 'string', 'format': 'datetime'}
-DefinitionsColumn = {'properties': {'account': DefinitionsAccount, 'assistant_name': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'date_updated': DefinitionsDatetime, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime, 'name': {'type': 'string'}}}
-DefinitionsColumndetail = {'properties': {'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
+DefinitionsAccount = {'properties': {'nickname': {'type': 'string'}, 'title': {'type': 'string'}, 'is_verified': {'type': 'boolean'}, 'id': {'type': 'string'}, 'avatar': {'type': 'string'}}}
+DefinitionsVoice = {'properties': {'url': {'type': 'string'}, 'duration': {'type': 'integer'}, 'id': {'type': 'string'}}}
+DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
+DefinitionsPost = {'properties': {'description': {'type': 'string'}, 'is_sticky': {'type': 'boolean'}, 'date_updated': DefinitionsDatetime, 'title': {'type': 'string'}, 'column_id': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
+DefinitionsColumn = {'properties': {'assistant_name': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'date_updated': DefinitionsDatetime, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_end': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'price': {'type': 'integer'}, 'id': {'type': 'string'}, 'name': {'type': 'string'}}}
+DefinitionsActivity = {'properties': {'description': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'target_id': {'type': 'string'}, 'target_type': {'type': 'string'}, 'action': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
+DefinitionsArticle = {'properties': {'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'column_id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'summary': {'type': 'string'}, 'id': {'type': 'string'}}}
+DefinitionsReply = {'properties': {'account': DefinitionsAccount, 'account_id': {'type': 'integer'}, 'is_sticky': {'type': 'boolean'}, 'date_updated': DefinitionsDatetime, 'column_id': {'type': 'string'}, 'content': {'type': 'string'}, 'post_id': {'type': 'string'}, 'likings_count': {'type': 'integer'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}}}
+DefinitionsColumndetail = {'properties': {'account': DefinitionsAccount}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
+DefinitionsPostdetail = {'properties': {'account': DefinitionsAccount}, 'allOf': [DefinitionsPost, {'type': 'object'}]}
+DefinitionsArticledetail = {'properties': {'account': DefinitionsAccount, 'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsArticle, {'type': 'object'}]}
 
 validators = {
+    ('posts_id_replies', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatereply},
+    ('posts_id_replies', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('columns_id_posts', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatepost},
+    ('columns_id_posts', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('self_columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('alipay', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatealipay},
+    ('columns_id_activities', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('articles_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
+    ('weixin_pay', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreateweixinpay},
     ('columns_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('columns', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
+    ('posts_id', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
+    ('posts_id_forward', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreatepostactivity},
+    ('liking', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'json': DefinitionsCreateliking},
+    ('voices_id', 'POST'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
 }
 
 filters = {
+    ('posts_id_replies', 'POST'): {201: {'headers': None, 'schema': DefinitionsReply}},
+    ('posts_id_replies', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsReply, 'type': 'array'}}},
+    ('columns_id_posts', 'POST'): {201: {'headers': None, 'schema': DefinitionsPost}},
+    ('columns_id_posts', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsPost, 'type': 'array'}}},
+    ('self_columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
+    ('alipay', 'POST'): {201: {'headers': None, 'schema': DefinitionsAlipayorderreturn}},
+    ('columns_id_activities', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsActivity, 'type': 'array'}}},
+    ('articles_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsArticledetail}},
+    ('weixin_pay', 'POST'): {201: {'headers': None, 'schema': DefinitionsUnifiedorder}},
     ('columns_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsColumndetail}},
     ('columns', 'GET'): {200: {'headers': None, 'schema': {'items': DefinitionsColumn, 'type': 'array'}}},
+    ('posts_id', 'GET'): {200: {'headers': None, 'schema': DefinitionsPostdetail}},
+    ('posts_id_forward', 'POST'): {201: {'headers': None, 'schema': DefinitionsActivity}},
+    ('liking', 'POST'): {201: {'headers': None, 'schema': DefinitionsSuccess}},
+    ('voices_id', 'POST'): {201: {'headers': None, 'schema': DefinitionsVoice}},
 }
 
 scopes = {
+    ('posts_id_replies', 'POST'): ['open'],
+    ('posts_id_replies', 'GET'): ['open'],
+    ('columns_id_posts', 'POST'): ['open'],
+    ('columns_id_posts', 'GET'): ['open'],
+    ('self_columns', 'GET'): ['open'],
+    ('alipay', 'POST'): ['open'],
+    ('columns_id_activities', 'GET'): ['open'],
+    ('articles_id', 'GET'): ['open'],
+    ('weixin_pay', 'POST'): ['open'],
     ('columns_id', 'GET'): ['open'],
+    ('columns', 'GET'): ['open'],
+    ('posts_id', 'GET'): ['open'],
+    ('posts_id_forward', 'POST'): ['open'],
+    ('liking', 'POST'): ['open'],
+    ('voices_id', 'POST'): ['open'],
 }
 
 
