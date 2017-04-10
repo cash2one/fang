@@ -8,6 +8,8 @@
 ###
 from __future__ import absolute_import
 
+from .api.columns_id_posts import ColumnsIdPosts
+from .api.posts_id_replies import PostsIdReplies
 from .api.replies import Replies
 from .api.articles_id_publish import ArticlesIdPublish
 from .api.replies_id import RepliesId
@@ -24,6 +26,8 @@ from .api.voices import Voices
 
 
 routes = [
+    dict(resource=ColumnsIdPosts, urls=['/columns/<id>/posts'], endpoint='columns_id_posts'),
+    dict(resource=PostsIdReplies, urls=['/posts/<id>/replies'], endpoint='posts_id_replies'),
     dict(resource=Replies, urls=['/replies'], endpoint='replies'),
     dict(resource=ArticlesIdPublish, urls=['/articles/<id>/publish'], endpoint='articles_id_publish'),
     dict(resource=RepliesId, urls=['/replies/<id>'], endpoint='replies_id'),

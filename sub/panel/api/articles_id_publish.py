@@ -14,7 +14,7 @@ class ArticlesIdPublish(Resource):
     def _get_article(self, id):
         column = Article.query.get(id)
         if not column:
-            raise NotFound('column_not_found')
+            raise NotFound('article_not_found')
         return column
 
     # @register_permission('update_article')
@@ -22,7 +22,7 @@ class ArticlesIdPublish(Resource):
         article = self._get_article(id)
 
         if article.is_hidden or (article.status not in [Article.STATUS_DRAFT]):
-            raise BadRequest('column_status_error')
+            raise BadRequest('article_status_error')
 
         params = {
             'status': Article.STATUS_PUBLISHED

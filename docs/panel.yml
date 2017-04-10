@@ -62,6 +62,8 @@ definitions:
             views_count:
                 type: integer
                 format: int32
+            price:
+                type: integer
             status:
                 type: string
             date_created:
@@ -81,6 +83,8 @@ definitions:
             views_count:
                 type: integer
                 format: int32
+            price:
+                type: integer
             status:
                 type: string
             is_hidden:
@@ -129,13 +133,6 @@ definitions:
                 enum:
                     - draft
                     - published
-            review_status:
-                type: string
-                enum:
-                    - pending
-                    - passed
-                    - rejected
-                    - auto_passed
             date_start:
                 $ref: '#/definitions/datetime'
             date_end:
@@ -144,7 +141,7 @@ definitions:
         properties:
             id:
                 type: string
-            name:
+            title:
                 type: string
             account:
                 $ref: '#/definitions/Account'
@@ -161,7 +158,9 @@ definitions:
         properties:
             id:
                 type: string
-            name:
+            title:
+                type: string
+            summary:
                 type: string
             content:
                 type: string
@@ -172,8 +171,12 @@ definitions:
             views_count:
                 type: integer
                 format: int32
+            column_id:
+                type: string
             status:
                 type: string
+            is_hidden:
+                type: boolean
             date_published:
                 $ref: '#/definitions/datetime'
             date_created:
@@ -185,8 +188,6 @@ definitions:
             summary:
                 type: string
             content:
-                type: string
-            voice_id:
                 type: string
             account_id:
                 type: integer
@@ -200,24 +201,17 @@ definitions:
                 type: string
             content:
                 type: string
-            voice_id:
-                type: string
             account_id:
                 type: integer
             column_id:
                 type: string
+            is_hidden:
+                type: boolean
             status:
                 type: string
                 enum:
                     - draft
                     - published
-            review_status:
-                type: string
-                enum:
-                    - pending
-                    - passed
-                    - rejected
-                    - auto_passed
     PostLite:
         properties:
             id:
@@ -229,6 +223,8 @@ definitions:
             account:
                 $ref: '#/definitions/Account'
             is_hidden:
+                type: boolean
+            is_sticky:
                 type: boolean
             review_status:
                 type: string
@@ -244,9 +240,6 @@ definitions:
                 type: string
             account:
                 $ref: '#/definitions/Account'
-            views_count:
-                type: integer
-                format: int32
             is_hidden:
                 type: boolean
             is_sticky:
@@ -297,6 +290,8 @@ definitions:
                 $ref: '#/definitions/Account'
             is_hidden:
                 type: boolean
+            is_sticky:
+                type: boolean
             review_status:
                 type: string
     Reply:
@@ -307,9 +302,6 @@ definitions:
                 type: string
             account:
                 $ref: '#/definitions/Account'
-            views_count:
-                type: integer
-                format: int32
             is_hidden:
                 type: boolean
             is_sticky:
@@ -336,6 +328,8 @@ definitions:
                 type: integer
                 format: int32
             column_id:
+                type: string
+            post_id:
                 type: string
             is_hidden:
                 type: boolean
@@ -402,6 +396,12 @@ parameters:
         in: query
         required: false
         type: string
+    reply_id_in_query:
+        description: reply id in query
+        name: reply_id
+        in: query
+        required: false
+        type: string
     date_created_in_query:
         description: date in query
         name: date_created
@@ -465,26 +465,8 @@ parameters:
         required: true
         type: integer
         format: int32
-    column_id_in_path:
-        description: column id in path
-        name: id
-        in: path
-        required: true
-        type: string
-    article_id_in_path:
-        description: article id in path
-        name: id
-        in: path
-        required: true
-        type: string
-    post_id_in_path:
-        description: post id in path
-        name: id
-        in: path
-        required: true
-        type: string
-    reply_id_in_path:
-        description: reply id in path
+    string_id_in_path:
+        description: string id in path
         name: id
         in: path
         required: true
@@ -555,7 +537,9 @@ paths:
                 - $ref: '#/parameters/column_id_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
-                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
                 - $ref: '#/parameters/limit'
             responses:
                 200:
@@ -601,7 +585,7 @@ paths:
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/column_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 专栏
@@ -620,7 +604,7 @@ paths:
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/column_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: update_column
                   in: body
                   required: true
@@ -645,7 +629,7 @@ paths:
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/column_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 发布专栏
@@ -664,12 +648,42 @@ paths:
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/column_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 204:
                     description: 取消发布专栏
                     schema:
                         $ref: '#/definitions/None'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
+    /columns/{id}/posts:
+        get:
+            summary: 专栏下主贴列表
+            description: 专栏下主贴列表
+            tags: [COLUMNS]
+            operationdId: columns_id_posts
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/post_id_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
+                - $ref: '#/parameters/is_sticky_in_query'
+                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏下主贴列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/PostLite'
                 default:
                     description: Unexpected Error
                     schema:
@@ -689,7 +703,9 @@ paths:
                 - $ref: '#/parameters/article_id_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
-                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
                 - $ref: '#/parameters/limit'
             responses:
                 200:
@@ -735,7 +751,7 @@ paths:
             operationdId: article
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/article_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 专栏
@@ -754,7 +770,7 @@ paths:
             operationdId: article
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/article_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: update_article
                   in: body
                   required: true
@@ -779,7 +795,7 @@ paths:
             operationdId: article
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/article_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 发布文章
@@ -798,7 +814,7 @@ paths:
             operationdId: columns
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/article_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 204:
                     description: 取消发布文章
@@ -823,6 +839,9 @@ paths:
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/is_sticky_in_query'
                 - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
                 - $ref: '#/parameters/limit'
             responses:
                 200:
@@ -868,7 +887,7 @@ paths:
             operationdId: posts
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/post_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 专栏
@@ -887,7 +906,7 @@ paths:
             operationdId: posts
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/post_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: update_post
                   in: body
                   required: true
@@ -912,7 +931,7 @@ paths:
             operationdId: review_post
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/post_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: review_post
                   in: body
                   required: ture
@@ -929,6 +948,37 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [panel]
+    /posts/{id}/replies:
+        get:
+            summary: 讨论回复列表
+            description: 讨论回复列表
+            tags: [POSTS]
+            operationdId: post_id_replies
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/reply_id_in_query'
+                - $ref: '#/parameters/string_id_in_path'
+                - $ref: '#/parameters/is_hidden_in_query'
+                - $ref: '#/parameters/is_sticky_in_query'
+                - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 讨论回复列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/ReplyLite'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
     /replies:
         get:
             summary: 讨论回复列表
@@ -939,10 +989,14 @@ paths:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/post_id_in_query'
+                - $ref: '#/parameters/reply_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/is_sticky_in_query'
                 - $ref: '#/parameters/review_status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
                 - $ref: '#/parameters/limit'
             responses:
                 200:
@@ -988,7 +1042,7 @@ paths:
             operationdId: replies
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/reply_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
                     description: 回复
@@ -1007,7 +1061,7 @@ paths:
             operationdId: replies
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/reply_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: update_reply
                   in: body
                   required: true
@@ -1032,7 +1086,7 @@ paths:
             operationdId: review_reply
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/reply_id_in_path'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: review_reply
                   in: body
                   required: ture

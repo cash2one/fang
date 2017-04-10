@@ -13,19 +13,14 @@ class Posts(Resource):
 
     # @register_permission('get_posts')
     def get(self):
-        filter_fields = ['id', 'is_hidden', 'column_id', 'is_sticky'
-                         'status', 'account_id', 'review_status']
+        filter_fields = ['id', 'is_hidden', 'is_sticky', 'column_id',
+                         'is_sticky', 'account_id', 'review_status']
         query = get_slave_query(Post, filter_fields, g.args)
-        order_by = g.args.get('order_by', 'date_created')
         count = query.count()
 
         offset, limit = get_offset_limit(g.args)
-        order_dict = {
-            'date_created': Post.date_created.desc(),
-        }
-        order_by = order_dict.get(order_by)
         posts = (query
-                     .order_by(order_by)
+                     .order_by(Post.date_created.desc())
                      .offset(offset).limit(limit)
                      .all())
         return posts, 200, [('Total-Count', str(count))]

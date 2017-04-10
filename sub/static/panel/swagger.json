@@ -4,6 +4,141 @@
     "title": "Fenda Sub Panel API"
   },
   "paths": {
+    "/columns/{id}/posts": {
+      "get": {
+        "description": "\u4e13\u680f\u4e0b\u4e3b\u8d34\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/post_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_hidden_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_sticky_in_query"
+          },
+          {
+            "$ref": "#/parameters/review_status_in_query"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u4e13\u680f\u4e0b\u4e3b\u8d34\u5217\u8868",
+        "operationdId": "columns_id_posts",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f\u4e0b\u4e3b\u8d34\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostLite"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}/replies": {
+      "get": {
+        "description": "\u8ba8\u8bba\u56de\u590d\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/reply_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/string_id_in_path"
+          },
+          {
+            "$ref": "#/parameters/is_hidden_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_sticky_in_query"
+          },
+          {
+            "$ref": "#/parameters/review_status_in_query"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u8ba8\u8bba\u56de\u590d\u5217\u8868",
+        "operationdId": "post_id_replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u8ba8\u8bba\u56de\u590d\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ReplyLite"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/replies": {
       "post": {
         "description": "\u6dfb\u52a0\u4e3b\u8d34",
@@ -60,6 +195,9 @@
             "$ref": "#/parameters/post_id_in_query"
           },
           {
+            "$ref": "#/parameters/reply_id_in_query"
+          },
+          {
             "$ref": "#/parameters/column_id_in_query"
           },
           {
@@ -70,6 +208,15 @@
           },
           {
             "$ref": "#/parameters/review_status_in_query"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
           },
           {
             "$ref": "#/parameters/limit"
@@ -114,7 +261,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/article_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -151,7 +298,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/article_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -190,7 +337,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/reply_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -294,7 +441,13 @@
             "$ref": "#/parameters/is_hidden_in_query"
           },
           {
-            "$ref": "#/parameters/review_status_in_query"
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
           },
           {
             "$ref": "#/parameters/limit"
@@ -339,7 +492,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/article_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -384,7 +537,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/article_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -423,7 +576,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/post_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -470,7 +623,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/column_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -515,7 +668,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/column_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -608,7 +761,13 @@
             "$ref": "#/parameters/is_hidden_in_query"
           },
           {
-            "$ref": "#/parameters/review_status_in_query"
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
           },
           {
             "$ref": "#/parameters/limit"
@@ -653,7 +812,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/post_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -698,7 +857,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/post_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -737,7 +896,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/column_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -774,7 +933,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/column_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -870,6 +1029,15 @@
             "$ref": "#/parameters/review_status_in_query"
           },
           {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
             "$ref": "#/parameters/limit"
           }
         ],
@@ -912,7 +1080,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/reply_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "schema": {
@@ -957,7 +1125,7 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
-            "$ref": "#/parameters/reply_id_in_path"
+            "$ref": "#/parameters/string_id_in_path"
           }
         ],
         "tags": [
@@ -1077,13 +1245,6 @@
     "application/json"
   ],
   "parameters": {
-    "reply_id_in_path": {
-      "required": true,
-      "type": "string",
-      "description": "reply id in path",
-      "in": "path",
-      "name": "id"
-    },
     "AccessToken": {
       "required": true,
       "type": "string",
@@ -1107,15 +1268,6 @@
       "in": "query",
       "type": "string",
       "description": "status in query"
-    },
-    "offset": {
-      "description": "offset number",
-      "format": "int32",
-      "required": false,
-      "maximum": 20000,
-      "in": "query",
-      "type": "integer",
-      "name": "offset"
     },
     "per_page": {
       "description": "per_page number",
@@ -1159,14 +1311,6 @@
       "in": "query",
       "name": "order_score"
     },
-    "account_id_in_query": {
-      "description": "account id in query",
-      "format": "int32",
-      "required": false,
-      "in": "query",
-      "type": "integer",
-      "name": "account_id"
-    },
     "account_id_in_path": {
       "description": "account id in path",
       "format": "int32",
@@ -1174,6 +1318,13 @@
       "in": "path",
       "type": "integer",
       "name": "account_id"
+    },
+    "column_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "\u4e13\u680fID",
+      "in": "query",
+      "name": "column_id"
     },
     "review_status_in_query": {
       "enum": [
@@ -1194,19 +1345,14 @@
       "name": "Authorization",
       "in": "header"
     },
-    "column_id_in_path": {
-      "required": true,
-      "type": "string",
-      "description": "column id in path",
-      "in": "path",
-      "name": "id"
-    },
-    "article_id_in_path": {
-      "required": true,
-      "type": "string",
-      "description": "article id in path",
-      "in": "path",
-      "name": "id"
+    "offset": {
+      "description": "offset number",
+      "format": "int32",
+      "required": false,
+      "maximum": 20000,
+      "in": "query",
+      "type": "integer",
+      "name": "offset"
     },
     "post_id_in_query": {
       "required": false,
@@ -1236,6 +1382,13 @@
       "in": "query",
       "name": "is_hidden"
     },
+    "reply_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "reply id in query",
+      "in": "query",
+      "name": "reply_id"
+    },
     "page": {
       "description": "page number",
       "format": "int32",
@@ -1254,17 +1407,18 @@
       "type": "integer",
       "name": "limit"
     },
-    "column_id_in_query": {
+    "account_id_in_query": {
+      "description": "account id in query",
+      "format": "int32",
       "required": false,
-      "type": "string",
-      "description": "\u4e13\u680fID",
       "in": "query",
-      "name": "column_id"
+      "type": "integer",
+      "name": "account_id"
     },
-    "post_id_in_path": {
+    "string_id_in_path": {
       "required": true,
       "type": "string",
-      "description": "post id in path",
+      "description": "string id in path",
       "in": "path",
       "name": "id"
     },
@@ -1319,6 +1473,9 @@
         "views_count": {
           "type": "integer",
           "format": "int32"
+        },
+        "price": {
+          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -1380,6 +1537,9 @@
           "type": "integer",
           "format": "int32"
         },
+        "title": {
+          "type": "string"
+        },
         "date_published": {
           "$ref": "#/definitions/datetime"
         },
@@ -1387,9 +1547,6 @@
           "$ref": "#/definitions/datetime"
         },
         "id": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }
@@ -1404,6 +1561,9 @@
         },
         "title": {
           "type": "string"
+        },
+        "is_sticky": {
+          "type": "boolean"
         },
         "review_status": {
           "type": "string"
@@ -1437,15 +1597,6 @@
         "date_start": {
           "$ref": "#/definitions/datetime"
         },
-        "review_status": {
-          "enum": [
-            "pending",
-            "passed",
-            "rejected",
-            "auto_passed"
-          ],
-          "type": "string"
-        },
         "content": {
           "type": "string"
         },
@@ -1464,10 +1615,6 @@
       "properties": {
         "account": {
           "$ref": "#/definitions/Account"
-        },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
         },
         "is_sticky": {
           "type": "boolean"
@@ -1507,42 +1654,42 @@
     },
     "CreateArticle": {
       "properties": {
-        "account_id": {
-          "type": "integer"
-        },
-        "title": {
+        "content": {
           "type": "string"
         },
         "column_id": {
           "type": "string"
         },
-        "content": {
-          "type": "string"
-        },
         "summary": {
           "type": "string"
         },
-        "voice_id": {
+        "account_id": {
+          "type": "integer"
+        },
+        "title": {
           "type": "string"
         }
       }
     },
     "ReplyLite": {
       "properties": {
-        "content": {
-          "type": "string"
-        },
         "account": {
           "$ref": "#/definitions/Account"
+        },
+        "is_sticky": {
+          "type": "boolean"
         },
         "review_status": {
           "type": "string"
         },
-        "id": {
+        "content": {
           "type": "string"
         },
         "is_hidden": {
           "type": "boolean"
+        },
+        "id": {
+          "type": "string"
         }
       }
     },
@@ -1558,6 +1705,15 @@
           "type": "integer",
           "format": "int32"
         },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "column_id": {
+          "type": "string"
+        },
         "content": {
           "type": "string"
         },
@@ -1567,13 +1723,13 @@
         "date_created": {
           "$ref": "#/definitions/datetime"
         },
+        "is_hidden": {
+          "type": "boolean"
+        },
         "voice": {
           "$ref": "#/definitions/VoiceLite"
         },
         "id": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }
@@ -1586,11 +1742,11 @@
         "description": {
           "type": "string"
         },
-        "is_sticky": {
-          "type": "boolean"
-        },
         "title": {
           "type": "string"
+        },
+        "is_sticky": {
+          "type": "boolean"
         },
         "review_status": {
           "type": "string"
@@ -1603,10 +1759,6 @@
         },
         "id": {
           "type": "string"
-        },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -1632,14 +1784,17 @@
           "type": "integer",
           "format": "int32"
         },
-        "date_end": {
-          "$ref": "#/definitions/datetime"
+        "price": {
+          "type": "integer"
         },
         "date_start": {
           "$ref": "#/definitions/datetime"
         },
         "content": {
           "type": "string"
+        },
+        "date_end": {
+          "$ref": "#/definitions/datetime"
         },
         "date_created": {
           "$ref": "#/definitions/datetime"
@@ -1734,25 +1889,16 @@
         "title": {
           "type": "string"
         },
-        "review_status": {
-          "enum": [
-            "pending",
-            "passed",
-            "rejected",
-            "auto_passed"
-          ],
-          "type": "string"
-        },
         "column_id": {
           "type": "string"
         },
         "content": {
           "type": "string"
         },
-        "summary": {
-          "type": "string"
+        "is_hidden": {
+          "type": "boolean"
         },
-        "voice_id": {
+        "summary": {
           "type": "string"
         }
       }
@@ -1811,6 +1957,9 @@
           "type": "string"
         },
         "content": {
+          "type": "string"
+        },
+        "post_id": {
           "type": "string"
         },
         "is_hidden": {
