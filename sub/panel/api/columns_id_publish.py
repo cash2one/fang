@@ -12,7 +12,7 @@ from sub.services.permissions import register_permission
 class ColumnsIdPublish(Resource):
 
     def _get_column(self, id):
-        column = Column.get_by_id(id)
+        column = Column.query.get(id)
         if not column:
             raise NotFound('column_not_found')
         return column
