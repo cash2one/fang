@@ -12,7 +12,7 @@ class VoicesId(Resource):
         voice = Voice.query.get(id)
         if not voice or voice.status != Voice.STATUS_SUCCEED:
             raise NotFound('voice_not_found')
-        if voice.target_type == Voice.TYPE_ARTICLE:
+        if voice.target_type == Voice.TARGET_TYPE_ARTICLE:
             art = Article.query.get(voice.target_id)
             if not art:
                 raise NotFound('article_not_found')

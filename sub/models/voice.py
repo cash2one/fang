@@ -26,7 +26,7 @@ class Voice(Model):
     SOURCE_WEIXIN = 'weixin'
     SOURCE_QINIU = 'qiniu'
 
-    TYPE_ARTICLE = 'article'
+    TARGET_TYPE_ARTICLE = 'article'
 
     REVIEW_STATUS_AUTO_PASSED = 'auto_passed'  # 审核通过
     REVIEW_STATUS_REJECTED = 'rejected'        # 审核未通过
@@ -42,7 +42,7 @@ class Voice(Model):
     duration = db.Column(db.Integer(), nullable=False)
     target_id = db.Column(db.String(32), nullable=False, index=True)
     target_type = db.Column(
-        db.String(16), nullable=False, index=True, server_default=TYPE_ARTICLE)
+        db.String(16), nullable=False, index=True, server_default=TARGET_TYPE_ARTICLE)
     source = db.Column(
         db.String(), nullable=True, index=True, default=SOURCE_WEIXIN)
     status = db.Column(

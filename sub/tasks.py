@@ -4,6 +4,7 @@ from datetime import timedelta
 
 import flask
 from celery import Celery
+from sqlalchemy.exc import IntegrityError
 # from raven.contrib.celery import register_signal
 
 from zaih_core.ztime import now, str_time
@@ -62,3 +63,30 @@ def jpush_send(push):
         print u'jpush:%s:%s' % (push.receiver_id, push.alert)
         print push.extras
     return resp
+
+
+@celery.task()
+def process_after_subscribed(account_id, column_id):
+    from sub.models import Column, Member
+    column = Column.query.get(column_id)
+    if not column:
+        return
+    member = Member.query.filter_by(account_id=account_id, column_id=column.id)
+    if not member:
+        member = Member.create(account_id=account_id, column_id=column.id)
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(column.id)
+        cm.update_members(account_id)
+
+
+@celery.task()
+def process_after_paid(order_id):
+    from sub.models import Order
+    order = Order.query.get(order_id)
+    if not order:
+        return
+    if order.status != Order.STATUS_PENDING:
+        return
+    order.update(status=Order.STATUS_PAID, date_updated=now())
+    if order.order_type == Order.ORDER_TYPE_SUBSCRIBE_COLUMN:
+        process_after_subscribed(order.account_id, order.target_id)

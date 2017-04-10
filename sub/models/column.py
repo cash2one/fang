@@ -89,6 +89,7 @@ class Column(Model):
 class Member(SurrogatePK, Model):
 
     __tablename__ = 'member'
+    __table_args__ = (db.UniqueConstraint('account_id', 'column_id'),)
 
     account_id = db.Column(db.Integer(), nullable=False, index=True)
     column_id = db.Column(db.String(32), nullable=False, index=True)
@@ -97,6 +98,7 @@ class Member(SurrogatePK, Model):
 class Assistant(SurrogatePK, Model):
 
     __tablename__ = 'assistant'
+    __table_args__ = (db.UniqueConstraint('account_id', 'column_id'),)
 
     account_id = db.Column(db.Integer(), nullable=False, index=True)
     column_id = db.Column(db.String(32), nullable=False, index=True)

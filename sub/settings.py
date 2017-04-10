@@ -124,9 +124,12 @@ class Config(object):
     # board server
     BOARD_SERVER_HOST = environ.get('BOARD_PORT_8889_HTTP_PROTO', 'http://0.0.0.0:8889')
     BOARD_BACKEND_API = '{host}/backend'.format(host=BOARD_SERVER_HOST)
-
+    # feed server
     FEED_SERVER_HOST = environ.get('FEED_PORT_8891_HTTP_PROTO', 'http://localhost:8891')
     FEED_BACKEND_API = '{host}/backend'.format(host=FEED_SERVER_HOST)
+    # bank server
+    BANK_SERVER_HOST = environ.get('BANK_PORT_8899_HTTP_PROTO', 'http://localhost:8899')
+    BANK_BACKEND_API = '{host}/backend'.format(host=BANK_SERVER_HOST)
 
     BACKEND_APIS = {
         'auth': FENDA_AUTH_BACKEND_API,
@@ -135,6 +138,7 @@ class Config(object):
         'board': BOARD_BACKEND_API,
         'feed': FEED_BACKEND_API,
         'fenda': FENDA_BACKEND_API,
+        'bank': BANK_BACKEND_API,
     }
 
     REVIEW_SERVER_HOST = environ.get('REVIEW_SERVER_HOST', b'54.223.60.47')

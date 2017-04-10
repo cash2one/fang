@@ -25,7 +25,7 @@ class Voices(Resource):
         article_id = g.args.get('article_id')
         voices = (Voice.query
                   .filter(Voice.target_id == article_id)
-                  .filter(Voice.target_type == Voice.TYPE_ARTICLE))
+                  .filter(Voice.target_type == Voice.TARGET_TYPE_ARTICLE))
         return voices, 200
 
     # @register_permission('update_article')
@@ -33,7 +33,7 @@ class Voices(Resource):
         article_id = g.json['article_id']
         source = g.json['source']
         voice = Voice.create(source=source,
-                             target_type=Voice.TYPE_ARTICLE, target_id=article_id)
+                             target_type=Voice.TARGET_TYPE_ARTICLE, target_id=article_id)
         media_key = media_saveas(source)
         if not media_key:
             raise BadRequest('voice_error')

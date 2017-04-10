@@ -29,10 +29,20 @@ class Order(Model):
     STATUS_PENDING = 'pending'
     STATUS_PAID = 'paid'
 
+    TARGET_TYPE_COLUMN = 'column'
+
+    ORDER_TYPE_SUBSCRIBE_COLUMN = 'subscribe_column'
+
     id = db.Column(
         db.String(32), primary_key=True, default=order_id_generator)
     account_id = db.Column(db.Integer(), nullable=False, index=True)
-    column_id = db.Column(db.String(32), nullable=False, index=True)
+    target_id = db.Column(db.String(32), nullable=False, index=True)
+    target_type = db.Column(
+        db.String(16), nullable=False, index=True,
+        server_default=TARGET_TYPE_COLUMN)
+    order_type = db.Column(
+        db.String(16), nullable=False, index=True,
+        server_default=ORDER_TYPE_SUBSCRIBE_COLUMN)
     price = db.Column(db.Integer(), nullable=False, index=True)
     status = db.Column(
         db.String(16), nullable=False, index=True,
