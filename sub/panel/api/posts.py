@@ -5,9 +5,11 @@ from flask import g
 from . import Resource
 from zaih_core.pager import get_offset_limit
 
-from sub.models import Post
+from sub.models import Post, Column, Member
 from sub.utils import get_slave_query
 from sub.services.permissions import register_permission
+from zaih_core.api_errors import NotFound, BadRequest
+
 
 class Posts(Resource):
 
@@ -27,6 +29,26 @@ class Posts(Resource):
 
     # @register_permission('create_post')
     def post(self):
+        column_id = g.json.get('column_id')
+        account_id = g.json.get('account_id')
+
+        column = (
+            Column.query
+            .filter(Column.id == column_id)
+            .filter(~Column.is_hidden)
+            .filter(Column.status == Column.STATUS_PUBLISHED)
+            .first())
+        if not column:
+            raise NotFound('column_not_found')
+
+        member = (
+            Member.query
+            .filter(Member.column_id == column.id)
+            .filter(Member.account_id == account_id)
+            .first())
+        if not member:
+            raise BadRequest('not_subscribe_column')
+
         g.json['review_status'] = Post.REVIEW_STATUS_AUTO_PASSED
         post = Post.create(**g.json)
         return post, 201

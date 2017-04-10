@@ -5,9 +5,10 @@ from . import Resource
 
 from zaih_core.pager import get_offset_limit
 
-from sub.models import Article
+from sub.models import Article, Column
 from sub.utils import get_slave_query
 from sub.services.permissions import register_permission
+from zaih_core.api_errors import NotFound, BadRequest
 
 
 class Articles(Resource):
@@ -28,5 +29,15 @@ class Articles(Resource):
 
     # @register_permission('create_article')
     def post(self):
-        column = Article.create(**g.json)
-        return column, 201
+        column_id = g.json.get('column_id', '')
+        column = (
+            Column.query
+            .filter(Column.id == column_id)
+            .filter(~Column.is_hidden)
+            .filter(Column.status == Column.STATUS_PUBLISHED)
+            .first())
+        if not column:
+            raise NotFound('column_not_found')
+
+        article = Article.create(**g.json)
+        return article, 201
