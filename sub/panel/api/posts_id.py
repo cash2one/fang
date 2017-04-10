@@ -11,7 +11,7 @@ from sub.services.permissions import register_permission
 class PostsId(Resource):
 
     def _get_post(self, id):
-        post = Post.get_by_id(id)
+        post = Post.query.get(id)
         if not post:
             raise NotFound('post_not_found')
         return post

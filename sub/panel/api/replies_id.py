@@ -11,7 +11,7 @@ from sub.services.permissions import register_permission
 class RepliesId(Resource):
 
     def _get_reply(self, id):
-        reply = Reply.get_by_id(id)
+        reply = Reply.query.get(id)
         if not reply:
             raise NotFound('reply_not_found')
         return reply

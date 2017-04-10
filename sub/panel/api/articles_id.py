@@ -12,7 +12,7 @@ from sub.services.permissions import register_permission
 class ArticlesId(Resource):
 
     def _get_article(self, id):
-        column = Article.get_by_id(id)
+        column = Article.query.get(id)
         if not column:
             raise NotFound('article_not_found')
         return column
