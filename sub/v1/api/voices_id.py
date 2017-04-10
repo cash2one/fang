@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from zaih_core.api_errors import NotFound
-from sub.models import Voice, Article, BadRequest
+from zaih_core.api_errors import NotFound, BadRequest
+from sub.models import Voice, Article
 
 from . import Resource
 
