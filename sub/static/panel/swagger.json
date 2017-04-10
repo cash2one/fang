@@ -1766,10 +1766,7 @@
           ],
           "type": "string"
         },
-        "account_id": {
-          "type": "integer"
-        },
-        "title": {
+        "name": {
           "type": "string"
         },
         "image": {
@@ -1785,6 +1782,9 @@
           "$ref": "#/definitions/datetime"
         },
         "price": {
+          "type": "integer"
+        },
+        "account_id": {
           "type": "integer"
         }
       }
