@@ -17,12 +17,10 @@ class ColumnsId(Resource):
             raise NotFound('column_not_found')
         return column
 
-    @register_permission('get_column')
     def get(self, id):
         column = self._get_column(id)
         return column, 200
 
-    @register_permission('update_column')
     def put(self, id):
         column = self._get_column(id)
         if g.json:

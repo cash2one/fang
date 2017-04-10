@@ -11,7 +11,6 @@ from sub.services.permissions import register_permission
 
 class Columns(Resource):
 
-    @register_permission('get_columns')
     def get(self):
         filter_fields = ['id', 'name', 'column_id',
                          'status', 'account_id', 'review_status']
@@ -30,7 +29,6 @@ class Columns(Resource):
                      .all())
         return columns, 200, [('Total-Count', str(count))]
 
-    @register_permission('create_column')
     def post(self):
         column = Column.create(**g.json)
         return column, 201

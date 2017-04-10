@@ -17,7 +17,6 @@ class ColumnsIdPublish(Resource):
             raise NotFound('column_not_found')
         return column
 
-    @register_permission('update_column')
     def put(self, id):
         column = self._get_column(id)
 
@@ -32,7 +31,6 @@ class ColumnsIdPublish(Resource):
         column.update(**params)
         return column, 200
 
-    @register_permission('update_column')
     def delete(self, id):
         column = self._get_column(id)
         column.update(status=Column.STATUS_DRAFT)
