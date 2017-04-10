@@ -12,7 +12,7 @@ from sub.services.permissions import register_permission
 
 class Articles(Resource):
 
-    @register_permission('get_articles')
+    # @register_permission('get_articles')
     def get(self):
         filter_fields = ['id', 'column_id', 'article_id',
                          'status', 'account_id', 'review_status']
@@ -31,7 +31,7 @@ class Articles(Resource):
                      .all())
         return articles, 200, [('Total-Count', str(count))]
 
-    @register_permission('create_article')
+    # @register_permission('create_article')
     def post(self):
         column = Article.create(**g.json)
         return column, 201

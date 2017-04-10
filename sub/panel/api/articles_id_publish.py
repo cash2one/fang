@@ -17,7 +17,7 @@ class ArticlesIdPublish(Resource):
             raise NotFound('column_not_found')
         return column
 
-    @register_permission('update_article')
+    # @register_permission('update_article')
     def put(self, id):
         article = self._get_article(id)
 
@@ -32,7 +32,7 @@ class ArticlesIdPublish(Resource):
         article.update(**params)
         return article, 200
 
-    @register_permission('update_article')
+    # @register_permission('update_article')
     def delete(self, id):
         article = self._get_article(id)
         article.update(status=Article.STATUS_DRAFT)

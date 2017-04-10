@@ -16,12 +16,12 @@ class RepliesId(Resource):
             raise NotFound('reply_not_found')
         return reply
 
-    @register_permission('get_reply')
+    # @register_permission('get_reply')
     def get(self, id):
         post = self._get_reply(id)
         return post, 200
 
-    @register_permission('update_column')
+    # @register_permission('update_column')
     def put(self, id):
         reply = self._get_reply(id)
         if g.json:

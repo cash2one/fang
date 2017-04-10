@@ -11,7 +11,7 @@ from sub.services.permissions import register_permission
 
 class Posts(Resource):
 
-    @register_permission('get_posts')
+    # @register_permission('get_posts')
     def get(self):
         filter_fields = ['id', 'is_hidden', 'column_id', 'is_sticky'
                          'status', 'account_id', 'review_status']
@@ -30,7 +30,7 @@ class Posts(Resource):
                      .all())
         return posts, 200, [('Total-Count', str(count))]
 
-    @register_permission('create_post')
+    # @register_permission('create_post')
     def post(self):
         g.json['review_status'] = Post.REVIEW_STATUS_AUTO_PASSED
         post = Post.create(**g.json)

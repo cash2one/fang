@@ -17,12 +17,12 @@ class ArticlesId(Resource):
             raise NotFound('article_not_found')
         return column
 
-    @register_permission('get_article')
+    # @register_permission('get_article')
     def get(self, id):
         article = self._get_article(id)
         return article, 200
 
-    @register_permission('update_article')
+    # @register_permission('update_article')
     def put(self, id):
         article = self._get_article(id)
         if g.json:

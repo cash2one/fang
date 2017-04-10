@@ -16,12 +16,12 @@ class PostsId(Resource):
             raise NotFound('post_not_found')
         return post
 
-    @register_permission('get_post')
+    # @register_permission('get_post')
     def get(self, id):
         post = self._get_post(id)
         return post, 200
 
-    @register_permission('update_column')
+    # @register_permission('update_column')
     def put(self, id):
         post = self._get_post(id)
         if g.json:

@@ -20,7 +20,7 @@ class Voices(Resource):
             raise NotFound('article_not_found')
         return article
 
-    @register_permission('get_article')
+    # @register_permission('get_article')
     def get(self):
         article_id = g.args.get('article_id')
         voices = (Voice.query
@@ -28,7 +28,7 @@ class Voices(Resource):
                   .filter(Voice.target_type == Voice.TYPE_ARTICLE))
         return voices, 200
 
-    @register_permission('update_article')
+    # @register_permission('update_article')
     def post(self):
         article_id = g.json['article_id']
         source = g.json['source']

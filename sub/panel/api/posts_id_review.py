@@ -11,7 +11,7 @@ from zaih_core.api_errors import NotFound, BadRequest
 
 class PostsIdReview(Resource):
 
-    @register_permission('update_post')
+    # @register_permission('update_post')
     def put(self, id):
         review_action = g.json.get('review_action')
         post = Post.query.get(id)
