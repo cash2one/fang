@@ -74,3 +74,12 @@ class Article(Model):
     def voice_id(self):
         if self._voice:
             return self._voice.id
+
+    @cached_property
+    def current_is_subscribed(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(self.column_id)
+        return cm.is_subscribed(account_id)

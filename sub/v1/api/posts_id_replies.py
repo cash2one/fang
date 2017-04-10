@@ -5,7 +5,7 @@ from flask import g
 from zaih_core.api_errors import NotFound, BadRequest
 from zaih_core.pager import get_offset_limit
 
-from sub.models import Post, Reply
+from sub.models import Post, Reply, Member
 
 from . import Resource
 
@@ -30,5 +30,25 @@ class PostsIdReplies(Resource):
         return replies, 200, [('Total-Count', str(count))]
 
     def post(self, id):
-
-        return {}, 201, None
+        post = (
+            Post.query
+            .filter(Post.id == id)
+            .filter(~Post.is_hidden)
+            .filter(Post.review_status.in_(Post.PUBLIC_REVIEW_STATUSES))
+            .first())
+        if not post:
+            raise NotFound('post_not_found')
+        member = (
+            Member.query
+            .filter(Member.account_id == g.account.id)
+            .filter(Member.column_id == post.column_id)
+            .first())
+        if not member:
+            raise BadRequest('not_subscribe_column')
+        reply = Reply.create(
+            account_id=g.account.id,
+            column_id=post.column_id,
+            post_id=post.id,
+            content=g.json['content'],
+            review_status=Reply.REVIEW_STATUS_AUTO_PASSED)
+        return reply, 201

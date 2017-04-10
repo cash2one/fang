@@ -85,6 +85,10 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            article:
+                $ref: '#/definitions/Article'
+            post:
+                $ref: '#/definitions/Post'
     Article:
         properties:
             id:
@@ -130,6 +134,8 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            replies_count:
+                type: integer
     PostDetail:
         allOf:
             - $ref: '#/definitions/Post'

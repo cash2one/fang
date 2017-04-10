@@ -61,6 +61,21 @@ class Post(Model):
         from sub.cache.accounts import account_meta
         return account_meta(self.account_id)
 
+    @cached_property
+    def replies_count(self):
+        from sub.cache.post_statistics import PostStatistics
+        ps = PostStatistics(self.id)
+        return ps.replies_count
+
+    @cached_property
+    def current_is_subscribed(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(self.column_id)
+        return cm.is_subscribed(account_id)
+
 
 def reply_id_generator():
     return generator_string_id(21, 5)
@@ -103,3 +118,18 @@ class Reply(Model):
     def account(self):
         from sub.cache.accounts import account_meta
         return account_meta(self.account_id)
+
+    @cached_property
+    def likings_count(self):
+        from sub.cache.reply_statistics import ReplyStatistics
+        rs = ReplyStatistics(self.id)
+        return rs.likings_count
+
+    @cached_property
+    def current_is_subscribed(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(self.column_id)
+        return cm.is_subscribed(account_id)

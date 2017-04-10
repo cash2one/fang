@@ -76,6 +76,15 @@ class Column(Model):
         account = account_meta(self.account_id)
         return account
 
+    @cached_property
+    def current_is_subscribed(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(self.id)
+        return cm.is_subscribed(account_id)
+
 
 class Member(SurrogatePK, Model):
 
