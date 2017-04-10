@@ -189,6 +189,9 @@ definitions:
                 type: string
             target_type:
                 type: string
+                enum:
+                    - post
+                    - reply
     CreateWeixinPay:
         required:
             - order_type

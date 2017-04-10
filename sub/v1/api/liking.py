@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
 
-from flask import request, g
+from flask import g
+
+from zaih_core.api_errors import BadRequest
+
+from sub.models import Liking as LikingModel
 
 from . import Resource
-from .. import schemas
 
 
 class Liking(Resource):
 
     def post(self):
-        print(g.headers)
-        print(g.json)
-
-        return {}, 201, None
+        g.json['account_id'] = g.account.id
+        liking = LikingModel.query.filter_by(**g.json).first()
+        if liking:
+            raise BadRequest('already_liking')
+        liking = LikingModel.create(**g.json)
+        return liking, 201

@@ -1,16 +1,60 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from flask import g
 
-from flask import request, g
+from zaih_core.pager import get_offset_limit
+
+from sub.models import Active, Article, Post
 
 from . import Resource
-from .. import schemas
 
 
 class ColumnsIdActivities(Resource):
 
     def get(self, id):
-        print(g.headers)
-        print(g.args)
-
-        return [], 200, None
+        query = (
+            Active.query
+            .filter(Active.column_id == id)
+            .filter(Active.status == Active.STATUS_ACTIVE))
+        count = query.count()
+        offset, limit = get_offset_limit(g.args)
+        acitvities = (
+            query
+            .order_by(Active.date_created.desc())
+            .offset(offset)
+            .limit(limit)
+            .all())
+        article_ids = []
+        post_ids = []
+        for a in acitvities:
+            if a.target_type == Active.TARGET_TYPE_ARTICLE:
+                article_ids.append(a.target_id)
+            elif a.target_type == Active.TARGET_TYPE_POST:
+                post_ids.append(a.target_id)
+        articles = (
+            Article.query
+            .filter(Article.id.in_(article_ids))
+            .filter(~Article.is_hidden)
+            .filter(Article.review_status.in_(Article.PUBLIC_REVIEW_STATUSES))
+            .filter(Article.status == Article.STATUS_PUBLISHED)
+            .all()) if article_ids else []
+        articles_dict = {a.id: a for a in articles}
+        posts = (
+            Post.query
+            .filter(Post.id.in_(post_ids))
+            .filter(~Post.is_hidden)
+            .filter(Post.review_status.in_(Post.PUBLIC_REVIEW_STATUSES))
+            .all()) if post_ids else []
+        posts_dict = {p.id: p for p in posts}
+        results = []
+        for a in acitvities:
+            if a.target_type == Active.TARGET_TYPE_ARTICLE:
+                article = articles_dict.get(a.target_id)
+                if article:
+                    a.article = article
+                    results.append(a)
+            elif a.target_type == Active.TARGET_TYPE_POST:
+                post = posts_dict.get(a.target_id)
+                if post:
+                    a.post = post
+                    results.append(a)
+        return results, 200, [('Total-Count', str(count))]
