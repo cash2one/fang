@@ -1833,7 +1833,7 @@
         "content": {
           "type": "string"
         },
-        "reply_id": {
+        "post_id": {
           "type": "string"
         },
         "account_id": {

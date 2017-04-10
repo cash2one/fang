@@ -326,7 +326,7 @@ definitions:
                 type: integer
             column_id:
                 type: string
-            reply_id:
+            post_id:
                 type: string
     UpdateReply:
         properties:

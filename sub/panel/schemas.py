@@ -10,7 +10,7 @@
 ###
 
 
-DefinitionsCreatereply = {'properties': {'content': {'type': 'string'}, 'reply_id': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'column_id': {'type': 'string'}}}
+DefinitionsCreatereply = {'properties': {'content': {'type': 'string'}, 'post_id': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'column_id': {'type': 'string'}}}
 DefinitionsUpdatepost = {'properties': {'description': {'type': 'string'}, 'is_sticky': {'type': 'boolean'}, 'is_hidden': {'type': 'boolean'}, 'title': {'type': 'string'}, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'account_id': {'type': 'integer', 'format': 'int32'}, 'column_id': {'type': 'string'}}}
 DefinitionsUpdatereply = {'properties': {'content': {'type': 'string'}, 'account_id': {'type': 'integer', 'format': 'int32'}, 'is_sticky': {'type': 'boolean'}, 'is_hidden': {'type': 'boolean'}, 'review_status': {'enum': ['pending', 'passed', 'rejected', 'auto_passed'], 'type': 'string'}, 'column_id': {'type': 'string'}}}
 DefinitionsVoicelite = {'properties': {'duration': {'type': 'string'}, 'id': {'type': 'string'}}}
