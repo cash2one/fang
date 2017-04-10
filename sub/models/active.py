@@ -29,8 +29,11 @@ class Active(SurrogatePK, Model):
     SOURCE_WXAPP = 'wxapp'
     SOURCE_WEIXIN = 'weixin'
 
+    STATUS_ACTIVE = 'active'
+
     id = db.Column(db.String(32), primary_key=True, default=active_id_generator)
     account_id = db.Column(db.Integer, nullable=False, index=True)
+    column_id = db.Column(db.Integer, nullable=False, index=True)
     action = db.Column(db.String(32), nullable=False, index=True)  # 触发的动作
     target_id = db.Column(db.String(32), nullable=False, index=True)  # 触发动作目标id
     target_type = db.Column(

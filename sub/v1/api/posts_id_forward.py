@@ -1,16 +1,36 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from flask import g
 
-from flask import request, g
+from zaih_core.api_errors import NotFound, BadRequest
+from zaih_core.utils import get_client
+
+from sub.models import Active, Post
 
 from . import Resource
-from .. import schemas
 
 
 class PostsIdForward(Resource):
 
     def post(self, id):
-        print(g.headers)
-        print(g.json)
-
-        return {}, 201, None
+        post = (
+            Post.query
+            .filter(Post.id == id)
+            .filter(~Post.is_hidden)
+            .filter(Post.review_status.in_(Post.PUBLIC_REVIEW_STATUSES))
+            .first())
+        if not post:
+            raise NotFound("post_not_found")
+        column = post.column
+        if not column:
+            raise NotFound("column_not_found")
+        if column.account_id != g.account.id:
+            raise BadRequest("can_not_forward")
+        activity = Active.create(
+            account_id=g.account.id,
+            column_id=column.id,
+            action='post_forward',
+            target_id=post.id,
+            target_type=Active.TARGET_TYPE_POST,
+            description=g.json.get('description'),
+            source=get_client())
+        return activity, 201
