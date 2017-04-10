@@ -15,6 +15,8 @@ from zaih_core.database import (db, Model, DateTime,
 
 __all__ = [
     'Column',
+    'Member',
+    'Assistant',
 ]
 
 
