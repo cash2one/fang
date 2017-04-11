@@ -30,9 +30,9 @@ class Voices(Resource):
 
     # @register_permission('update_article')
     def post(self):
-        article_id = g.json('article_id')
-        media_id = g.json('media_id')
-        source = g.json('source', Voice.SOURCE_QINIU)
+        article_id = g.json.get('article_id')
+        media_id = g.json.get('media_id')
+        source = g.json.get('source', Voice.SOURCE_QINIU)
 
         article = (
             Article.query
