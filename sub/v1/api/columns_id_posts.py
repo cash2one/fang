@@ -5,7 +5,7 @@ from flask import g
 from zaih_core.api_errors import NotFound, BadRequest
 from zaih_core.pager import get_offset_limit
 
-from sub.models import Post, Column, Member
+from sub.models import Post, Column
 
 from . import Resource
 
@@ -39,13 +39,8 @@ class ColumnsIdPosts(Resource):
             .first())
         if not column:
             raise NotFound('column_not_found')
-        member = (
-            Member.query
-            .filter(Member.column_id == column.id)
-            .filter(Member.account_id == g.account.id)
-            .first())
-        if not member:
-            raise BadRequest('not_subscribe_column')
+        if column.account_id != g.account.id:
+            raise BadRequest("can_not_post")
         g.json.update(
             account_id=g.account.id,
             column_id=column.id,
