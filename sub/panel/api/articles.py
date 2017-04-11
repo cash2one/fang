@@ -39,5 +39,6 @@ class Articles(Resource):
         if not column:
             raise NotFound('column_not_found')
 
+        g.json.update(review_status=Article.REVIEW_STATUS_AUTO_PASSED)
         article = Article.create(**g.json)
         return article, 201

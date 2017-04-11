@@ -9,6 +9,7 @@ from sub.models import Column
 from sub.utils import get_slave_query
 from sub.services.permissions import register_permission
 
+
 class Columns(Resource):
 
     def get(self):
@@ -25,5 +26,6 @@ class Columns(Resource):
         return columns, 200, [('Total-Count', str(count))]
 
     def post(self):
+        g.json.update(review_status=Column.REVIEW_STATUS_AUTO_PASSED)
         column = Column.create(**g.json)
         return column, 201
