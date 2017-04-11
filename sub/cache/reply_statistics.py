@@ -29,9 +29,12 @@ class ReplyStatistics(object):
         }
         return statistics
 
-    def update_replies_count(self):
-        count = get_reply_likings_count(self.id)
-        self.update('likings_count', count)
+    def update_likings_count(self, init=False, increment=1):
+        if init:
+            count = get_reply_likings_count(self.id)
+            self.update('likings_count', count)
+        else:
+            redis.hincrby(self.skey, 'likings_count', increment)
 
     def update(self, init=False, **kwargs):
         '''

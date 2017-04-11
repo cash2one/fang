@@ -90,3 +90,36 @@ def process_after_paid(order_id):
     order.update(status=Order.STATUS_PAID, date_updated=now())
     if order.order_type == Order.ORDER_TYPE_SUBSCRIBE_COLUMN:
         process_after_subscribed(order.account_id, order.target_id)
+
+
+@celery.task()
+def process_after_liking(liking_id):
+    from sub.models import Liking
+    from sub.cache.reply_statistics import ReplyStatistics
+    liking = Liking.query.get(liking_id)
+    if not liking:
+        return
+    if liking.target_type == Liking.TARGET_TYPE_REPLY:
+        rs = ReplyStatistics(liking.target_id)
+        rs.update_likings_count()
+
+
+@celery.task()
+def process_after_review_reply(reply_id, reply=None):
+    from sub.models import Reply
+    from sub.cache.post_statistics import PostStatistics
+    if not reply:
+        reply = Reply.query.get(reply_id)
+    if reply.review_status in Reply.PUBLIC_REVIEW_STATUSES:
+        ps = PostStatistics(reply.post_id)
+        ps.update_replies_count()
+
+
+@celery.task()
+def process_after_reply(reply_id):
+    from sub.models import Reply
+    reply = Reply.query.get(reply_id)
+    if not reply:
+        return
+    if reply.review_status in Reply.PUBLIC_REVIEW_STATUSES:
+        process_after_review_reply(reply_id, reply)
