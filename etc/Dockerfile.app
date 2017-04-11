@@ -1,7 +1,7 @@
 # DON'T CHANGE ME !!!
-# latest: 6.7.4-production-806fee6f
+# latest: 7.4.0-1_sub-fb12779e
 
-FROM docker-registry.guokr.com/apps/fenda-sub-env:6.7.4-production
+FROM docker-registry.guokr.com/apps/fenda-sub-env:7.4.0-1_sub
 
 ADD . /app
 WORKDIR /app 
