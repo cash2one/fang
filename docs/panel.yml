@@ -36,7 +36,7 @@ definitions:
         properties:
             id:
                 type: string
-            column_id:
+            article_id:
                 type: string
             url:
                 type: string
@@ -44,9 +44,11 @@ definitions:
                 type: string
     CreateVoice:
         properties:
-            source_key:
+            media_id:
                 type: string
-            column_id:
+            article_id:
+                type: string
+            source:
                 type: string
     ColumnLite:
         properties:
@@ -897,8 +899,8 @@ paths:
             security:
                 - OAuth2: [panel]
         put:
-            summary: 修改专栏
-            description: 修改专栏
+            summary: 修改主贴
+            description: 修改主贴
             tags: [POSTS]
             operationdId: posts
             parameters:
@@ -911,7 +913,7 @@ paths:
                         $ref: '#/definitions/UpdatePost'
             responses:
                 200:
-                    description: 专栏
+                    description: 主贴
                     schema:
                         $ref: '#/definitions/Post'
                 default:
@@ -1108,7 +1110,7 @@ paths:
             operationdId: get_voices
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/article_id_in_query'
             responses:
                 200:
                     description: 语音列表
@@ -1129,7 +1131,7 @@ paths:
             operationdId: create_voices 
             parameters:
                 - $ref: '#/parameters/AccessToken'
-                - name: create_column
+                - name: create_voice
                   in: body
                   required: true
                   schema:

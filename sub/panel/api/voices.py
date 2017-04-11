@@ -30,11 +30,24 @@ class Voices(Resource):
 
     # @register_permission('update_article')
     def post(self):
-        article_id = g.json['article_id']
-        source = g.json['source']
+        article_id = g.json('article_id')
+        media_id = g.json('media_id')
+        source = g.json('source', Voice.SOURCE_QINIU)
+
+        article = (
+            Article.query
+            .filter(Article.id == article_id)
+            .filter(~Article.is_hidden)
+            .filter(Article.status == Article.STATUS_PUBLISHED)
+            .first())
+        if not article:
+            raise NotFound('article_not_found')
+
         voice = Voice.create(source=source,
-                             target_type=Voice.TARGET_TYPE_ARTICLE, target_id=article_id)
-        media_key = media_saveas(source)
+                             target_type=Voice.TARGET_TYPE_ARTICLE,
+                             target_id=article_id)
+
+        media_key = media_saveas(media_id)
         if not media_key:
             raise BadRequest('voice_error')
         voice.update(voice_key=media_key)
