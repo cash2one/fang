@@ -2,8 +2,9 @@
 from flask import g
 
 from zaih_core.pager import get_offset_limit
+from zaih_core.api_errors import NotFound, BadRequest
 
-from sub.models import Active, Article, Post
+from sub.models import Active, Article, Post, Column
 
 from . import Resource
 
@@ -11,6 +12,17 @@ from . import Resource
 class ColumnsIdActivities(Resource):
 
     def get(self, id):
+        column = (
+            Column.query
+            .filter(Column.id == id)
+            .filter(~Column.is_hidden)
+            .filter(Column.review_status.in_(Column.PUBLIC_REVIEW_STATUSES))
+            .filter(Column.status == Column.STATUS_PUBLISHED)
+            .first())
+        if not column:
+            raise NotFound('column_not_found')
+        if not column.current_is_subscribed:
+            raise BadRequest('not_subscribe_column')
         query = (
             Active.query
             .filter(Active.column_id == id)
