@@ -71,7 +71,7 @@ def process_after_subscribed(account_id, column_id):
     column = Column.query.get(column_id)
     if not column:
         return
-    member = Member.query.filter_by(account_id=account_id, column_id=column.id)
+    member = Member.query.filter_by(account_id=account_id, column_id=column.id).first()
     if not member:
         member = Member.create(account_id=account_id, column_id=column.id)
         from sub.cache.columns import ColumnMembers
