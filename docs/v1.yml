@@ -138,13 +138,12 @@ definitions:
                 $ref: '#/definitions/datetime'
             replies_count:
                 type: integer
+            account:
+                $ref: '#/definitions/Account'
     PostDetail:
         allOf:
             - $ref: '#/definitions/Post'
             - type: object
-        properties:
-            account:
-                $ref: '#/definitions/Account'
     CreatePost:
         required:
             - title
