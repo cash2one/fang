@@ -31,6 +31,8 @@ class Active(SurrogatePK, Model):
 
     STATUS_ACTIVE = 'active'
 
+    ACTION_POST_FORWARD = 'post_forward'
+
     id = db.Column(db.String(32), primary_key=True, default=active_id_generator)
     account_id = db.Column(db.Integer, nullable=False, index=True)
     column_id = db.Column(db.Integer, nullable=False, index=True)

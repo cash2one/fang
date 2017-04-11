@@ -24,12 +24,16 @@ def get_added_and_deleted(model, field):
 
 
 def on_models_committed(sender, changes):
-    from sub.tasks import process_after_liking, process_after_reply
+    from sub.tasks import (
+        process_after_liking, process_after_reply,
+        process_after_create_activity)
     for model, change in changes:
         if isinstance(model, Liking) and change == 'insert':
             process_after_liking.delay(voice_id=model.id)
         elif isinstance(model, Reply) and change == 'insert':
             process_after_reply.delay(model.id)
+        elif isinstance(model, Active) and change == 'insert':
+            process_after_create_activity.delay(model.id)
 
 
 def before_models_committed(sender, changes):
