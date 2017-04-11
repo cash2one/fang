@@ -118,13 +118,18 @@ def notice_after_review_reply(reply_id, reply=None):
     post = reply.post
     if not post:
         return
+    column = post.column
+    if not column:
+        return
+    alert_args = {'name': column.name}
     extras = {
         'column_id': reply.column_id,
         'post_id': reply.post_id,
         'reply_id': reply.id,
     }
     push = Push(
-        'notice_reply_post', post.account_id, extras=extras)
+        'notice_reply_post', post.account_id,
+        alert_args=alert_args, extras=extras)
     push.send()
 
 
