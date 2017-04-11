@@ -177,6 +177,8 @@ definitions:
                 type: boolean
             likings_count:
                 type: integer
+            is_liked:
+                type: boolean
             date_created:
                 $ref: '#/definitions/datetime'
             date_updated:

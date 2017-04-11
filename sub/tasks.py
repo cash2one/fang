@@ -103,7 +103,7 @@ def process_after_liking(liking_id):
         return
     if liking.target_type == Liking.TARGET_TYPE_REPLY:
         rs = ReplyStatistics(liking.target_id)
-        rs.update_likings_count()
+        rs.update_likings(liking.account_id)
 
 
 @celery.task()
