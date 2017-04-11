@@ -118,13 +118,18 @@ def notice_after_review_reply(reply_id, reply=None):
     post = reply.post
     if not post:
         return
+    column = post.column
+    if not column:
+        return
+    alert_args = {'name': column.name}
     extras = {
         'column_id': reply.column_id,
         'post_id': reply.post_id,
         'reply_id': reply.id,
     }
     push = Push(
-        'notice_reply_post', post.account_id, extras=extras)
+        'notice_reply_post', post.account_id,
+        alert_args=alert_args, extras=extras)
     push.send()
 
 
@@ -150,3 +155,45 @@ def process_after_reply(reply_id):
         return
     if reply.review_status in Reply.PUBLIC_REVIEW_STATUSES:
         process_after_review_reply(reply_id, reply)
+
+
+@celery.task()
+def notice_after_create_activity(activity_id, activity=None):
+    from sub.models import Active, Column, Member
+    if not activity:
+        activity = Active.query.get(activity_id)
+    if not activity:
+        return
+    column = (
+        Column.query
+        .filter(Column.id == activity.column_id)
+        .filter(~Column.is_hidden)
+        .filter(Column.review_status.in_(Column.PUBLIC_REVIEW_STATUSES))
+        .filter(Column.status == Column.STATUS_PUBLISHED)
+        .first())
+    if not column:
+        return
+    members = (
+        Member.query
+        .filter(Member.column_id == column.id)
+        .all())
+    extras = {
+        'activity_id': activity.id,
+        'column_id': activity.column_id,
+        'target_id': activity.target_id,
+        'target_type': activity.target_type,
+    }
+    for member in members:
+        push = Push('notice_new_activity', member.account_id, extras=extras)
+        jpush_send(push)
+
+
+@celery.task()
+def process_after_create_activity(activity_id):
+    from sub.models import Active
+    activity = Active.query.get(activity_id)
+    if not activity:
+        return
+    if activity.status != Active.STATUS_ACTIVE:
+        return
+    notice_after_create_activity(activity.id, activity)

@@ -28,7 +28,7 @@ class PostsIdForward(Resource):
         activity = Active.create(
             account_id=g.account.id,
             column_id=column.id,
-            action='post_forward',
+            action=Active.ACTION_POST_FORWARD,
             target_id=post.id,
             target_type=Active.TARGET_TYPE_POST,
             description=g.json.get('description'),
