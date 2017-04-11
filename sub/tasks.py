@@ -80,9 +80,10 @@ def process_after_subscribed(account_id, column_id):
 
 
 @celery.task()
-def process_after_paid(order_id):
+def process_after_paid(order_id, order=None):
     from sub.models import Order
-    order = Order.query.get(order_id)
+    if not order:
+        order = Order.query.get(order_id)
     if not order:
         return
     if order.status != Order.STATUS_PENDING:
@@ -90,6 +91,7 @@ def process_after_paid(order_id):
     order.update(status=Order.STATUS_PAID, date_updated=now())
     if order.order_type == Order.ORDER_TYPE_SUBSCRIBE_COLUMN:
         process_after_subscribed(order.account_id, order.target_id)
+    return True
 
 
 @celery.task()

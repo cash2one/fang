@@ -10,16 +10,21 @@
 ###
 
 
+DefinitionsPaynotify = {'required': ['order_id', 'status'], 'properties': {'order_id': {'type': 'string'}, 'status': {'enum': ['success'], 'type': 'string'}}}
 DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
+DefinitionsPayresult = {'required': ['ok', 'is_settle'], 'properties': {'ok': {'type': 'boolean'}, 'is_settle': {'type': 'boolean'}}}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
 
 validators = {
+    ('pay_notify', 'POST'): {'json': DefinitionsPaynotify},
 }
 
 filters = {
+    ('pay_notify', 'POST'): {201: {'headers': None, 'schema': DefinitionsPayresult}},
 }
 
 scopes = {
+    ('pay_notify', 'POST'): ['open'],
 }
 
 
