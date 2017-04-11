@@ -85,6 +85,8 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            account:
+                $ref: '#/definitions/Account'
             article:
                 $ref: '#/definitions/Article'
             post:
