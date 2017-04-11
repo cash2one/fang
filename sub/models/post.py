@@ -49,6 +49,9 @@ class Post(Model):
     is_hidden = db.Column(
         db.Boolean(), nullable=False, index=True,
         server_default=sql.false())
+    date_published = db.Column(
+        DateTime, nullable=False, index=True,
+        server_default=db.func.current_timestamp())
     date_created = db.Column(
         db.DateTime(timezone=True), nullable=False, index=True,
         server_default=db.func.current_timestamp())
@@ -107,6 +110,9 @@ class Reply(Model):
     is_hidden = db.Column(
         db.Boolean(), nullable=False, index=True,
         server_default=sql.false())
+    date_published = db.Column(
+        DateTime, nullable=False, index=True,
+        server_default=db.func.current_timestamp())
     date_created = db.Column(
         db.DateTime(timezone=True), nullable=False, index=True,
         server_default=db.func.current_timestamp())

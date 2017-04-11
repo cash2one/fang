@@ -228,7 +228,7 @@ definitions:
                 type: boolean
             review_status:
                 type: string
-            date_created:
+            date_published:
                 $ref: '#/definitions/datetime'
     Post:
         properties:
@@ -246,7 +246,7 @@ definitions:
                 type: boolean
             review_status:
                 type: string
-            date_created:
+            date_published:
                 $ref: '#/definitions/datetime'
     CreatePost:
         properties:
@@ -280,6 +280,8 @@ definitions:
                     - passed
                     - rejected
                     - auto_passed
+            date_published:
+                $ref: '#/definitions/datetime'
     ReplyLite:
         properties:
             id:
@@ -294,6 +296,8 @@ definitions:
                 type: boolean
             review_status:
                 type: string
+            date_published:
+                $ref: '#/definitions/datetime'
     Reply:
         properties:
             id:
@@ -308,7 +312,7 @@ definitions:
                 type: boolean
             review_status:
                 type: string
-            date_created:
+            date_published:
                 $ref: '#/definitions/datetime'
     CreateReply:
         properties:
@@ -342,6 +346,8 @@ definitions:
                     - passed
                     - rejected
                     - auto_passed
+            date_published:
+                $ref: '#/definitions/datetime'
     Error:
         properties:
             error_code:

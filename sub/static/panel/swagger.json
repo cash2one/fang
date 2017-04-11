@@ -1568,7 +1568,7 @@
         "review_status": {
           "type": "string"
         },
-        "date_created": {
+        "date_published": {
           "$ref": "#/definitions/datetime"
         },
         "is_hidden": {
@@ -1625,7 +1625,7 @@
         "content": {
           "type": "string"
         },
-        "date_created": {
+        "date_published": {
           "$ref": "#/definitions/datetime"
         },
         "is_hidden": {
@@ -1684,6 +1684,9 @@
         },
         "content": {
           "type": "string"
+        },
+        "date_published": {
+          "$ref": "#/definitions/datetime"
         },
         "is_hidden": {
           "type": "boolean"
@@ -1751,7 +1754,7 @@
         "review_status": {
           "type": "string"
         },
-        "date_created": {
+        "date_published": {
           "$ref": "#/definitions/datetime"
         },
         "is_hidden": {
@@ -1835,6 +1838,9 @@
         },
         "column_id": {
           "type": "string"
+        },
+        "date_published": {
+          "$ref": "#/definitions/datetime"
         },
         "is_hidden": {
           "type": "boolean"
@@ -1964,6 +1970,9 @@
         },
         "is_hidden": {
           "type": "boolean"
+        },
+        "date_published": {
+          "$ref": "#/definitions/datetime"
         }
       }
     },
