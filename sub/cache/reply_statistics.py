@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import time
 from flask import g
+
+from zaih_core.ztime import now
 
 from sub.models import Liking
 from sub.app import redis
@@ -22,6 +25,7 @@ class ReplyStatistics(object):
         self.id = id
         self.single = single
         self.skey = 'reply:%s:statistics' % id
+        self.likings_key = 'reply:%s:likings' % id
 
     def init(self):
         statistics = {
@@ -29,12 +33,21 @@ class ReplyStatistics(object):
         }
         return statistics
 
-    def update_likings_count(self, init=False, increment=1):
-        if init:
+    def update_likings_count(self, count=False):
+        key = 'likings_count'
+        if not count:
             count = get_reply_likings_count(self.id)
-            self.update('likings_count', count)
+        self.update(key, count)
+
+    def update_likings(self, account_id, is_delete=False, score=None):
+        if score is None:
+            score = time.mktime(now().timetuple())
+        if is_delete:
+            redis.zrem(self.likings_key, account_id)
         else:
-            redis.hincrby(self.skey, 'likings_count', increment)
+            redis.zadd(self.likings_key, score, account_id)
+        count = redis.zcard(self.likings_key)
+        self.update_likings_count(count=count)
 
     def update(self, init=False, **kwargs):
         '''
@@ -68,3 +81,7 @@ class ReplyStatistics(object):
     def likings_count(self):
         key = 'likings_count'
         return self._get_count(key)
+
+    def has_liked(self, account_id):
+        score = redis.zscore(self.likings_key, account_id)
+        return True if score else False

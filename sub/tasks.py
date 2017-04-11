@@ -71,7 +71,7 @@ def process_after_subscribed(account_id, column_id):
     column = Column.query.get(column_id)
     if not column:
         return
-    member = Member.query.filter_by(account_id=account_id, column_id=column.id)
+    member = Member.query.filter_by(account_id=account_id, column_id=column.id).first()
     if not member:
         member = Member.create(account_id=account_id, column_id=column.id)
         from sub.cache.columns import ColumnMembers
@@ -103,7 +103,29 @@ def process_after_liking(liking_id):
         return
     if liking.target_type == Liking.TARGET_TYPE_REPLY:
         rs = ReplyStatistics(liking.target_id)
-        rs.update_likings_count()
+        rs.update_likings(liking.account_id)
+
+
+@celery.task()
+def notice_after_review_reply(reply_id, reply=None):
+    from sub.models import Reply
+    if not reply:
+        reply = Reply.query.get(reply_id)
+    if not reply:
+        return
+    if reply.review_status not in Reply.PUBLIC_REVIEW_STATUSES:
+        return
+    post = reply.post
+    if not post:
+        return
+    extras = {
+        'column_id': reply.column_id,
+        'post_id': reply.post_id,
+        'reply_id': reply.id,
+    }
+    push = Push(
+        'notice_reply_post', post.account_id, extras=extras)
+    push.send()
 
 
 @celery.task()
@@ -112,9 +134,12 @@ def process_after_review_reply(reply_id, reply=None):
     from sub.cache.post_statistics import PostStatistics
     if not reply:
         reply = Reply.query.get(reply_id)
+    if not reply:
+        return
     if reply.review_status in Reply.PUBLIC_REVIEW_STATUSES:
         ps = PostStatistics(reply.post_id)
         ps.update_replies_count()
+        notice_after_review_reply.delay(reply.id)
 
 
 @celery.task()

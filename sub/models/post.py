@@ -159,6 +159,14 @@ class Reply(Model):
         return rs.likings_count
 
     @cached_property
+    def is_liked(self):
+        if not hasattr(g, 'account'):
+            return False
+        from sub.cache.reply_statistics import ReplyStatistics
+        rs = ReplyStatistics(self.id)
+        return rs.has_liked(g.account.id)
+
+    @cached_property
     def current_is_subscribed(self):
         account_id = g.account.id if hasattr(g, 'account') else None
         if not account_id:
