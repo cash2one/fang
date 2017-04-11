@@ -56,10 +56,7 @@ definitions:
                 type: string
             account:
                 $ref: '#/definitions/Account'
-            follows_count:
-                type: integer
-                format: int32
-            views_count:
+            subscribes_count:
                 type: integer
                 format: int32
             price:
@@ -145,9 +142,6 @@ definitions:
                 type: string
             account:
                 $ref: '#/definitions/Account'
-            views_count:
-                type: integer
-                format: int32
             status:
                 type: string
             date_created:
@@ -168,9 +162,6 @@ definitions:
                 $ref: '#/definitions/Account'
             voice:
                 $ref: '#/definitions/VoiceLite'
-            views_count:
-                type: integer
-                format: int32
             column_id:
                 type: string
             status:

@@ -1470,25 +1470,21 @@
         "account": {
           "$ref": "#/definitions/Account"
         },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
+        "name": {
+          "type": "string"
         },
         "price": {
           "type": "integer"
         },
-        "name": {
-          "type": "string"
-        },
         "date_created": {
           "$ref": "#/definitions/datetime"
         },
-        "id": {
-          "type": "string"
-        },
-        "follows_count": {
+        "subscribes_count": {
           "type": "integer",
           "format": "int32"
+        },
+        "id": {
+          "type": "string"
         }
       }
     },
@@ -1532,10 +1528,6 @@
         },
         "account": {
           "$ref": "#/definitions/Account"
-        },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
         },
         "title": {
           "type": "string"
@@ -1703,10 +1695,6 @@
         },
         "account": {
           "$ref": "#/definitions/Account"
-        },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
         },
         "title": {
           "type": "string"

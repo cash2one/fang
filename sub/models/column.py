@@ -85,6 +85,12 @@ class Column(Model):
         cm = ColumnMembers(self.id)
         return cm.is_subscribed(account_id)
 
+    @cached_property
+    def subscribes_count(self):
+        from sub.cache.columns import ColumnMembers
+        cm = ColumnMembers(self.id)
+        return cm.count()
+
 
 class Member(SurrogatePK, Model):
 
