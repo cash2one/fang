@@ -531,6 +531,7 @@ paths:
             operationdId: create_post
             parameters:
                 - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: create_post
                   in: body
                   required: true
