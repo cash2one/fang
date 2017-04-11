@@ -107,14 +107,39 @@ def process_after_liking(liking_id):
 
 
 @celery.task()
+def notice_after_review_reply(reply_id, reply=None):
+    from sub.models import Reply
+    if not reply:
+        reply = Reply.query.get(reply_id)
+    if not reply:
+        return
+    if reply.review_status not in Reply.PUBLIC_REVIEW_STATUSES:
+        return
+    post = reply.post
+    if not post:
+        return
+    extras = {
+        'column_id': reply.column_id,
+        'post_id': reply.post_id,
+        'reply_id': reply.id,
+    }
+    push = Push(
+        'notice_reply_post', post.account_id, extras=extras)
+    push.send()
+
+
+@celery.task()
 def process_after_review_reply(reply_id, reply=None):
     from sub.models import Reply
     from sub.cache.post_statistics import PostStatistics
     if not reply:
         reply = Reply.query.get(reply_id)
+    if not reply:
+        return
     if reply.review_status in Reply.PUBLIC_REVIEW_STATUSES:
         ps = PostStatistics(reply.post_id)
         ps.update_replies_count()
+        notice_after_review_reply.delay(reply.id)
 
 
 @celery.task()
