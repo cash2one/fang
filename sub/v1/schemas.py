@@ -30,7 +30,7 @@ DefinitionsReply = {'properties': {'account': DefinitionsAccount, 'account_id': 
 DefinitionsColumndetail = {'properties': {'account': DefinitionsAccount}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
 DefinitionsPostdetail = {'properties': {'account': DefinitionsAccount}, 'allOf': [DefinitionsPost, {'type': 'object'}]}
 DefinitionsArticledetail = {'properties': {'account': DefinitionsAccount, 'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsArticle, {'type': 'object'}]}
-DefinitionsActivity = {'properties': {'description': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'target_id': {'type': 'string'}, 'target_type': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'action': {'type': 'string'}, 'article': DefinitionsArticle, 'post': DefinitionsPost, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
+DefinitionsActivity = {'properties': {'account': DefinitionsAccount, 'description': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'target_id': {'type': 'string'}, 'target_type': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'action': {'type': 'string'}, 'article': DefinitionsArticle, 'post': DefinitionsPost, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
 
 validators = {
     ('self_columns_subscribed', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'per_page': {'description': 'per_page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'limit': {'description': 'limit number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'page': {'description': 'page number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}, 'offset': {'description': 'offset number', 'format': 'int32', 'required': False, 'type': 'integer', 'maximum': 10000}}}},
@@ -71,16 +71,13 @@ filters = {
 scopes = {
     ('self_columns_subscribed', 'GET'): ['open'],
     ('columns_id_posts', 'POST'): ['open'],
-    ('columns_id_posts', 'GET'): ['open'],
     ('posts_id_replies', 'POST'): ['open'],
-    ('posts_id_replies', 'GET'): ['open'],
     ('alipay', 'POST'): ['open'],
     ('columns_id_activities', 'GET'): ['open'],
     ('articles_id', 'GET'): ['open'],
     ('weixin_pay', 'POST'): ['open'],
     ('columns_id', 'GET'): ['open'],
     ('columns', 'GET'): ['open'],
-    ('posts_id', 'GET'): ['open'],
     ('posts_id_forward', 'POST'): ['open'],
     ('liking', 'POST'): ['open'],
     ('voices_id', 'POST'): ['open'],

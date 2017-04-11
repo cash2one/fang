@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import g
 
-from zaih_core.api_errors import NotFound, BadRequest
+from zaih_core.api_errors import NotFound
 
-from sub.models import Post, Member
+from sub.models import Post
 
 from . import Resource
 
@@ -19,11 +18,4 @@ class PostsId(Resource):
             .first())
         if not post:
             raise NotFound('post_not_found')
-        member = (
-            Member.query
-            .filter(Member.account_id == g.account.id)
-            .filter(Member.column_id == post.column_id)
-            .first())
-        if not member:
-            raise BadRequest('not_subscribe_column')
         return post, 200

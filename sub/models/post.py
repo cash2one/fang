@@ -59,6 +59,15 @@ class Post(Model):
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
+    _column = db.relationship(
+        'Column',
+        primaryjoin='Post.column_id==Column.id',
+        foreign_keys='Post.column_id')
+
+    @cached_property
+    def column(self):
+        return self._column
+
     @cached_property
     def account(self):
         from sub.cache.accounts import account_meta
@@ -119,6 +128,24 @@ class Reply(Model):
     date_updated = db.Column(
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
+
+    _column = db.relationship(
+        'Column',
+        primaryjoin='Reply.column_id==Column.id',
+        foreign_keys='Reply.column_id')
+
+    _post = db.relationship(
+        'Post',
+        primaryjoin='Reply.post_id==Post.id',
+        foreign_keys='Reply.post_id')
+
+    @cached_property
+    def column(self):
+        return self._column
+
+    @cached_property
+    def post(self):
+        return self._post
 
     @cached_property
     def account(self):

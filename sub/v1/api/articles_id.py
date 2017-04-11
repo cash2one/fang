@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from zaih_core.api_errors import NotFound
+from zaih_core.api_errors import NotFound, BadRequest
 
 from sub.models import Article
 
@@ -19,4 +19,6 @@ class ArticlesId(Resource):
             .first())
         if not article:
             raise NotFound('article_not_found')
+        if not article.current_is_subscribed:
+            raise BadRequest('not_subscribe_column')
         return article, 200

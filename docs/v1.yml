@@ -85,6 +85,8 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            account:
+                $ref: '#/definitions/Account'
             article:
                 $ref: '#/definitions/Article'
             post:
@@ -522,8 +524,6 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
-            security:
-                - OAuth2: [open]
         post:
             summary: 发起讨论
             description: 发起讨论
@@ -531,6 +531,7 @@ paths:
             operationdId: create_post
             parameters:
                 - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
                 - name: create_post
                   in: body
                   required: true
@@ -565,8 +566,6 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
-            security:
-                - OAuth2: [open]
     /posts/{id}/replies:
         get:
             summary: 讨论回复列表
@@ -591,8 +590,6 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
-            security:
-                - OAuth2: [open]
         post:
             summary: 回复讨论
             description: 回复讨论

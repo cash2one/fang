@@ -61,6 +61,15 @@ class Article(Model):
         DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
+    _column = db.relationship(
+        'Column',
+        primaryjoin='Article.column_id==Column.id',
+        foreign_keys='Article.column_id')
+
+    @cached_property
+    def column(self):
+        return self._column
+
     @cached_property
     def account(self):
         from sub.cache.accounts import account_meta

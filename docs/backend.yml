@@ -11,6 +11,26 @@ consumes:
 profuces:
     - application/json
 definitions:
+    PayNotify:
+        required:
+            - order_id
+            - status
+        properties:
+            order_id:
+                type: string
+            status:
+                type: string
+                enum:
+                    - success
+    PayResult:
+        required:
+            - ok
+            - is_settle
+        properties:
+            ok:
+                type: boolean
+            is_settle:
+                type: boolean
     Error:
         properties:
             error_code:
@@ -77,5 +97,28 @@ securityDefinitions:
             panel: 后台API
             backend: Backend API
 paths:
+    /pay/notify:
+        post:
+            summary: 支付后回调接口
+            description: 支付后回调接口
+            tags: [PAY]
+            operationdId: pay_notify
+            parameters:
+                - name: pay_notify
+                  in: body
+                  required: ture
+                  schema:
+                      $ref: '#/definitions/PayNotify'
+            responses:
+                201:
+                    description: 处理结果
+                    schema:
+                        $ref: '#/definitions/PayResult'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [open]
 tags:
-    - {description: "", name: BACKEND}
+    - {description: "PAY", name: BACKEND}

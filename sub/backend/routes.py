@@ -8,7 +8,9 @@
 ###
 from __future__ import absolute_import
 
+from .api.pay_notify import PayNotify
 
 
 routes = [
+    dict(resource=PayNotify, urls=['/pay/notify'], endpoint='pay_notify'),
 ]
