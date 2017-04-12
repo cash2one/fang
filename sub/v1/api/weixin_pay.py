@@ -59,7 +59,8 @@ def prepare_prepay_info():
     if trade_type == 'JSAPI':
         auth = Authentication(g.account.id)
         openid = auth.get_single('weixin_mp')
-        result.update(openid=openid)
+        if openid:
+            result.update(openid=openid)
     return result
 
 
