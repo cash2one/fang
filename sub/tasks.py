@@ -93,7 +93,7 @@ def process_after_paid(order_id, order=None):
         return
     result = {}
     order.update(status=Order.STATUS_PAID, date_updated=now())
-    if order.order_type == Order.ORDER_TYPE_SUBSCRIBE_COLUMN:
+    if order.order_type == Order.ORDER_TYPE_SUBSCRIBE:
         res = process_after_subscribed(order.account_id, order.target_id)
         result.update(res)
     return result

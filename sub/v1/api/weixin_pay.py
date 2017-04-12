@@ -26,7 +26,7 @@ def prepare_prepay_info():
     if order:
         if order.status == Order.STATUS_PAID:
             raise BadRequest('already_paid_success')
-    if order_type == "subscribe_column":
+    if order_type == Order.ORDER_TYPE_SUBSCRIBE:
         # 订阅
         column = Column.query.get(target_id)
         if not column:
@@ -70,7 +70,7 @@ class WeixinPay(Resource):
         参数：
         target_id           商品id
         target_type         商品类型（column）
-        order_type          订单类型（subscribe_column)
+        order_type          订单类型（subscribe)
         trade_type          交易类型
         '''
         pay_info = prepare_prepay_info()

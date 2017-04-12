@@ -92,7 +92,7 @@ def upgrade():
     sa.Column('account_id', sa.Integer(), nullable=False),
     sa.Column('target_id', sa.String(length=32), nullable=False),
     sa.Column('target_type', sa.String(length=16), server_default=u'column', nullable=False),
-    sa.Column('order_type', sa.String(length=16), server_default=u'subscribe_column', nullable=False),
+    sa.Column('order_type', sa.String(length=16), server_default=u'subscribe', nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('status', sa.String(length=16), server_default=u'pending', nullable=False),
     sa.Column('date_created', sa.DateTime(timezone=True), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=False),

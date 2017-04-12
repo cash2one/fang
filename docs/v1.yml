@@ -212,7 +212,7 @@ definitions:
                 type: string
                 description: 订单类型 订阅专栏
                 enum:
-                    - subscribe_column
+                    - subscribe
             target_type:
                 type: string
                 enum:
@@ -238,7 +238,7 @@ definitions:
                 type: string
                 description: 订单类型 订阅专栏
                 enum:
-                    - subscribe_column
+                    - subscribe
             target_type:
                 type: string
                 enum:

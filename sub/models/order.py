@@ -31,7 +31,7 @@ class Order(Model):
 
     TARGET_TYPE_COLUMN = 'column'
 
-    ORDER_TYPE_SUBSCRIBE_COLUMN = 'subscribe_column'
+    ORDER_TYPE_SUBSCRIBE = 'subscribe'
 
     id = db.Column(
         db.String(32), primary_key=True, default=order_id_generator)
@@ -42,7 +42,7 @@ class Order(Model):
         server_default=TARGET_TYPE_COLUMN)
     order_type = db.Column(
         db.String(16), nullable=False, index=True,
-        server_default=ORDER_TYPE_SUBSCRIBE_COLUMN)
+        server_default=ORDER_TYPE_SUBSCRIBE)
     price = db.Column(db.Integer(), nullable=False, index=True)
     status = db.Column(
         db.String(16), nullable=False, index=True,

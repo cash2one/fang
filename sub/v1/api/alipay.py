@@ -16,7 +16,7 @@ class Alipay(Resource):
         参数：
         target_id           商品id
         target_type         商品类型（column）
-        order_type          订单类型（subscribe_column)
+        order_type          订单类型（subscribe)
         trade_type          交易类型
         '''
         pay_info = prepare_prepay_info()
