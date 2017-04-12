@@ -38,7 +38,6 @@ class Voices(Resource):
             Article.query
             .filter(Article.id == article_id)
             .filter(~Article.is_hidden)
-            .filter(Article.status == Article.STATUS_PUBLISHED)
             .first())
         if not article:
             raise NotFound('article_not_found')
