@@ -1490,10 +1490,13 @@
     },
     "CreateVoice": {
       "properties": {
-        "source_key": {
+        "article_id": {
           "type": "string"
         },
-        "column_id": {
+        "media_id": {
+          "type": "string"
+        },
+        "source": {
           "type": "string"
         }
       }
@@ -1860,10 +1863,10 @@
         "duration": {
           "type": "string"
         },
-        "id": {
+        "article_id": {
           "type": "string"
         },
-        "column_id": {
+        "id": {
           "type": "string"
         }
       }
