@@ -27,7 +27,7 @@ class ColumnMembers(object):
             redis.zadd(self.mkey, score, account_id)
 
     def is_subscribed(self, account_id):
-        return redis.sismembers(self.mkey, account_id)
+        return redis.sismember(self.mkey, account_id)
 
     def full_sync(self):
         # 全量更新缓存
