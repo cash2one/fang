@@ -27,5 +27,5 @@ class PayNotify(Resource):
             from sub.tasks import process_after_paid
             r = process_after_paid(order.id, order)
             if r:
-                result.update(ok=True, is_settle=True)
+                result.update(r)
         return result, 201

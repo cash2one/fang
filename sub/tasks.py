@@ -71,12 +71,15 @@ def process_after_subscribed(account_id, column_id):
     column = Column.query.get(column_id)
     if not column:
         return
+    result = dict(is_settle=False, ok=True)
     member = Member.query.filter_by(account_id=account_id, column_id=column.id).first()
     if not member:
         member = Member.create(account_id=account_id, column_id=column.id)
         from sub.cache.columns import ColumnMembers
         cm = ColumnMembers(column.id)
         cm.update_members(account_id)
+        result.update(payee_id=column.account_id, is_settle=True)
+    return result
 
 
 @celery.task()
@@ -88,10 +91,12 @@ def process_after_paid(order_id, order=None):
         return
     if order.status != Order.STATUS_PENDING:
         return
+    result = {}
     order.update(status=Order.STATUS_PAID, date_updated=now())
     if order.order_type == Order.ORDER_TYPE_SUBSCRIBE_COLUMN:
-        process_after_subscribed(order.account_id, order.target_id)
-    return True
+        res = process_after_subscribed(order.account_id, order.target_id)
+        result.update(res)
+    return result
 
 
 @celery.task()
