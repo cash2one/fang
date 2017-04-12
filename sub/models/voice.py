@@ -39,7 +39,7 @@ class Voice(Model):
         db.String(32), primary_key=True, default=voice_id_generator)
     media_id = db.Column(db.String(), nullable=False)
     voice_key = db.Column(db.String(), nullable=True)
-    duration = db.Column(db.Integer(), nullable=False)
+    duration = db.Column(db.Integer(), nullable=False, default=60)
     target_id = db.Column(db.String(32), nullable=False, index=True)
     target_type = db.Column(
         db.String(16), nullable=False, index=True, server_default=TARGET_TYPE_ARTICLE)

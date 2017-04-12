@@ -43,6 +43,7 @@ class Voices(Resource):
             raise NotFound('article_not_found')
 
         voice = Voice.create(source=source,
+                             media_id=media_id,
                              target_type=Voice.TARGET_TYPE_ARTICLE,
                              target_id=article_id)
 
