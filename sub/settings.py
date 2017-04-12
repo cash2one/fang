@@ -128,7 +128,7 @@ class Config(object):
     FEED_SERVER_HOST = environ.get('FEED_PORT_8891_HTTP_PROTO', 'http://localhost:8891')
     FEED_BACKEND_API = '{host}/backend'.format(host=FEED_SERVER_HOST)
     # bank server
-    BANK_SERVER_HOST = environ.get('BANK_PORT_8899_HTTP_PROTO', 'http://localhost:8899')
+    BANK_SERVER_HOST = environ.get('BANK_PORT_8898_HTTP_PROTO', 'http://localhost:8898')
     BANK_BACKEND_API = '{host}/backend'.format(host=BANK_SERVER_HOST)
 
     BACKEND_APIS = {
