@@ -166,7 +166,7 @@ def upgrade():
     sa.Column('date_created', sa.DateTime(timezone=True), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=False),
     sa.Column('id', sa.String(length=32), nullable=False),
     sa.Column('account_id', sa.Integer(), nullable=False),
-    sa.Column('column_id', sa.Integer(), nullable=False),
+    sa.Column('column_id', sa.String(length=32), nullable=False),
     sa.Column('action', sa.String(length=32), nullable=False),
     sa.Column('target_id', sa.String(length=32), nullable=False),
     sa.Column('target_type', sa.String(length=32), server_default=u'question', nullable=False),
