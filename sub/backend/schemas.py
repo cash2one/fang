@@ -12,7 +12,7 @@
 
 DefinitionsPaynotify = {'required': ['order_id', 'status'], 'properties': {'order_id': {'type': 'string'}, 'status': {'enum': ['success'], 'type': 'string'}}}
 DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
-DefinitionsPayresult = {'required': ['ok', 'is_settle'], 'properties': {'ok': {'type': 'boolean'}, 'is_settle': {'type': 'boolean'}}}
+DefinitionsPayresult = {'required': ['ok', 'is_settle'], 'properties': {'ok': {'type': 'boolean'}, 'payee_id': {'type': 'integer'}, 'is_settle': {'type': 'boolean'}}}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
 
 validators = {

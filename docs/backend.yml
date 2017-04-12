@@ -31,6 +31,8 @@ definitions:
                 type: boolean
             is_settle:
                 type: boolean
+            payee_id:
+                type: integer
     Error:
         properties:
             error_code:
