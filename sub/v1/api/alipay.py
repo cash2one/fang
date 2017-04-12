@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from flask import g
 
 from zaih_core.helpers import get_backend_api
 from zaih_core.api_errors import BadRequest
@@ -20,6 +21,9 @@ class Alipay(Resource):
         trade_type          交易类型
         '''
         pay_info = prepare_prepay_info()
+        return_url = g.json.get('return_url')
+        if return_url:
+            pay_info['return_url'] = return_url
         bank_api = get_backend_api('bank')
         res = bank_api.alipay.post(pay_info)
         if not res or not isinstance(res, dict):
