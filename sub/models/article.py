@@ -8,7 +8,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from flask import g
 from sqlalchemy import sql
 from markdown2 import markdown
-
 from zaih_core.ztime import now, str_time
 from zaih_core.database import (db, Model, DateTime,
                                 SurrogatePK, generator_string_id)

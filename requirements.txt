@@ -2,4 +2,3 @@ Flask
 Jinja2
 Flask-RESTful
 jsonschema
-markdown2==2.3.3
