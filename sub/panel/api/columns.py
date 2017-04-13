@@ -15,8 +15,7 @@ class Columns(Resource):
     def get(self):
         nickname = g.args.get('nickname')
 
-        filter_fields = ['id', 'name', 'column_id',
-                         'status', 'account_id']
+        filter_fields = ['id', 'name', 'status', 'account_id']
         query = get_slave_query(Column, filter_fields, g.args)
         if nickname:
             from sub.cache.accounts import get_account_ids_by_nickname

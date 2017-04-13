@@ -469,6 +469,12 @@ parameters:
         in: query
         required: false
         type: string
+    string_id_in_query:
+        description:  ID
+        name: id
+        in: query
+        required: false
+        type: string
     account_id_in_path:
         description: account id in path
         name: account_id
@@ -545,7 +551,7 @@ paths:
             parameters:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
-                - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/string_id_in_query'
                 - $ref: '#/parameters/nickname_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
@@ -744,7 +750,7 @@ paths:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
-                - $ref: '#/parameters/article_id_in_query'
+                - $ref: '#/parameters/string_id_in_query'
                 - $ref: '#/parameters/title_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'

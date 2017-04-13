@@ -544,7 +544,7 @@
             "$ref": "#/parameters/column_id_in_query"
           },
           {
-            "$ref": "#/parameters/article_id_in_query"
+            "$ref": "#/parameters/string_id_in_query"
           },
           {
             "$ref": "#/parameters/title_in_query"
@@ -867,7 +867,7 @@
             "$ref": "#/parameters/account_id_in_query"
           },
           {
-            "$ref": "#/parameters/column_id_in_query"
+            "$ref": "#/parameters/string_id_in_query"
           },
           {
             "$ref": "#/parameters/nickname_in_query"
@@ -1406,6 +1406,13 @@
       "in": "query",
       "type": "integer",
       "name": "account_id"
+    },
+    "string_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "ID",
+      "in": "query",
+      "name": "id"
     },
     "account_id_in_path": {
       "description": "account id in path",
