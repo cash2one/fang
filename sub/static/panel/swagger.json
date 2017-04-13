@@ -1826,7 +1826,7 @@
           "type": "boolean"
         },
         "voice": {
-          "$ref": "#/definitions/VoiceLite"
+          "$ref": "#/definitions/Voice"
         },
         "id": {
           "type": "string"

@@ -163,7 +163,7 @@ definitions:
             account:
                 $ref: '#/definitions/Account'
             voice:
-                $ref: '#/definitions/VoiceLite'
+                $ref: '#/definitions/Voice'
             column_id:
                 type: string
             status:
