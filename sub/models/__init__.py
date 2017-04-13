@@ -29,7 +29,7 @@ def on_models_committed(sender, changes):
         process_after_create_activity)
     for model, change in changes:
         if isinstance(model, Liking) and change == 'insert':
-            process_after_liking.delay(voice_id=model.id)
+            process_after_liking.delay(model.id)
         elif isinstance(model, Reply) and change == 'insert':
             process_after_reply.delay(model.id)
         elif isinstance(model, Active) and change == 'insert':
