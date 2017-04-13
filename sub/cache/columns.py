@@ -25,6 +25,9 @@ class ColumnMembers(object):
         else:
             score = time.mktime(now().timetuple())
             redis.zadd(self.mkey, score, account_id)
+        from .column_statistics import ColumnStatistics
+        cs = ColumnStatistics(self.id)
+        cs.update_members_count(self.count())
 
     def is_subscribed(self, account_id):
         return bool(redis.zscore(self.mkey, account_id))

@@ -77,7 +77,7 @@ class Column(Model):
         return account
 
     @cached_property
-    def current_is_subscribed(self):
+    def is_subscribed(self):
         account_id = g.account.id if hasattr(g, 'account') else None
         if not account_id:
             return False
@@ -87,9 +87,9 @@ class Column(Model):
 
     @cached_property
     def subscribes_count(self):
-        from sub.cache.columns import ColumnMembers
-        cm = ColumnMembers(self.id)
-        return cm.count()
+        from sub.cache.column_statistics import ColumnStatistics
+        cs = ColumnStatistics(self.id)
+        return cs.members_count
 
 
 class Member(SurrogatePK, Model):

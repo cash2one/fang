@@ -19,6 +19,6 @@ class ArticlesId(Resource):
             .first())
         if not article:
             raise NotFound('article_not_found')
-        if not article.current_is_subscribed:
+        if not article.is_subscribed:
             raise BadRequest('not_subscribe_column')
         return article, 200

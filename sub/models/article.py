@@ -85,7 +85,7 @@ class Article(Model):
             return self._voice.id
 
     @cached_property
-    def current_is_subscribed(self):
+    def is_subscribed(self):
         account_id = g.account.id if hasattr(g, 'account') else None
         if not account_id:
             return False

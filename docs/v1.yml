@@ -42,6 +42,8 @@ definitions:
                 type: string
             content:
                 type: string
+            html_content:
+                type: string
             account_id:
                 type: integer
             image:
@@ -60,13 +62,17 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            account:
+                $ref: '#/definitions/Account'
     ColumnDetail:
         allOf:
             - $ref: '#/definitions/Column'
             - type: object
         properties:
-            account:
-                $ref: '#/definitions/Account'
+            is_subscribed:
+                type: boolean
+            subscribes_count:
+                type: integer
     Activity:
         properties:
             id:

@@ -33,7 +33,7 @@ class ReplyStatistics(object):
         }
         return statistics
 
-    def update_likings_count(self, count=False):
+    def update_likings_count(self, count=None):
         key = 'likings_count'
         if not count:
             count = get_reply_likings_count(self.id)

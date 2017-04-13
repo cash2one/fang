@@ -80,7 +80,7 @@ class Post(Model):
         return ps.replies_count
 
     @cached_property
-    def current_is_subscribed(self):
+    def is_subscribed(self):
         account_id = g.account.id if hasattr(g, 'account') else None
         if not account_id:
             return False
@@ -167,7 +167,7 @@ class Reply(Model):
         return rs.has_liked(g.account.id)
 
     @cached_property
-    def current_is_subscribed(self):
+    def is_subscribed(self):
         account_id = g.account.id if hasattr(g, 'account') else None
         if not account_id:
             return False

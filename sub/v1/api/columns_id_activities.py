@@ -21,7 +21,7 @@ class ColumnsIdActivities(Resource):
             .first())
         if not column:
             raise NotFound('column_not_found')
-        if not column.current_is_subscribed:
+        if not column.is_subscribed:
             raise BadRequest('not_subscribe_column')
         query = (
             Active.query
