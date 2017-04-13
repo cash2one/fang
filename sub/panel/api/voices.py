@@ -45,7 +45,8 @@ class Voices(Resource):
         voice = Voice.create(source=source,
                              media_id=media_id,
                              target_type=Voice.TARGET_TYPE_ARTICLE,
-                             target_id=article_id)
+                             target_id=article_id,
+                             review_status=Voice.REVIEW_STATUS_AUTO_PASSED)
 
         media_key = media_saveas(media_id)
         if not media_key:
