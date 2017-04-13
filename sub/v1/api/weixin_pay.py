@@ -39,7 +39,7 @@ def prepare_prepay_info():
         if member:
             raise BadRequest('already_subscribed')
         total_fee = column.price
-        body = u'在「分答」订阅专栏'
+        body = u'购买订阅产品《{name}》'.format(name=column.name)
     else:
         raise BadRequest('order_type_error')
     if not order:

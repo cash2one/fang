@@ -83,6 +83,27 @@ def process_after_subscribed(account_id, column_id):
 
 
 @celery.task()
+def notice_after_paid(order_id):
+    from sub.models import Order
+    from sub.cache.accounts import account_meta
+    from sub.cache.column_statistics import ColumnStatistics
+    order = Order.query.get(order_id)
+    if not order:
+        return
+    if order.status != Order.STATUS_PAID:
+        return
+    account = account_meta(order.account_id)
+    if not account:
+        return
+    mobile = account.get('mobile')
+    if mobile:
+        if order.order_type == Order.ORDER_TYPE_SUBSCRIBE:
+            cs = ColumnStatistics(order.target_id)
+            count = cs.members_count
+            send_msg('notice_after_paid', mobile, count=count)
+
+
+@celery.task()
 def process_after_paid(order_id, order=None):
     from sub.models import Order
     if not order:
@@ -96,6 +117,7 @@ def process_after_paid(order_id, order=None):
     if order.order_type == Order.ORDER_TYPE_SUBSCRIBE:
         res = process_after_subscribed(order.account_id, order.target_id)
         result.update(res)
+        notice_after_paid.delay(order.id)
     return result
 
 
