@@ -12,6 +12,9 @@
             "$ref": "#/parameters/AccessToken"
           },
           {
+            "$ref": "#/parameters/string_id_in_path"
+          },
+          {
             "$ref": "#/parameters/account_id_in_query"
           },
           {
@@ -79,6 +82,9 @@
           },
           {
             "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/string_id_in_path"
           },
           {
             "$ref": "#/parameters/reply_id_in_query"
@@ -329,9 +335,9 @@
         }
       }
     },
-    "/replies/{id}/review": {
+    "/replies/{id}": {
       "put": {
-        "description": "\u5ba1\u6838\u56de\u590d",
+        "description": "\u4fee\u6539\u56de\u590d",
         "parameters": [
           {
             "$ref": "#/parameters/AccessToken"
@@ -343,16 +349,16 @@
             "schema": {
               "$ref": "#/definitions/UpdateReply"
             },
-            "required": "ture",
-            "name": "review_reply",
+            "required": true,
+            "name": "update_reply",
             "in": "body"
           }
         ],
         "tags": [
           "POSTS"
         ],
-        "summary": "\u5ba1\u6838\u56de\u590d",
-        "operationdId": "review_reply",
+        "summary": "\u4fee\u6539\u56de\u590d",
+        "operationdId": "replies",
         "security": [
           {
             "OAuth2": [
@@ -362,9 +368,115 @@
         ],
         "responses": {
           "200": {
-            "description": "ok",
+            "description": "\u56de\u590d",
             "schema": {
-              "$ref": "#/definitions/Success"
+              "$ref": "#/definitions/Reply"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "\u56de\u590d",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/string_id_in_path"
+          }
+        ],
+        "tags": [
+          "POSTS"
+        ],
+        "summary": "\u56de\u590d",
+        "operationdId": "replies",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u56de\u590d",
+            "schema": {
+              "$ref": "#/definitions/Reply"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/columns/{id}/articles": {
+      "get": {
+        "description": "\u4e13\u680f\u4e0b\u6587\u7ae0\u5217\u8868",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AccessToken"
+          },
+          {
+            "$ref": "#/parameters/string_id_in_path"
+          },
+          {
+            "$ref": "#/parameters/account_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/article_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_hidden_in_query"
+          },
+          {
+            "$ref": "#/parameters/is_sticky_in_query"
+          },
+          {
+            "$ref": "#/parameters/status_in_query"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "$ref": "#/parameters/per_page"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "tags": [
+          "COLUMNS"
+        ],
+        "summary": "\u4e13\u680f\u4e0b\u6587\u7ae0\u5217\u8868",
+        "operationdId": "columns_id_articles",
+        "security": [
+          {
+            "OAuth2": [
+              "panel"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "\u4e13\u680f\u4e0b\u6587\u7ae0\u5217\u8868",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ArticleLite"
+              },
+              "type": "array"
             }
           },
           "default": {
@@ -433,6 +545,9 @@
           },
           {
             "$ref": "#/parameters/article_id_in_query"
+          },
+          {
+            "$ref": "#/parameters/title_in_query"
           },
           {
             "$ref": "#/parameters/status_in_query"
@@ -755,6 +870,9 @@
             "$ref": "#/parameters/column_id_in_query"
           },
           {
+            "$ref": "#/parameters/nickname_in_query"
+          },
+          {
             "$ref": "#/parameters/status_in_query"
           },
           {
@@ -1072,9 +1190,9 @@
         }
       }
     },
-    "/replies/{id}": {
+    "/replies/{id}/review": {
       "put": {
-        "description": "\u4fee\u6539\u56de\u590d",
+        "description": "\u5ba1\u6838\u56de\u590d",
         "parameters": [
           {
             "$ref": "#/parameters/AccessToken"
@@ -1086,16 +1204,16 @@
             "schema": {
               "$ref": "#/definitions/UpdateReply"
             },
-            "required": true,
-            "name": "update_reply",
+            "required": "ture",
+            "name": "review_reply",
             "in": "body"
           }
         ],
         "tags": [
           "POSTS"
         ],
-        "summary": "\u4fee\u6539\u56de\u590d",
-        "operationdId": "replies",
+        "summary": "\u5ba1\u6838\u56de\u590d",
+        "operationdId": "review_reply",
         "security": [
           {
             "OAuth2": [
@@ -1105,46 +1223,9 @@
         ],
         "responses": {
           "200": {
-            "description": "\u56de\u590d",
+            "description": "ok",
             "schema": {
-              "$ref": "#/definitions/Reply"
-            }
-          },
-          "default": {
-            "description": "Unexpected Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "get": {
-        "description": "\u56de\u590d",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AccessToken"
-          },
-          {
-            "$ref": "#/parameters/string_id_in_path"
-          }
-        ],
-        "tags": [
-          "POSTS"
-        ],
-        "summary": "\u56de\u590d",
-        "operationdId": "replies",
-        "security": [
-          {
-            "OAuth2": [
-              "panel"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "\u56de\u590d",
-            "schema": {
-              "$ref": "#/definitions/Reply"
+              "$ref": "#/definitions/Success"
             }
           },
           "default": {
@@ -1304,12 +1385,27 @@
       "type": "string",
       "description": "order by"
     },
+    "nickname_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "nickname in query",
+      "in": "query",
+      "name": "nickname"
+    },
     "order_score": {
       "required": false,
       "type": "string",
       "description": "\u6392\u5e8f\u503c",
       "in": "query",
       "name": "order_score"
+    },
+    "account_id_in_query": {
+      "description": "account id in query",
+      "format": "int32",
+      "required": false,
+      "in": "query",
+      "type": "integer",
+      "name": "account_id"
     },
     "account_id_in_path": {
       "description": "account id in path",
@@ -1319,12 +1415,12 @@
       "type": "integer",
       "name": "account_id"
     },
-    "column_id_in_query": {
+    "title_in_query": {
       "required": false,
       "type": "string",
-      "description": "\u4e13\u680fID",
+      "description": "title in query",
       "in": "query",
-      "name": "column_id"
+      "name": "title"
     },
     "review_status_in_query": {
       "enum": [
@@ -1361,6 +1457,13 @@
       "in": "query",
       "name": "post_id"
     },
+    "is_refresh": {
+      "required": false,
+      "type": "boolean",
+      "description": "\u662f\u5426\u5237\u65b0",
+      "in": "query",
+      "name": "is_refresh"
+    },
     "article_id_in_query": {
       "required": false,
       "type": "string",
@@ -1389,15 +1492,6 @@
       "in": "query",
       "name": "reply_id"
     },
-    "page": {
-      "description": "page number",
-      "format": "int32",
-      "required": false,
-      "maximum": 1000,
-      "in": "query",
-      "type": "integer",
-      "name": "page"
-    },
     "limit": {
       "description": "limit number",
       "format": "int32",
@@ -1407,13 +1501,12 @@
       "type": "integer",
       "name": "limit"
     },
-    "account_id_in_query": {
-      "description": "account id in query",
-      "format": "int32",
+    "column_id_in_query": {
       "required": false,
+      "type": "string",
+      "description": "\u4e13\u680fID",
       "in": "query",
-      "type": "integer",
-      "name": "account_id"
+      "name": "column_id"
     },
     "string_id_in_path": {
       "required": true,
@@ -1422,12 +1515,14 @@
       "in": "path",
       "name": "id"
     },
-    "is_refresh": {
+    "page": {
+      "description": "page number",
+      "format": "int32",
       "required": false,
-      "type": "boolean",
-      "description": "\u662f\u5426\u5237\u65b0",
+      "maximum": 1000,
       "in": "query",
-      "name": "is_refresh"
+      "type": "integer",
+      "name": "page"
     }
   },
   "tags": [
@@ -1533,6 +1628,9 @@
           "$ref": "#/definitions/Account"
         },
         "title": {
+          "type": "string"
+        },
+        "column_id": {
           "type": "string"
         },
         "date_published": {

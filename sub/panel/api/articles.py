@@ -15,9 +15,13 @@ class Articles(Resource):
 
     # @register_permission('get_articles')
     def get(self):
+        title = g.args.get('title')
         filter_fields = ['id', 'column_id', 'article_id',
                          'status', 'account_id']
+
         query = get_slave_query(Article, filter_fields, g.args)
+        if title:
+            query = query.filter(Article.title.like("%{}%".format(title)))
         count = query.count()
 
         offset, limit = get_offset_limit(g.args)

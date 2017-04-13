@@ -7,6 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from flask import g
 from sqlalchemy import sql
+from markdown2 import markdown
 
 from zaih_core.ztime import now, str_time
 from zaih_core.database import (db, Model, DateTime,
@@ -92,3 +93,7 @@ class Article(Model):
         from sub.cache.columns import ColumnMembers
         cm = ColumnMembers(self.column_id)
         return cm.is_subscribed(account_id)
+
+    @property
+    def html_content(self):
+        return markdown(self.content) if self.content else ''

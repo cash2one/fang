@@ -202,3 +202,11 @@ def process_after_create_activity(activity_id):
     if activity.status != Active.STATUS_ACTIVE:
         return
     notice_after_create_activity(activity.id, activity)
+
+
+@celery.task()
+def add_nickname_account_ids(account_id):
+    from sub.cache.accounts import account_meta, set_nickname_account_ids
+    account_dict = account_meta(account_id)
+    if account_dict:
+        set_nickname_account_ids(account_dict['nickname'], account_id)

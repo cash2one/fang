@@ -16,7 +16,7 @@ class Posts(Resource):
     # @register_permission('get_posts')
     def get(self):
         filter_fields = ['id', 'is_hidden', 'is_sticky', 'column_id',
-                         'is_sticky', 'account_id', 'review_status']
+                         'account_id', 'review_status']
         query = get_slave_query(Post, filter_fields, g.args)
         count = query.count()
 

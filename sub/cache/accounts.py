@@ -44,3 +44,24 @@ def preload_accounts_meta(ids=None, field_name='id'):
     accounts_meta = AccountMeta(ids, field_name=field_name)
     accounts_meta.preload_meta()
     return getattr(g, accounts_meta.meta_name, {})
+
+
+def get_account_ids_by_nickname(nickname):
+    from sub.app import redis
+    rkey = 'sub:nickname:account_id'
+    _ids = redis.hget(rkey, nickname)
+    if _ids:
+        return _ids.split(',')
+    return []
+
+
+def set_nickname_account_ids(nickname, account_id):
+    account_id = str(account_id)
+    nickname_ids = get_account_ids_by_nickname(nickname)
+    if account_id in nickname_ids:
+        return
+
+    from sub.app import redis
+    rkey = 'sub:nickname:account_id'
+    nickname_ids.append(account_id)
+    redis.hmset(rkey, {nickname: ','.join(nickname_ids)})

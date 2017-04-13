@@ -140,6 +140,8 @@ definitions:
         properties:
             id:
                 type: string
+            column_id:
+                type: string
             title:
                 type: string
             account:
@@ -389,6 +391,18 @@ parameters:
         required: false
         type: integer
         format: int32
+    nickname_in_query:
+        description: nickname in query
+        name: nickname
+        in: query
+        required: false
+        type: string
+    title_in_query:
+        description: title in query
+        name: title
+        in: query
+        required: false
+        type: string
     post_id_in_query:
         description: post id in query
         name: post_id
@@ -534,6 +548,7 @@ paths:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/nickname_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/page'
@@ -667,6 +682,7 @@ paths:
             operationdId: columns_id_posts
             parameters:
                 - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/post_id_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
@@ -689,6 +705,37 @@ paths:
                         $ref: '#/definitions/Error'
             security:
                 - OAuth2: [panel]
+    /columns/{id}/articles:
+        get:
+            summary: 专栏下文章列表
+            description: 专栏下文章列表
+            tags: [COLUMNS]
+            operationdId: columns_id_articles
+            parameters:
+                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/string_id_in_path'
+                - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/article_id_in_query'
+                - $ref: '#/parameters/is_hidden_in_query'
+                - $ref: '#/parameters/is_sticky_in_query'
+                - $ref: '#/parameters/status_in_query'
+                - $ref: '#/parameters/page'
+                - $ref: '#/parameters/per_page'
+                - $ref: '#/parameters/offset'
+                - $ref: '#/parameters/limit'
+            responses:
+                200:
+                    description: 专栏下文章列表
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/ArticleLite'
+                default:
+                    description: Unexpected Error
+                    schema:
+                        $ref: '#/definitions/Error'
+            security:
+                - OAuth2: [panel]
     /articles:
         get:
             summary: 文章列表
@@ -700,6 +747,7 @@ paths:
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
                 - $ref: '#/parameters/article_id_in_query'
+                - $ref: '#/parameters/title_in_query'
                 - $ref: '#/parameters/status_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/page'
@@ -956,6 +1004,7 @@ paths:
             parameters:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
+                - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/reply_id_in_query'
                 - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/is_hidden_in_query'
