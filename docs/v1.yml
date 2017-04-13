@@ -26,6 +26,12 @@ definitions:
                 type: string
             is_verified:
                 type: boolean
+    VoiceLite:
+        properties:
+            id:
+                type: string
+            duration:
+                type: integer
     Voice:
         properties:
             id:
@@ -115,13 +121,13 @@ definitions:
                 $ref: '#/definitions/datetime'
             date_updated:
                 $ref: '#/definitions/datetime'
+            voice:
+                $ref: '#/definitions/VoiceLite'
     ArticleDetail:
         allOf:
             - $ref: '#/definitions/Article'
             - type: object
         properties:
-            voice_id:
-                type: string
             account:
                 $ref: '#/definitions/Account'
     Post:

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from werkzeug.utils import cached_property
+
 from zaih_core.database import (
     db, Model, SurrogatePK, generator_string_id)
 
@@ -51,3 +53,9 @@ class Active(SurrogatePK, Model):
     status = db.Column(
         db.String(16), nullable=False, index=True,
         server_default='active')  # 当前动态状态 是否有效
+
+    @cached_property
+    def account(self):
+        from sub.cache.accounts import account_meta
+        account = account_meta(self.account_id)
+        return account

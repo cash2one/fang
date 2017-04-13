@@ -10,6 +10,8 @@
 ###
 
 
+DefinitionsCreatereply = {'required': ['content'], 'properties': {'content': {'type': 'string'}}}
+DefinitionsVoicelite = {'properties': {'duration': {'type': 'integer'}, 'id': {'type': 'string'}}}
 DefinitionsCreateweixinpay = {'required': ['order_type', 'trade_type', 'target_type', 'target_id'], 'properties': {'trade_type': {'default': 'NATIVE', 'enum': ['JSAPI', 'NATIVE', 'APP', 'MWEB'], 'type': 'string'}, 'target_id': {'type': 'string'}, 'order_type': {'enum': ['subscribe'], 'type': 'string', 'description': u'\u8ba2\u5355\u7c7b\u578b \u8ba2\u9605\u4e13\u680f'}, 'target_type': {'enum': ['column'], 'type': 'string'}}}
 DefinitionsUnifiedorder = {'required': ['return_code'], 'properties': {'trade_type': {'enum': ['JSAPI', 'NATIVE', 'APP'], 'type': 'string'}, 'prepay_id': {'type': 'string'}, 'nonce_str': {'type': 'string'}, 'return_code': {'enum': ['SUCCESS', 'FAIL'], 'type': 'string'}, 'return_msg': {'type': 'string', 'description': u'\u9519\u8bef\u539f\u56e0'}, 'sign': {'type': 'string'}, 'device_info': {'type': 'string'}, 'mch_type': {'enum': ['guokr', 'zaihang'], 'type': 'string'}, 'err_code_des': {'type': 'string'}, 'appid': {'type': 'string'}, 'time_stamp': {'type': 'string'}, 'mweb_url': {'type': 'string'}, 'code_url': {'type': 'string', 'description': u'trade_type\u4e3aNATIVE\u662f\u6709\u8fd4\u56de'}, 'result_code': {'enum': ['SUCCESS', 'FAIL'], 'type': 'string', 'description': u'\u4e1a\u52a1\u7ed3\u679c'}, 'err_code': {'type': 'string'}}}
 DefinitionsCreatealipay = {'required': ['order_type', 'target_type', 'target_id', 'trade_type'], 'properties': {'trade_type': {'default': 'alipay', 'enum': ['alipay'], 'type': 'string'}, 'target_id': {'type': 'string'}, 'order_type': {'enum': ['subscribe'], 'type': 'string', 'description': u'\u8ba2\u5355\u7c7b\u578b \u8ba2\u9605\u4e13\u680f'}, 'return_url': {'type': 'string'}, 'target_type': {'enum': ['column'], 'type': 'string'}}}
@@ -18,18 +20,17 @@ DefinitionsSuccess = {'properties': {'ok': {'type': 'boolean'}}}
 DefinitionsCreateliking = {'required': ['target_id', 'target_type'], 'properties': {'target_id': {'type': 'string'}, 'target_type': {'enum': ['post', 'reply'], 'type': 'string'}}}
 DefinitionsAlipayorderreturn = {'required': ['payment_url'], 'properties': {'payment_url': {'type': 'string'}}}
 DefinitionsCreatepost = {'required': ['title', 'description'], 'properties': {'description': {'type': 'string'}, 'title': {'type': 'string'}}}
-DefinitionsCreatereply = {'required': ['content'], 'properties': {'content': {'type': 'string'}}}
+DefinitionsVoice = {'properties': {'url': {'type': 'string'}, 'duration': {'type': 'integer'}, 'id': {'type': 'string'}}}
 DefinitionsDatetime = {'type': 'string', 'format': 'datetime'}
 DefinitionsAccount = {'properties': {'nickname': {'type': 'string'}, 'title': {'type': 'string'}, 'is_verified': {'type': 'boolean'}, 'id': {'type': 'string'}, 'avatar': {'type': 'string'}}}
-DefinitionsVoice = {'properties': {'url': {'type': 'string'}, 'duration': {'type': 'integer'}, 'id': {'type': 'string'}}}
 DefinitionsError = {'properties': {'text': {'type': 'string'}, 'message': {'type': 'string'}, 'error_code': {'type': 'string'}}}
 DefinitionsPost = {'properties': {'account': DefinitionsAccount, 'description': {'type': 'string'}, 'is_sticky': {'type': 'boolean'}, 'date_updated': DefinitionsDatetime, 'title': {'type': 'string'}, 'column_id': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'replies_count': {'type': 'integer'}, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
 DefinitionsColumn = {'properties': {'account': DefinitionsAccount, 'assistant_name': {'type': 'string'}, 'account_id': {'type': 'integer'}, 'date_updated': DefinitionsDatetime, 'html_content': {'type': 'string'}, 'image': {'type': 'string'}, 'date_start': DefinitionsDatetime, 'id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_published': DefinitionsDatetime, 'date_created': DefinitionsDatetime, 'price': {'type': 'integer'}, 'date_end': DefinitionsDatetime, 'name': {'type': 'string'}}}
-DefinitionsArticle = {'properties': {'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'column_id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'summary': {'type': 'string'}, 'id': {'type': 'string'}}}
 DefinitionsReply = {'properties': {'account': DefinitionsAccount, 'account_id': {'type': 'integer'}, 'is_sticky': {'type': 'boolean'}, 'date_updated': DefinitionsDatetime, 'is_liked': {'type': 'boolean'}, 'column_id': {'type': 'string'}, 'content': {'type': 'string'}, 'post_id': {'type': 'string'}, 'likings_count': {'type': 'integer'}, 'date_created': DefinitionsDatetime, 'id': {'type': 'string'}}}
-DefinitionsColumndetail = {'properties': {'is_subscribed': {'type': 'boolean'}}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
+DefinitionsArticle = {'properties': {'account_id': {'type': 'integer'}, 'title': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'summary': {'type': 'string'}, 'column_id': {'type': 'string'}, 'content': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'voice': DefinitionsVoicelite, 'id': {'type': 'string'}}}
+DefinitionsColumndetail = {'properties': {'is_subscribed': {'type': 'boolean'}, 'subscribes_count': {'type': 'integer'}}, 'allOf': [DefinitionsColumn, {'type': 'object'}]}
 DefinitionsPostdetail = {'allOf': [DefinitionsPost, {'type': 'object'}]}
-DefinitionsArticledetail = {'properties': {'account': DefinitionsAccount, 'voice_id': {'type': 'string'}}, 'allOf': [DefinitionsArticle, {'type': 'object'}]}
+DefinitionsArticledetail = {'properties': {'account': DefinitionsAccount}, 'allOf': [DefinitionsArticle, {'type': 'object'}]}
 DefinitionsActivity = {'properties': {'account': DefinitionsAccount, 'description': {'type': 'string'}, 'date_updated': DefinitionsDatetime, 'target_id': {'type': 'string'}, 'target_type': {'type': 'string'}, 'date_created': DefinitionsDatetime, 'action': {'type': 'string'}, 'article': DefinitionsArticle, 'post': DefinitionsPost, 'id': {'type': 'string'}, 'account_id': {'type': 'integer'}}}
 
 validators = {
