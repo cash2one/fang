@@ -34,10 +34,9 @@ class ReplyStatistics(object):
         return statistics
 
     def update_likings_count(self, count=None):
-        key = 'likings_count'
-        if not count:
+        if count is None:
             count = get_reply_likings_count(self.id)
-        self.update(key, count)
+        self.update(likings_count=count)
 
     def update_likings(self, account_id, is_delete=False, score=None):
         if score is None:

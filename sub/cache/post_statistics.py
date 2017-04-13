@@ -33,7 +33,7 @@ class PostStatistics(object):
     def update_replies_count(self, init=False, increment=1):
         if init:
             count = get_post_replies_count(self.id)
-            self.update('replies_count', count)
+            self.update(replies_count=count)
         else:
             redis.hincrby(self.skey, 'replies_count', increment)
 

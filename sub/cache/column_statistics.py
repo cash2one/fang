@@ -29,10 +29,9 @@ class ColumnStatistics(object):
         return statistics
 
     def update_members_count(self, count=None):
-        key = 'members_count'
-        if not count:
+        if count is None:
             count = get_members_count(self.id)
-        self.update(key, count)
+        self.update(members_count=count)
 
     def update(self, init=False, **kwargs):
         '''
