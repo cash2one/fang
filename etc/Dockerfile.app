@@ -1,5 +1,5 @@
 # DON'T CHANGE ME !!!
-# latest: 7.4.0-1_sub-e8cef0b6
+# latest: 7.4.0-1_sub-6e5100de
 
 FROM docker-registry.guokr.com/apps/fenda-sub-env:7.4.0-1_sub
 
