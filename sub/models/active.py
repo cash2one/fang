@@ -28,10 +28,13 @@ class Active(SurrogatePK, Model):
     SOURCE_APP = 'app'
     SOURCE_WXAPP = 'wxapp'
     SOURCE_WEIXIN = 'weixin'
+    SOURCE_PANEL = 'panel'
 
     STATUS_ACTIVE = 'active'
+    STATUS_DISABLE = 'disable'
 
     ACTION_POST_FORWARD = 'post_forward'
+    ACTION_PUBLISH_ARTICLE = 'publish_article'
 
     id = db.Column(db.String(32), primary_key=True, default=active_id_generator)
     account_id = db.Column(db.Integer, nullable=False, index=True)

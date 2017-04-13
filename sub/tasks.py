@@ -210,3 +210,19 @@ def add_nickname_account_ids(account_id):
     account_dict = account_meta(account_id)
     if account_dict:
         set_nickname_account_ids(account_dict['nickname'], account_id)
+
+
+@celery.task()
+def disable_activity(column_id, target_id, target_type):
+    from zaih_core.database import db
+    from sub.models import Active
+    activities = (
+        Active.query
+        .filter(Active.column_id == column_id)
+        .filter(Active.target_id == target_id)
+        .filter(Active.target_type == target_type)
+        .filter(Active.status == Active.STATUS_ACTIVE)
+        .all())
+    for activity in activities:
+        activity.status == Active.STATUS_DISABLE
+    db.session.commit()
