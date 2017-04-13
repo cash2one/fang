@@ -36,8 +36,9 @@ class Columns(Resource):
         return columns, 200, [('Total-Count', str(count))]
 
     def post(self):
-        from sub.tasks import add_nickname_account_ids
+        from sub.tasks import add_nickname_account_ids, process_after_subscribed
         g.json.update(review_status=Column.REVIEW_STATUS_AUTO_PASSED)
         column = Column.create(**g.json)
+        process_after_subscribed(column.account_id, column.id)
         add_nickname_account_ids.delay(column.account_id)
         return column, 201
