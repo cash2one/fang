@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import g
+from sqlalchemy.sql import expression
 
 from zaih_core.pager import get_offset_limit
 
@@ -23,6 +24,9 @@ class SelfColumnsSubscribed(Resource):
         offset, limit = get_offset_limit(g.args)
         columns = (
             query
+            .order_by(expression.case((
+                (Column.account_id == g.account.id, 1),
+            )))
             .order_by(Column.date_published.desc())
             .offset(offset)
             .limit(limit)
