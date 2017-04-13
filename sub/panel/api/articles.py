@@ -8,7 +8,8 @@ from zaih_core.pager import get_offset_limit
 from sub.models import Article, Column
 from sub.utils import get_slave_query
 from sub.services.permissions import register_permission
-from zaih_core.api_errors import NotFound, BadRequest
+from zaih_core.api_errors import NotFound
+from zaih_core.coding import smart_str
 
 
 class Articles(Resource):
@@ -21,7 +22,7 @@ class Articles(Resource):
 
         query = get_slave_query(Article, filter_fields, g.args)
         if title:
-            query = query.filter(Article.title.like("%{}%".format(title)))
+            query = query.filter(Article.title.like("%{}%".format(smart_str(title))))
         count = query.count()
 
         offset, limit = get_offset_limit(g.args)

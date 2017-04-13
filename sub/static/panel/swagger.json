@@ -1872,9 +1872,8 @@
         "account": {
           "$ref": "#/definitions/Account"
         },
-        "views_count": {
-          "type": "integer",
-          "format": "int32"
+        "name": {
+          "type": "string"
         },
         "price": {
           "type": "integer"
@@ -1894,13 +1893,11 @@
         "is_hidden": {
           "type": "boolean"
         },
-        "voice": {
-          "$ref": "#/definitions/Voice"
+        "subscribes_count": {
+          "type": "integer",
+          "format": "int32"
         },
         "id": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         }
       }

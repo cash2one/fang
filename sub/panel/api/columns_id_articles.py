@@ -4,6 +4,7 @@ from flask import g
 from zaih_core.pager import get_offset_limit
 from sub.utils import get_slave_query
 from sub.models import Article
+from zaih_core.coding import smart_str
 
 from . import Resource
 
@@ -19,7 +20,7 @@ class ColumnsIdArticles(Resource):
             .filter(Article.column_id == id))
 
         if title:
-            query = query.filter(Article.title.like("%{}%".format(title)))
+            query = query.filter(Article.title.like("%{}%".format(smart_str(title))))
         elif status:
             query = query.filter(Article.status == status)
 
