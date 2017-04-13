@@ -16,6 +16,6 @@ class VoicesId(Resource):
             art = Article.query.get(voice.target_id)
             if not art:
                 raise NotFound('article_not_found')
-            if not art.is_available:
-                raise BadRequest('article_not_available')
+            if not art.is_subscribed:
+                raise BadRequest('not_subscribe_column')
         return voice, 200
