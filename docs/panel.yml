@@ -75,6 +75,8 @@ definitions:
                 type: string
             content:
                 type: string
+            image:
+                type: string
             account:
                 $ref: '#/definitions/Account'
             subscribes_count:

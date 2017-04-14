@@ -1904,8 +1904,8 @@
         "name": {
           "type": "string"
         },
-        "price": {
-          "type": "integer"
+        "image": {
+          "type": "string"
         },
         "date_start": {
           "$ref": "#/definitions/datetime"
@@ -1915,6 +1915,9 @@
         },
         "date_end": {
           "$ref": "#/definitions/datetime"
+        },
+        "price": {
+          "type": "integer"
         },
         "date_created": {
           "$ref": "#/definitions/datetime"

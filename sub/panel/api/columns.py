@@ -14,9 +14,9 @@ class Columns(Resource):
 
     def get(self):
         nickname = g.args.get('nickname')
-
         filter_fields = ['id', 'name', 'status', 'account_id']
         query = get_slave_query(Column, filter_fields, g.args)
+
         if nickname:
             from sub.cache.accounts import get_account_ids_by_nickname
             ids = get_account_ids_by_nickname(nickname)
@@ -26,7 +26,6 @@ class Columns(Resource):
                 return [], 200, [('Total-Count', str(0))]
 
         count = query.count()
-
         offset, limit = get_offset_limit(g.args)
         columns = (query
                      .order_by(Column.date_created.desc())

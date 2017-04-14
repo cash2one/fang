@@ -20,13 +20,13 @@ class ArticlesIdPublish(Resource):
     # @register_permission('update_article')
     def put(self, id):
         article = self._get_article(id)
-
         if article.is_hidden or (article.status not in [Article.STATUS_DRAFT]):
             raise BadRequest('article_status_error')
 
         params = {
             'status': Article.STATUS_PUBLISHED
         }
+
         if not article.date_published:
             params['date_published'] = now()
         article.update(**params)

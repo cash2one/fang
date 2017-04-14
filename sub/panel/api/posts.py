@@ -19,12 +19,13 @@ class Posts(Resource):
         filter_fields = ['id', 'is_hidden', 'is_sticky', 'column_id',
                          'account_id', 'review_status']
         query = get_slave_query(Post, filter_fields, g.args)
+
         if column_account_id:
             query = (query
                      .filter(Column.id == Post.column_id)
                      .filter(Column.account_id == column_account_id))
-        count = query.count()
 
+        count = query.count()
         offset, limit = get_offset_limit(g.args)
         posts = (query
                      .order_by(Post.is_sticky.desc())

@@ -19,7 +19,6 @@ class ColumnsIdPublish(Resource):
 
     def put(self, id):
         column = self._get_column(id)
-
         if column.is_hidden or (column.status not in [Column.STATUS_DRAFT]):
             raise BadRequest('column_status_error')
 
