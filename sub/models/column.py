@@ -7,6 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from flask import g
 from sqlalchemy import sql
+from markdown2 import markdown
 
 from zaih_core.ztime import now, str_time
 from zaih_core.database import (db, Model, DateTime,
@@ -90,6 +91,10 @@ class Column(Model):
         from sub.cache.column_statistics import ColumnStatistics
         cs = ColumnStatistics(self.id)
         return cs.members_count
+
+    @property
+    def html_content(self):
+        return markdown(self.content) if self.content else ''
 
 
 class Member(SurrogatePK, Model):
