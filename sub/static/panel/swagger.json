@@ -1672,13 +1672,16 @@
         "description": {
           "type": "string"
         },
-        "title": {
-          "type": "string"
-        },
         "is_sticky": {
           "type": "boolean"
         },
+        "title": {
+          "type": "string"
+        },
         "review_status": {
+          "type": "string"
+        },
+        "column_id": {
           "type": "string"
         },
         "date_published": {
@@ -1795,17 +1798,23 @@
         "review_status": {
           "type": "string"
         },
+        "column_id": {
+          "type": "string"
+        },
         "content": {
           "type": "string"
         },
-        "date_published": {
-          "$ref": "#/definitions/datetime"
+        "post_id": {
+          "type": "string"
         },
         "is_hidden": {
           "type": "boolean"
         },
         "id": {
           "type": "string"
+        },
+        "date_published": {
+          "$ref": "#/definitions/datetime"
         }
       }
     },

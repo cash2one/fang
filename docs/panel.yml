@@ -209,6 +209,8 @@ definitions:
         properties:
             id:
                 type: string
+            column_id:
+                type: string
             title:
                 type: string
             description:
@@ -283,6 +285,10 @@ definitions:
                 type: string
             account:
                 $ref: '#/definitions/Account'
+            column_id:
+                type: string
+            post_id:
+                type: string
             is_hidden:
                 type: boolean
             is_sticky:
