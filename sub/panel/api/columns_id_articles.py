@@ -21,7 +21,7 @@ class ColumnsIdArticles(Resource):
 
         if title:
             query = query.filter(Article.title.like("%{}%".format(smart_str(title))))
-        elif status:
+        if status:
             query = query.filter(Article.status == status)
 
         count = query.count()
