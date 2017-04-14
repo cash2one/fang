@@ -463,6 +463,12 @@ parameters:
         in: query
         required: false
         type: string
+    column_account_id_in_query:
+        description:  专栏用户ID
+        name: column_account_id
+        in: query
+        required: false
+        type: string
     article_id_in_query:
         description:  文章ID
         name: article_id
@@ -720,6 +726,7 @@ paths:
                 - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/article_id_in_query'
+                - $ref: '#/parameters/title_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/is_sticky_in_query'
                 - $ref: '#/parameters/status_in_query'
@@ -887,6 +894,7 @@ paths:
                 - $ref: '#/parameters/AccessToken'
                 - $ref: '#/parameters/account_id_in_query'
                 - $ref: '#/parameters/column_id_in_query'
+                - $ref: '#/parameters/column_account_id_in_query'
                 - $ref: '#/parameters/is_hidden_in_query'
                 - $ref: '#/parameters/is_sticky_in_query'
                 - $ref: '#/parameters/review_status_in_query'

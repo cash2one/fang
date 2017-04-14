@@ -436,6 +436,9 @@
             "$ref": "#/parameters/article_id_in_query"
           },
           {
+            "$ref": "#/parameters/title_in_query"
+          },
+          {
             "$ref": "#/parameters/is_hidden_in_query"
           },
           {
@@ -1138,6 +1141,9 @@
             "$ref": "#/parameters/column_id_in_query"
           },
           {
+            "$ref": "#/parameters/column_account_id_in_query"
+          },
+          {
             "$ref": "#/parameters/is_hidden_in_query"
           },
           {
@@ -1514,6 +1520,13 @@
       "description": "\u4e13\u680fID",
       "in": "query",
       "name": "column_id"
+    },
+    "column_account_id_in_query": {
+      "required": false,
+      "type": "string",
+      "description": "\u4e13\u680f\u7528\u6237ID",
+      "in": "query",
+      "name": "column_account_id"
     },
     "string_id_in_path": {
       "required": true,
