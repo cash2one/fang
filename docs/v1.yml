@@ -48,8 +48,6 @@ definitions:
                 type: string
             content:
                 type: string
-            html_content:
-                type: string
             account_id:
                 type: integer
             image:
@@ -75,6 +73,8 @@ definitions:
             - $ref: '#/definitions/Column'
             - type: object
         properties:
+            html_content:
+                type: string
             is_subscribed:
                 type: boolean
             subscribes_count:
@@ -123,8 +123,6 @@ definitions:
                 type: string
             content:
                 type: string
-            html_content:
-                type: string
             date_created:
                 $ref: '#/definitions/datetime'
             date_updated:
@@ -136,6 +134,8 @@ definitions:
             - $ref: '#/definitions/Article'
             - type: object
         properties:
+            html_content:
+                type: string
             account:
                 $ref: '#/definitions/Account'
     Post:
