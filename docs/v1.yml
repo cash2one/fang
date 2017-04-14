@@ -87,10 +87,16 @@ definitions:
                 type: integer
             action:
                 type: string
+                enum:
+                    - publish_article
+                    - post_forward
             target_id:
                 type: string
             target_type:
                 type: string
+                enum:
+                    - post
+                    - article
             description:
                 type: string
             date_created:
@@ -404,7 +410,7 @@ paths:
             tags: [COLUMN]
             operationdId: get_columns
             parameters:
-                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/AccessTokenOptional'
                 - $ref: '#/parameters/page'
                 - $ref: '#/parameters/per_page'
                 - $ref: '#/parameters/offset'
@@ -420,8 +426,6 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
-            security:
-                - OAuth2: [open]
     /self/columns/subscribed:
         get:
             summary: 我订阅的专栏列表
@@ -454,7 +458,7 @@ paths:
             tags: [COLUMN]
             operationdId: columns
             parameters:
-                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/AccessTokenOptional'
                 - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
@@ -465,8 +469,6 @@ paths:
                     description: Unexpected Error
                     schema:
                         $ref: '#/definitions/Error'
-            security:
-                - OAuth2: [open]
     /columns/{id}/activities:
         get:
             summary: activities
@@ -520,7 +522,7 @@ paths:
             tags: [POST]
             operationdId: get_posts
             parameters:
-                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/AccessTokenOptional'
                 - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/page'
                 - $ref: '#/parameters/per_page'
@@ -568,7 +570,7 @@ paths:
             tags: [POST]
             operationdId: get_post
             parameters:
-                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/AccessTokenOptional'
                 - $ref: '#/parameters/string_id_in_path'
             responses:
                 200:
@@ -586,7 +588,7 @@ paths:
             tags: [REPLY]
             operationdId: get_post_replies
             parameters:
-                - $ref: '#/parameters/AccessToken'
+                - $ref: '#/parameters/AccessTokenOptional'
                 - $ref: '#/parameters/string_id_in_path'
                 - $ref: '#/parameters/page'
                 - $ref: '#/parameters/per_page'
