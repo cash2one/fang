@@ -123,6 +123,8 @@ definitions:
                 type: string
             content:
                 type: string
+            date_published:
+                $ref: '#/definitions/datetime'
             date_created:
                 $ref: '#/definitions/datetime'
             date_updated:
