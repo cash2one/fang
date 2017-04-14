@@ -22,6 +22,7 @@ class Replies(Resource):
 
         offset, limit = get_offset_limit(g.args)
         replys = (query
+                     .order_by(Reply.is_sticky.desc())
                      .order_by(Reply.date_created.desc())
                      .offset(offset).limit(limit)
                      .all())

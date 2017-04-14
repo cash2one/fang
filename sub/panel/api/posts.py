@@ -27,6 +27,7 @@ class Posts(Resource):
 
         offset, limit = get_offset_limit(g.args)
         posts = (query
+                     .order_by(Post.is_sticky.desc())
                      .order_by(Post.date_created.desc())
                      .offset(offset).limit(limit)
                      .all())
