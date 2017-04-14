@@ -36,7 +36,6 @@ class Posts(Resource):
             Column.query
             .filter(Column.id == column_id)
             .filter(~Column.is_hidden)
-            .filter(Column.status == Column.STATUS_PUBLISHED)
             .filter(Column.review_status.in_(Column.PUBLIC_REVIEW_STATUSES))
             .first())
         if not column:
