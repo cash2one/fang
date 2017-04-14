@@ -12,11 +12,7 @@ from . import Resource
 class PostsIdReplies(Resource):
 
     def get(self, id):
-        query = (
-            Reply.query
-            .filter(~Reply.is_hidden)
-            .filter(Reply.post_id == id)
-            .filter(Reply.review_status.in_(Reply.PUBLIC_REVIEW_STATUSES)))
+        query = Reply.query.filter(Reply.post_id == id)
         count = query.count()
         offset, limit = get_offset_limit(g.args)
         replies = (
