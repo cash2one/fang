@@ -116,7 +116,8 @@ class Config(object):
                                     'http://localhost:8888')
     FENDA_OAUTH_API = '{host}/backend/oauth/tokeninfo'.format(host=FENDA_SERVER_HOST)
     FENDA_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
-    FENDA_AUTH_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
+    OAUTH_SERVER_HOST = environ.get('OAUTH_PORT_8897_HTTP_PROTO', 'http://localhost:8897')
+    FENDA_AUTH_BACKEND_API = '{host}/backend'.format(host=OAUTH_SERVER_HOST)
     FENDA_ACCOUNT_BACKEND_API = '{host}/backend'.format(host=FENDA_SERVER_HOST)
     # censor server
     CENSOR_SERVER_HOST = environ.get('CENSOR_PORT_8989_HTTP_PROTO', 'http://localhost:8989')
