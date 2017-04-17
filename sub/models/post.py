@@ -88,6 +88,16 @@ class Post(Model):
         cm = ColumnMembers(self.column_id)
         return cm.is_subscribed(account_id)
 
+    @cached_property
+    def is_presenter(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        column = self.column
+        if account_id == column.account_id:
+            return True
+        return False
+
 
 def reply_id_generator():
     return generator_string_id(21, 5)

@@ -87,6 +87,22 @@ class Column(Model):
         return cm.is_subscribed(account_id)
 
     @cached_property
+    def is_assistant(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        # TODO
+
+    @cached_property
+    def is_presenter(self):
+        account_id = g.account.id if hasattr(g, 'account') else None
+        if not account_id:
+            return False
+        if account_id == self.account_id:
+            return True
+        return False
+
+    @cached_property
     def subscribes_count(self):
         from sub.cache.column_statistics import ColumnStatistics
         cs = ColumnStatistics(self.id)

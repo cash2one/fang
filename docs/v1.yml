@@ -166,6 +166,9 @@ definitions:
         allOf:
             - $ref: '#/definitions/Post'
             - type: object
+        properties:
+            is_presenter:
+                type: boolean
     CreatePost:
         required:
             - title
