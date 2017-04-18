@@ -25,7 +25,7 @@ def prepare_prepay_info():
         .first())
     if order:
         if order.status == Order.STATUS_PAID:
-            raise BadRequest('already_paid_success')
+            raise BadRequest('already_paid')
     if order_type == Order.ORDER_TYPE_SUBSCRIBE:
         # 订阅
         column = Column.query.get(target_id)
